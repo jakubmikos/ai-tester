@@ -472,3 +472,4 @@ Scenario: Add new BrewDog keg to shopping cart
         | Unit price       |
         | Total price      |
     And the cart counter should show "1" item
+
