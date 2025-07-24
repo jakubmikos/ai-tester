@@ -456,3 +456,19 @@ Scenario Outline: Form validation and security
         | @example.com            |
         | user@                   |
         | user..name@example.com  |
+
+@P1 @ShoppingCart @Smoke @NewProduct
+Scenario: Add new BrewDog keg to shopping cart
+    Given I am on the UK website
+    And my cart is empty
+    When I navigate to the "Kegs" section
+    And I add "BrewDog Punk IPA 6L Keg" to the cart
+    When I click on the cart icon
+    Then I should see the cart contents with:
+        | Cart Information |
+        | Product name     |
+        | Product image    |
+        | Quantity         |
+        | Unit price       |
+        | Total price      |
+    And the cart counter should show "1" item
