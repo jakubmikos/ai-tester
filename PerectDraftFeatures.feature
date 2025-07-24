@@ -473,17 +473,19 @@ Scenario: Add new BrewDog keg to shopping cart
         | Total price      |
     And the cart counter should show "1" item
 
-@P3 @AboutUs @Smoke
-Scenario: Navigate to About Us page and verify content
+@P3 @PrivacyPolicy @Smoke
+Scenario: Navigate to Privacy Policy page and verify content
     Given I am on the UK website
     When I scroll to the footer
-    And I click on "About Us" link
-    Then I should be on the About Us page
-    And I should see the page title "About PerfectDraft"
-    And I should see company information including:
-        | Information Type        |
-        | Company history        |
-        | Mission statement      |
-        | Team information       |
-        | Contact details        |
-    And I should see links to related pages like "Careers" or "Press"
+    And I click on "Privacy Policy" link
+    Then I should be on the Privacy Policy page
+    And I should see the page title "Privacy Policy"
+    And I should see privacy policy sections including:
+        | Policy Section                    |
+        | Data collection information       |
+        | Cookie usage policy              |
+        | Data processing purposes         |
+        | User rights and choices          |
+        | Contact information for queries   |
+    And the policy should display the last updated date
+    And I should be able to navigate back to the main website
