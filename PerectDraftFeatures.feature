@@ -96,6 +96,15 @@ Scenario: Main website navigation
     And the search functionality should be available
     And the cart icon should show "0" items
 
+@P1 @Navigation @Smoke
+Scenario: Navigate to About Us page
+    Given I am on the UK website
+    When I navigate to the "About Us" page
+    Then I should see the About Us page
+    And I should see company information
+    And I should see contact details
+    And the page should have a professional layout
+
 @P1 @ProductBrowsing @Smoke  
 Scenario: Browse beer kegs catalog
     Given I am on the UK website
