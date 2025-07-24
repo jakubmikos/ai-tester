@@ -472,3 +472,27 @@ Scenario: Add new BrewDog keg to shopping cart
         | Unit price       |
         | Total price      |
     And the cart counter should show "1" item
+
+@P2 @ProductReviews @Regression
+Scenario: Leave a product review as registered user
+    Given I am on the UK website
+    And I am logged in with email "test.user@example.com"
+    And I have previously purchased "Stella Artois 6L Keg"
+    When I navigate to the "Stella Artois 6L Keg" product page
+    And I scroll to the reviews section
+    And I click "Write a Review"
+    Then I should see the review form with fields:
+        | Review Field     |
+        | Star rating      |
+        | Review title     |
+        | Review text      |
+        | Recommend (Y/N)  |
+    When I select "5" stars
+    And I enter review title "Excellent beer for home enjoyment"
+    And I enter review text "Great quality beer, perfect for watching football with friends. The keg system works flawlessly and keeps the beer fresh."
+    And I select "Yes" for recommendation
+    And I click "Submit Review"
+    Then I should see a confirmation message "Thank you for your review"
+    And I should see my review appear in the reviews section
+    And the review should show my username "John D."
+    And the review should show the correct rating "5 stars"
