@@ -473,3 +473,29 @@ Scenario: Add new BrewDog keg to shopping cart
         | Total price      |
     And the cart counter should show "1" item
 
+@P2 @LegalPages @Regression
+Scenario: Navigate to Privacy Policy page from footer
+    Given I am on the UK website
+    When I scroll to the footer section
+    And I click on "Privacy Policy" link
+    Then I should be redirected to the Privacy Policy page
+    And I should see the page title "Privacy Policy"
+    And I should see legal content about data collection and usage
+    And I should see the last updated date
+    And the page URL should contain "privacy-policy"
+
+@P2 @LegalPages @Regression
+Scenario Outline: Access Privacy Policy from different pages
+    Given I am on the UK website
+    When I navigate to "<Page>"
+    And I scroll to the footer section
+    And I click on "Privacy Policy" link
+    Then I should be redirected to the Privacy Policy page
+    And I should see the page title "Privacy Policy"
+    
+    Examples:
+        | Page          |
+        | Homepage      |
+        | Kegs section  |
+        | Machines page |
+        | Account page  |
