@@ -197,6 +197,54 @@ Scenario: Add bundle products to cart
     And the bundle discount should be applied
     And the total should reflect the bundle price
 
+@P1 @ShoppingCart @Smoke @StellaArtois
+Scenario: Add Stella Artois keg to shopping cart
+    Given I am on the UK website
+    And my cart is empty
+    When I navigate to the "Kegs" section
+    And I filter by brand "Stella Artois"
+    And I select "Stella Artois 6L Keg"
+    And I click "Add to Cart"
+    Then the cart counter should show "1" item
+    And I should see a confirmation message
+    When I click on the cart icon
+    Then I should see the cart contents with:
+        | Cart Information |
+        | Product name     |
+        | Product image    |
+        | Quantity         |
+        | Unit price       |
+        | Total price      |
+    And the product name should be "Stella Artois 6L Keg"
+
+@P2 @ShoppingCart @Regression @StellaArtois
+Scenario: Add multiple Stella Artois kegs to cart
+    Given I am on the UK website
+    And my cart is empty
+    When I navigate to the "Kegs" section
+    And I add "Stella Artois 6L Keg" to the cart
+    And I increase the quantity to "3"
+    Then the cart counter should show "3" items
+    And the cart should show quantity "3" for "Stella Artois 6L Keg"
+    And the total price should reflect 3 kegs at the unit price
+
+@P2 @ShoppingCart @Regression @StellaArtois
+Scenario Outline: Add different Stella Artois variants to cart
+    Given I am on the UK website
+    And my cart is empty
+    When I navigate to the "Kegs" section
+    And I add "<StellaVariant>" to the cart
+    Then the cart counter should show "1" item
+    When I click on the cart icon
+    Then I should see "<StellaVariant>" in the cart
+    And the price should match the product listing price
+    
+    Examples:
+        | StellaVariant              |
+        | Stella Artois 6L Keg       |
+        | Stella Artois Unfiltered 6L|
+        | Stella Artois 0.0% 6L Keg  |
+
 @P2 @UserRegistration @Smoke
 Scenario: Register new user account
     Given I am on the UK website
