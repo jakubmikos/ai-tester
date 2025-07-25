@@ -197,6 +197,47 @@ Scenario: Add bundle products to cart
     And the bundle discount should be applied
     And the total should reflect the bundle price
 
+@P1 @ShoppingCart @StellaArtois @Regression
+Scenario Outline: Add Stella Artois kegs to shopping cart with different quantities
+    Given I am on the UK website
+    And my cart is empty
+    When I navigate to the "Kegs" section
+    And I search for "Stella Artois"
+    And I select "<ProductVariant>" from the search results
+    And I set quantity to "<Quantity>"
+    And I add the product to the cart
+    Then the cart counter should show "<Quantity>" items
+    When I click on the cart icon
+    Then I should see the cart contents with:
+        | Cart Information |
+        | Product name     |
+        | Product image    |
+        | Quantity         |
+        | Unit price       |
+        | Total price      |
+    And the product name should contain "Stella Artois"
+    And the quantity should be "<Quantity>"
+    And the total price should be correctly calculated for "<Quantity>" items
+    
+    Examples:
+        | ProductVariant           | Quantity |
+        | Stella Artois 6L Keg    | 1        |
+        | Stella Artois 6L Keg    | 2        |
+        | Stella Artois 6L Keg    | 3        |
+
+@P2 @ShoppingCart @StellaArtois @Regression
+Scenario: Add multiple Stella Artois keg variants to cart
+    Given I am on the UK website
+    And my cart is empty
+    When I navigate to the "Kegs" section
+    And I add "Stella Artois 6L Keg" to the cart
+    And I add "Stella Artois Unfiltered 6L Keg" to the cart
+    Then the cart counter should show "2" items
+    When I click on the cart icon
+    Then I should see "2" different Stella Artois products in my cart
+    And each product should display correct pricing
+    And the total should reflect both products
+
 @P2 @UserRegistration @Smoke
 Scenario: Register new user account
     Given I am on the UK website
