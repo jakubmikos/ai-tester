@@ -87,12 +87,14 @@ Scenario: Main website navigation
     Given I am on the UK website
     When I view the main navigation menu
     Then I should see navigation options:
-        | Menu Item    |
-        | Machines     |
-        | Kegs         |
-        | Bundles      |
-        | Community    |
-        | Account      |
+        | Menu Item                |
+        | PerfectDraft Machines    |
+        | Beer Kegs                |
+        | Multibuy                 |
+        | Keg Packs                |
+        | Merchandise               |
+        | Community Stores         |
+        | Which machine            |
     And the search functionality should be available
     And the cart icon should show "0" items
 

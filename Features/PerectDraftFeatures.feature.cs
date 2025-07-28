@@ -452,22 +452,26 @@ await this.FeatureBackgroundAsync();
                 global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "Menu Item"});
                 table1.AddRow(new string[] {
-                            "Machines"});
+                            "PerfectDraft Machines"});
                 table1.AddRow(new string[] {
-                            "Kegs"});
+                            "Beer Kegs"});
                 table1.AddRow(new string[] {
-                            "Bundles"});
+                            "Multibuy"});
                 table1.AddRow(new string[] {
-                            "Community"});
+                            "Keg Packs"});
                 table1.AddRow(new string[] {
-                            "Account"});
+                            "Merchandise"});
+                table1.AddRow(new string[] {
+                            "Community Stores"});
+                table1.AddRow(new string[] {
+                            "Which machine"});
 #line 89
     await testRunner.ThenAsync("I should see navigation options:", ((string)(null)), table1, "Then ");
 #line hidden
-#line 96
+#line 98
     await testRunner.AndAsync("the search functionality should be available", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 97
+#line 99
     await testRunner.AndAsync("the cart icon should show \"0\" items", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -490,7 +494,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Browse beer kegs catalog", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 100
+#line 102
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -503,13 +507,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 101
+#line 103
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 102
+#line 104
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 103
+#line 105
     await testRunner.ThenAsync("I should see a list of available beer kegs", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
@@ -526,13 +530,13 @@ await this.FeatureBackgroundAsync();
                             "Price in GBP"});
                 table2.AddRow(new string[] {
                             "Stock status"});
-#line 104
+#line 106
     await testRunner.AndAsync("each keg should display:", ((string)(null)), table2, "And ");
 #line hidden
-#line 112
+#line 114
     await testRunner.AndAsync("I should be able to filter by beer type", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 113
+#line 115
     await testRunner.AndAsync("I should be able to sort by price or popularity", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -555,7 +559,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View PerfectDraft machine options", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 116
+#line 118
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -568,10 +572,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 117
+#line 119
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 118
+#line 120
     await testRunner.WhenAsync("I navigate to the \"Machines\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
@@ -580,16 +584,16 @@ await this.FeatureBackgroundAsync();
                             "PerfectDraft"});
                 table3.AddRow(new string[] {
                             "PerfectDraft Pro"});
-#line 119
+#line 121
     await testRunner.ThenAsync("I should see both machine types:", ((string)(null)), table3, "Then ");
 #line hidden
-#line 123
+#line 125
     await testRunner.AndAsync("each machine should display specifications", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 124
+#line 126
     await testRunner.AndAsync("I should see feature comparisons between Standard and Pro", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 125
+#line 127
     await testRunner.AndAsync("bundle options should be available", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -612,7 +616,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View detailed product information", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 128
+#line 130
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -625,16 +629,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 129
+#line 131
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 130
+#line 132
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 131
+#line 133
     await testRunner.AndAsync("I click on a beer keg \"Stella Artois 6L Keg\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 132
+#line 134
     await testRunner.ThenAsync("I should see the product detail page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
@@ -651,13 +655,13 @@ await this.FeatureBackgroundAsync();
                             "Stock availability"});
                 table4.AddRow(new string[] {
                             "Customer reviews"});
-#line 133
+#line 135
     await testRunner.AndAsync("I should see detailed product information:", ((string)(null)), table4, "And ");
 #line hidden
-#line 141
+#line 143
     await testRunner.AndAsync("I should see an \"Add to Cart\" button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 142
+#line 144
     await testRunner.AndAsync("I should see related product recommendations", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -680,7 +684,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Search for specific products", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 145
+#line 147
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -693,34 +697,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 146
+#line 148
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 147
+#line 149
     await testRunner.WhenAsync("I enter \"Stella\" in the search box", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 148
-    await testRunner.AndAsync("I click the search button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 149
-    await testRunner.ThenAsync("I should see search results containing \"Stella\" products", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
 #line 150
-    await testRunner.AndAsync("the results should include both kegs and bundles", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I click the search button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 151
-    await testRunner.AndAsync("I should be able to filter the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("I should see search results containing \"Stella\" products", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 152
-    await testRunner.WhenAsync("I enter \"InvalidProductName123\" in the search box", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.AndAsync("the results should include both kegs and bundles", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 153
-    await testRunner.AndAsync("I click the search button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I should be able to filter the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 154
-    await testRunner.ThenAsync("I should see a \"no results found\" message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.WhenAsync("I enter \"InvalidProductName123\" in the search box", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 155
+    await testRunner.AndAsync("I click the search button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 156
+    await testRunner.ThenAsync("I should see a \"no results found\" message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 157
     await testRunner.AndAsync("I should see suggestions for alternative searches", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -743,7 +747,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add products to shopping cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 158
+#line 160
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -756,19 +760,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 159
+#line 161
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 160
+#line 162
     await testRunner.AndAsync("my cart is empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 161
+#line 163
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 162
+#line 164
     await testRunner.AndAsync("I add \"PerfectDraft Stella Artois 6L Keg\" to the cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 165
+#line 167
     await testRunner.WhenAsync("I click on the cart icon", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
@@ -783,7 +787,7 @@ await this.FeatureBackgroundAsync();
                             "Unit price"});
                 table5.AddRow(new string[] {
                             "Total price"});
-#line 166
+#line 168
     await testRunner.ThenAsync("I should see the cart contents with:", ((string)(null)), table5, "Then ");
 #line hidden
             }
@@ -806,7 +810,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Modify cart contents", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 175
+#line 177
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -819,31 +823,31 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 176
+#line 178
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 177
+#line 179
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 178
+#line 180
     await testRunner.WhenAsync("I view my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 179
+#line 181
     await testRunner.AndAsync("I increase the quantity to \"2\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 180
+#line 182
     await testRunner.ThenAsync("the cart should show quantity \"2\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 181
+#line 183
     await testRunner.AndAsync("the total price should be updated accordingly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 182
+#line 184
     await testRunner.WhenAsync("I click \"Remove\" for the item", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 183
+#line 185
     await testRunner.ThenAsync("the cart should be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 184
+#line 186
     await testRunner.AndAsync("the cart counter should show \"0\" items", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -866,7 +870,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add bundle products to cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 187
+#line 189
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -879,16 +883,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 188
+#line 190
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 189
+#line 191
     await testRunner.WhenAsync("I navigate to the \"Bundles\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 190
+#line 192
     await testRunner.AndAsync("I select a \"PerfectDraft Machine Bundle\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 191
+#line 193
     await testRunner.AndAsync("I add the bundle to my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
@@ -899,13 +903,13 @@ await this.FeatureBackgroundAsync();
                             "Beer keg"});
                 table6.AddRow(new string[] {
                             "Glasses"});
-#line 192
+#line 194
     await testRunner.ThenAsync("the cart should contain all bundle items:", ((string)(null)), table6, "Then ");
 #line hidden
-#line 197
+#line 199
     await testRunner.AndAsync("the bundle discount should be applied", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 198
+#line 200
     await testRunner.AndAsync("the total should reflect the bundle price", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -928,7 +932,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Register new user account", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 201
+#line 203
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -941,13 +945,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 202
+#line 204
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 203
+#line 205
     await testRunner.WhenAsync("I click on \"Account\" in the navigation", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 204
+#line 206
     await testRunner.AndAsync("I click \"Register\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
@@ -968,25 +972,25 @@ await this.FeatureBackgroundAsync();
                 table7.AddRow(new string[] {
                             "Date of Birth",
                             "15/06/1990"});
-#line 205
+#line 207
     await testRunner.AndAsync("I fill in the registration form with email \"test.user@example.com\":", ((string)(null)), table7, "And ");
 #line hidden
-#line 212
+#line 214
     await testRunner.AndAsync("I accept the terms and conditions", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 213
+#line 215
     await testRunner.AndAsync("I accept age verification (18+)", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 214
+#line 216
     await testRunner.AndAsync("I click \"Create Account\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 215
+#line 217
     await testRunner.ThenAsync("I should see a registration confirmation message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 216
+#line 218
     await testRunner.AndAsync("I should receive an email verification for \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 217
+#line 219
     await testRunner.AndAsync("I should be automatically logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1009,7 +1013,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User login and logout", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 220
+#line 222
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1022,34 +1026,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 221
+#line 223
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 222
+#line 224
     await testRunner.AndAsync("I have a registered account with email \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 223
+#line 225
     await testRunner.WhenAsync("I click on \"Account\" in the navigation", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 224
+#line 226
     await testRunner.AndAsync("I click \"Login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 225
+#line 227
     await testRunner.AndAsync("I login with email \"test.user@example.com\" and password \"SecurePassword123\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 226
+#line 228
     await testRunner.ThenAsync("I should be logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 227
+#line 229
     await testRunner.AndAsync("I should see \"Welcome John\" in the account section", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 228
+#line 230
     await testRunner.WhenAsync("I click \"Logout\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 229
+#line 231
     await testRunner.ThenAsync("I should be logged out", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 230
+#line 232
     await testRunner.AndAsync("I should see the \"Login\" option again", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1072,7 +1076,7 @@ await this.FeatureBackgroundAsync();
                     "Critical"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Complete checkout process as registered user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 233
+#line 235
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1085,16 +1089,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 234
+#line 236
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 235
+#line 237
     await testRunner.AndAsync("I am logged in with email \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 236
+#line 238
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 237
+#line 239
     await testRunner.WhenAsync("I proceed to checkout", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table8 = new global::Reqnroll.Table(new string[] {
@@ -1107,13 +1111,13 @@ await this.FeatureBackgroundAsync();
                             "Delivery options"});
                 table8.AddRow(new string[] {
                             "Payment method"});
-#line 238
+#line 240
     await testRunner.ThenAsync("I should see the checkout page with:", ((string)(null)), table8, "Then ");
 #line hidden
-#line 244
+#line 246
     await testRunner.WhenAsync("I confirm my shipping address", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 245
+#line 247
     await testRunner.AndAsync("I select \"Standard Delivery\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
@@ -1131,19 +1135,19 @@ await this.FeatureBackgroundAsync();
                 table9.AddRow(new string[] {
                             "Cardholder Name",
                             "John Doe"});
-#line 246
+#line 248
     await testRunner.AndAsync("I enter valid payment details:", ((string)(null)), table9, "And ");
 #line hidden
-#line 252
+#line 254
     await testRunner.AndAsync("I click \"Place Order\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 253
+#line 255
     await testRunner.ThenAsync("I should see an order confirmation page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 254
+#line 256
     await testRunner.AndAsync("I should receive an order confirmation email at \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 255
+#line 257
     await testRunner.AndAsync("I should see an order tracking number", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1166,7 +1170,7 @@ await this.FeatureBackgroundAsync();
                     "Critical"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Complete checkout process as guest user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 258
+#line 260
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1179,19 +1183,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 259
+#line 261
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 260
+#line 262
     await testRunner.AndAsync("I am not logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 261
+#line 263
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 262
+#line 264
     await testRunner.WhenAsync("I proceed to checkout", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 263
+#line 265
     await testRunner.AndAsync("I select \"Checkout as Guest\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
@@ -1215,25 +1219,25 @@ await this.FeatureBackgroundAsync();
                 table10.AddRow(new string[] {
                             "Postcode",
                             "SW1A 1AA"});
-#line 264
+#line 266
     await testRunner.AndAsync("I fill in guest checkout information with email \"guest.user@example.com\":", ((string)(null)), table10, "And ");
 #line hidden
-#line 272
+#line 274
     await testRunner.AndAsync("I select \"Standard Delivery\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 273
+#line 275
     await testRunner.AndAsync("I enter valid payment details", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 274
+#line 276
     await testRunner.AndAsync("I confirm age verification (18+)", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 275
+#line 277
     await testRunner.AndAsync("I click \"Place Order\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 276
+#line 278
     await testRunner.ThenAsync("I should see an order confirmation page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 277
+#line 279
     await testRunner.AndAsync("I should receive an order confirmation email at \"guest.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1256,7 +1260,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View Beer Token information", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 280
+#line 282
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1269,16 +1273,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 281
+#line 283
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 282
+#line 284
     await testRunner.AndAsync("I am logged in as a registered user", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 283
+#line 285
     await testRunner.WhenAsync("I navigate to my account dashboard", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 284
+#line 286
     await testRunner.ThenAsync("I should see my Beer Token balance", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
@@ -1293,13 +1297,13 @@ await this.FeatureBackgroundAsync();
                 table11.AddRow(new string[] {
                             "Guest order (3 days)",
                             "Variable"});
-#line 285
+#line 287
     await testRunner.AndAsync("I should see information about earning tokens:", ((string)(null)), table11, "And ");
 #line hidden
-#line 290
+#line 292
     await testRunner.AndAsync("I should see token expiration information \"6 months\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 291
+#line 293
     await testRunner.AndAsync("I should see how to redeem tokens", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1322,7 +1326,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Apply Beer Tokens during checkout", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 294
+#line 296
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1335,37 +1339,37 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 295
+#line 297
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 296
+#line 298
     await testRunner.AndAsync("I am logged in as a user with \"£10.00\" in Beer Tokens", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 297
+#line 299
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" priced at \"£32.50\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 298
+#line 300
     await testRunner.WhenAsync("I proceed to checkout", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 299
+#line 301
     await testRunner.ThenAsync("I should see my Beer Token balance \"£10.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 300
+#line 302
     await testRunner.WhenAsync("I select \"Apply Beer Tokens\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 301
+#line 303
     await testRunner.AndAsync("I choose to apply \"£10.00\" tokens", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 302
+#line 304
     await testRunner.ThenAsync("the order total should be reduced by \"£10.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 303
+#line 305
     await testRunner.AndAsync("my new total should be \"£22.50\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 304
+#line 306
     await testRunner.WhenAsync("I complete the checkout process", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 305
+#line 307
     await testRunner.ThenAsync("my Beer Token balance should be \"£0.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -1388,7 +1392,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initiate keg return process", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 308
+#line 310
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1401,16 +1405,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 309
+#line 311
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 310
+#line 312
     await testRunner.AndAsync("I am logged in as a registered user", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 311
+#line 313
     await testRunner.WhenAsync("I navigate to \"Keg Returns\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 312
+#line 314
     await testRunner.AndAsync("I click \"Return Kegs\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
@@ -1419,25 +1423,25 @@ await this.FeatureBackgroundAsync();
                             "Courier Collection"});
                 table12.AddRow(new string[] {
                             "Community Store"});
-#line 313
+#line 315
     await testRunner.ThenAsync("I should see the keg return options:", ((string)(null)), table12, "Then ");
 #line hidden
-#line 317
+#line 319
     await testRunner.WhenAsync("I select \"Courier Collection\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 318
+#line 320
     await testRunner.AndAsync("I specify \"2\" kegs to return", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 319
+#line 321
     await testRunner.AndAsync("I confirm my collection address", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 320
+#line 322
     await testRunner.ThenAsync("I should be able to generate return labels", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 321
+#line 323
     await testRunner.AndAsync("I should see the estimated Beer Token credit \"£10.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 322
+#line 324
     await testRunner.AndAsync("I should receive return instructions", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1460,7 +1464,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Find Community Store locations", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 325
+#line 327
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1473,19 +1477,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 326
+#line 328
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 327
+#line 329
     await testRunner.WhenAsync("I navigate to \"Community Store Network\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 328
+#line 330
     await testRunner.AndAsync("I enter postcode \"SW1A 1AA\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 329
+#line 331
     await testRunner.AndAsync("I click \"Find Stores\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 330
+#line 332
     await testRunner.ThenAsync("I should see a list of nearby Community Stores", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
@@ -1500,10 +1504,10 @@ await this.FeatureBackgroundAsync();
                             "Opening hours"});
                 table13.AddRow(new string[] {
                             "Available services"});
-#line 331
+#line 333
     await testRunner.AndAsync("each store should show:", ((string)(null)), table13, "And ");
 #line hidden
-#line 338
+#line 340
     await testRunner.AndAsync("I should be able to get directions to selected stores", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1526,7 +1530,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View and select bundle options", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 341
+#line 343
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1539,10 +1543,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 342
+#line 344
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 343
+#line 345
     await testRunner.WhenAsync("I navigate to \"Bundles\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
@@ -1555,22 +1559,22 @@ await this.FeatureBackgroundAsync();
                             "Match Day Keg Pack"});
                 table14.AddRow(new string[] {
                             "Seasonal Keg Packs"});
-#line 344
+#line 346
     await testRunner.ThenAsync("I should see available bundle types:", ((string)(null)), table14, "Then ");
 #line hidden
-#line 350
+#line 352
     await testRunner.WhenAsync("I select \"PerfectDraft Pro Bundle\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 351
+#line 353
     await testRunner.ThenAsync("I should see bundle contents clearly listed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 352
+#line 354
     await testRunner.AndAsync("I should see bundle price vs individual prices", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 353
+#line 355
     await testRunner.AndAsync("I should see savings amount", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 354
+#line 356
     await testRunner.AndAsync("bundle customization options should be available", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1593,7 +1597,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View promotional keg packs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 357
+#line 359
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1606,13 +1610,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 358
+#line 360
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 359
+#line 361
     await testRunner.WhenAsync("I navigate to promotional keg packs", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 360
+#line 362
     await testRunner.ThenAsync("I should see current offers like \"Match Day Keg Pack\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
@@ -1624,19 +1628,19 @@ await this.FeatureBackgroundAsync();
                 table15.AddRow(new string[] {
                             "3 kegs",
                             "£85.00"});
-#line 361
+#line 363
     await testRunner.AndAsync("I should see pricing options:", ((string)(null)), table15, "And ");
 #line hidden
-#line 365
+#line 367
     await testRunner.WhenAsync("I select \"3 kegs for £85.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 366
+#line 368
     await testRunner.ThenAsync("I should be able to choose from available keg options", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 367
+#line 369
     await testRunner.AndAsync("I should see the discount calculation", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 368
+#line 370
     await testRunner.AndAsync("promotional terms should be clearly displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1659,7 +1663,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View order history as registered user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 371
+#line 373
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1672,16 +1676,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 372
+#line 374
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 373
+#line 375
     await testRunner.AndAsync("I am logged in as a user with previous orders", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 374
+#line 376
     await testRunner.WhenAsync("I navigate to \"My Orders\" in my account", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 375
+#line 377
     await testRunner.ThenAsync("I should see a list of my previous orders", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
@@ -1696,19 +1700,19 @@ await this.FeatureBackgroundAsync();
                             "Order status"});
                 table16.AddRow(new string[] {
                             "Tracking info"});
-#line 376
+#line 378
     await testRunner.AndAsync("each order should display:", ((string)(null)), table16, "And ");
 #line hidden
-#line 383
+#line 385
     await testRunner.WhenAsync("I click on an order", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 384
+#line 386
     await testRunner.ThenAsync("I should see detailed order information", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 385
+#line 387
     await testRunner.AndAsync("I should be able to track the shipment", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 386
+#line 388
     await testRunner.AndAsync("I should have options to reorder or contact support", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1740,7 +1744,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Device", device);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Responsive design functionality", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 389
+#line 391
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1753,25 +1757,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 390
+#line 392
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 391
+#line 393
     await testRunner.WhenAsync(string.Format("I access the site on \"{0}\"", device), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 392
+#line 394
     await testRunner.ThenAsync(string.Format("the layout should be optimized for \"{0}\"", device), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 393
+#line 395
     await testRunner.AndAsync("all navigation elements should be accessible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 394
+#line 396
     await testRunner.AndAsync("the shopping cart functionality should work", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 395
+#line 397
     await testRunner.AndAsync("the checkout process should be functional", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 396
+#line 398
     await testRunner.AndAsync("text should be readable without zooming", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1794,7 +1798,7 @@ await this.FeatureBackgroundAsync();
                     "NonFunctional"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Website performance requirements", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 405
+#line 407
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1807,22 +1811,22 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 406
+#line 408
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 407
+#line 409
     await testRunner.WhenAsync("I navigate to any page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 408
+#line 410
     await testRunner.ThenAsync("the page should load within \"3\" seconds", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 409
+#line 411
     await testRunner.AndAsync("images should load progressively", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 410
+#line 412
     await testRunner.AndAsync("the shopping cart should respond within \"1\" second", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 411
+#line 413
     await testRunner.AndAsync("the search functionality should return results within \"2\" seconds", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1845,7 +1849,7 @@ await this.FeatureBackgroundAsync();
                     "NonFunctional"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Basic accessibility compliance", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 414
+#line 416
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1858,25 +1862,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 415
+#line 417
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 416
+#line 418
     await testRunner.WhenAsync("I navigate through the site using keyboard only", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 417
+#line 419
     await testRunner.ThenAsync("all interactive elements should be accessible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 418
+#line 420
     await testRunner.AndAsync("focus indicators should be clearly visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 419
+#line 421
     await testRunner.AndAsync("alt text should be provided for all images", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 420
+#line 422
     await testRunner.AndAsync("color contrast should meet accessibility standards", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 421
+#line 423
     await testRunner.AndAsync("screen reader compatibility should be maintained", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1910,7 +1914,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Error Scenario", errorScenario);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle common error scenarios", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 424
+#line 426
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1923,19 +1927,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 425
+#line 427
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 426
+#line 428
     await testRunner.WhenAsync(string.Format("I encounter the scenario \"{0}\"", errorScenario), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 427
+#line 429
     await testRunner.ThenAsync("I should see an appropriate error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 428
+#line 430
     await testRunner.AndAsync("I should have options to recover or get help", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 429
+#line 431
     await testRunner.AndAsync("the error should be logged for support purposes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -1968,7 +1972,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Email", email);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Form validation and security", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 440
+#line 442
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1981,7 +1985,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 441
+#line 443
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
                 global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
@@ -1999,19 +2003,19 @@ await this.FeatureBackgroundAsync();
                 table17.AddRow(new string[] {
                             "Missing required fields",
                             "<empty>"});
-#line 442
+#line 444
     await testRunner.WhenAsync(string.Format("I attempt to register with email \"{0}\" and invalid data:", email), ((string)(null)), table17, "When ");
 #line hidden
-#line 448
+#line 450
     await testRunner.ThenAsync("I should see appropriate validation messages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 449
+#line 451
     await testRunner.AndAsync("the form should not submit", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 450
+#line 452
     await testRunner.AndAsync("security measures should prevent malicious input", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 451
+#line 453
     await testRunner.AndAsync("sensitive data should be properly encrypted", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
