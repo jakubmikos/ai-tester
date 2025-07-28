@@ -32,6 +32,12 @@ public class TestConfiguration
     
     public int ViewportHeight => int.Parse(_configuration["TestSettings:BrowserSettings:ViewportHeight"] ?? "1080");
 
+    public bool RecordVideo => bool.Parse(_configuration["TestSettings:BrowserSettings:RecordVideo"] ?? "false");
+    
+    public string VideoDir => _configuration["TestSettings:BrowserSettings:VideoDir"] ?? "test-videos";
+    
+    public string VideoMode => _configuration["TestSettings:BrowserSettings:VideoMode"] ?? "retain-on-failure";
+
     public string TestEmail => _configuration["TestSettings:TestData:TestEmail"] ?? "test.user@example.com";
     
     public string TestPassword => _configuration["TestSettings:TestData:TestPassword"] ?? "SecurePassword123";

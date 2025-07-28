@@ -43,6 +43,19 @@ public class WebDriverFactory : IDisposable
             }
         };
 
+        if (_config.RecordVideo)
+        {
+            var videoDir = Path.Combine(Directory.GetCurrentDirectory(), _config.VideoDir);
+            Directory.CreateDirectory(videoDir);
+            
+            contextOptions.RecordVideoDir = videoDir;
+            contextOptions.RecordVideoSize = new RecordVideoSize
+            {
+                Width = _config.ViewportWidth,
+                Height = _config.ViewportHeight
+            };
+        }
+
         _context = await _browser.NewContextAsync(contextOptions);
         _context.SetDefaultTimeout(_config.Timeout);
         
@@ -63,7 +76,18 @@ public class WebDriverFactory : IDisposable
             SlowMo = _config.SlowMo
         });
 
-        _context = await _browser.NewContextAsync(device);
+        var contextOptions = new BrowserNewContextOptions(device);
+        
+        if (_config.RecordVideo)
+        {
+            var videoDir = Path.Combine(Directory.GetCurrentDirectory(), _config.VideoDir);
+            Directory.CreateDirectory(videoDir);
+            
+            contextOptions.RecordVideoDir = videoDir;
+            contextOptions.RecordVideoSize = device.RecordVideoSize;
+        }
+
+        _context = await _browser.NewContextAsync(contextOptions);
         _context.SetDefaultTimeout(_config.Timeout);
         
         _page = await _context.NewPageAsync();
