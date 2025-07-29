@@ -25,16 +25,13 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore --configuration Release
       
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libasound2t64
-        
+    - name: Setup Playwright
+      uses: microsoft/playwright-github-action@v1
+      
     - name: Install Playwright browsers
       run: |
         dotnet tool install --global Microsoft.Playwright.CLI
-        playwright install-deps
-        playwright install
+        playwright install chromium --with-deps
       
     - name: Run Level 1 tests (Smoke)
       run: dotnet test --no-build --configuration Release --filter "TestCategory=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
