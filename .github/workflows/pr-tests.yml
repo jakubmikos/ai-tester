@@ -30,6 +30,7 @@ jobs:
         dotnet tool install --global Microsoft.Playwright.CLI
         npx playwright install --with-deps
         npx playwright install chromium --with-deps
+        pwsh bin/Debug/netX/playwright.ps1 install 
       
     - name: Run Level 1 tests (Smoke)
       run: dotnet test --no-build --configuration Release --filter "TestCategory=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
