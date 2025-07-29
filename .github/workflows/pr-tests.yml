@@ -1,0 +1,77 @@
+name: PR Tests
+
+on:
+  pull_request:
+    branches: [ main, dotnet ]
+  push:
+    branches: [ main, dotnet ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build project
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Install Playwright
+      run: |
+        dotnet build
+        pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
+      
+    - name: Run Level 1 tests (Smoke)
+      run: dotnet test --no-build --configuration Release --filter "TestCategory=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
+      continue-on-error: false
+      
+    - name: Run Level 1 tests (P1)
+      run: dotnet test --no-build --configuration Release --filter "TestCategory=P1" --logger "trx;LogFileName=level1-tests.trx" --collect:"XPlat Code Coverage"
+      continue-on-error: true
+      
+    - name: Run Country Selection tests
+      run: dotnet test --no-build --configuration Release --filter "TestCategory=CountrySelection" --logger "trx;LogFileName=country-selection-tests.trx" --collect:"XPlat Code Coverage"
+      continue-on-error: true
+      
+    - name: Run Navigation tests
+      run: dotnet test --no-build --configuration Release --filter "TestCategory=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
+      continue-on-error: true
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          TestResults/**/*.trx
+          TestResults/**/*.xml
+          TestResults/**/coverage.cobertura.xml
+        retention-days: 30
+        
+    - name: Upload Playwright videos
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-videos
+        path: |
+          test-results/
+          playwright-report/
+        retention-days: 7
+        
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results
+        path: 'TestResults/**/*.trx'
+        reporter: dotnet-trx
+        fail-on-error: false
