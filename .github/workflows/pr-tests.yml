@@ -27,6 +27,7 @@ jobs:
       
     - name: Install Playwright browsers
       run: |
+        apt install libasound2t64
         dotnet tool install --global Microsoft.Playwright.CLI
         playwright install-deps
         playwright install

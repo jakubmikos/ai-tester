@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include=".github\workflows\pr-tests.yml" />
     <Content Include="Features\PerectDraftFeatures.feature" />
   </ItemGroup>
 
