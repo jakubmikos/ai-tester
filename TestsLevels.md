@@ -4,15 +4,17 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 
 ## Level 1: Lowest Complexity (Basic Navigation & Static Content)
 
-### 1. Main website navigation (line 86)
+### 1. Main website navigation (line 86) ✅ IMPLEMENTED
 - **Complexity:** Simple element visibility checks
 - **Requirements:** Basic page object, navigation menu verification
 - **Dependencies:** None
+- **Status:** Complete - Navigation menu test implemented with actual website menu items
 
-### 2. Select country from homepage (line 61)
+### 2. Select country from homepage (line 61) ✅ IMPLEMENTED
 - **Complexity:** Basic page interactions and redirects
 - **Requirements:** Country selection page, redirect verification
 - **Dependencies:** None
+- **Status:** Complete - Country selection steps implemented with region/country detection and redirect validation
 
 ### 3. Navigate to different country websites (line 71)
 - **Complexity:** Parameterized country selection
