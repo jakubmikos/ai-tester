@@ -25,10 +25,11 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore --configuration Release
       
-    - name: Install Playwright
+    - name: Install Playwright browsers
       run: |
-        dotnet build
-        pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
+        dotnet tool install --global Microsoft.Playwright.CLI
+        playwright install-deps
+        playwright install
       
     - name: Run Level 1 tests (Smoke)
       run: dotnet test --no-build --configuration Release --filter "TestCategory=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
