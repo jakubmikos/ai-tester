@@ -128,15 +128,15 @@ public class CountrySelectionSteps
     }
 
     [Then(@"I should be redirected to the UK website")]
-    public async Task ThenIShouldBeRedirectedToTheUKWebsite()
+    public void ThenIShouldBeRedirectedToTheUKWebsite()
     {
         _page.Should().NotBeNull("Page should be initialized");
         var currentUrl = _page!.Url;
-        currentUrl.Should().Contain("/uk", "Should be redirected to the UK website");
+        currentUrl.Should().Contain("/en-gb", "Should be redirected to the UK website");
     }
 
     [Then(@"I should be redirected to the ""(.+)"" website")]
-    public async Task ThenIShouldBeRedirectedToTheWebsite(string countryName)
+    public void ThenIShouldBeRedirectedToTheWebsite(string countryName)
     {
         _page.Should().NotBeNull("Page should be initialized");
         var currentUrl = _page!.Url;
@@ -186,7 +186,9 @@ public class CountrySelectionSteps
         {
             // Check if currency symbol is visible anywhere on the page
             var currencySymbol = GetCurrencySymbol(expectedCurrency);
-            currencyFound = await _page!.GetByText(currencySymbol, new PageGetByTextOptions { Exact = false }).IsVisibleAsync();
+            var currencyElements= _page!.GetByText(currencySymbol, new PageGetByTextOptions { Exact = false });
+
+            currencyFound = await currencyElements.CountAsync() > 0;
         }
 
         currencyFound.Should().BeTrue($"Currency '{expectedCurrency}' should be displayed on the page");
@@ -237,10 +239,10 @@ public class CountrySelectionSteps
     {
         return countryName.ToLower() switch
         {
-            "united kingdom" => "/uk",
-            "deutschland" => "/de",
-            "france" => "/fr",
-            "united states" => "/us",
+            "united kingdom" => "/en-gb",
+            "deutschland" => "/de-de",
+            "france" => "/fr-fr",
+            "united states" => "us.",
             _ => $"/{countryName.ToLower().Replace(" ", "-")}"
         };
     }

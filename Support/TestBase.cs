@@ -90,7 +90,7 @@ public abstract class TestBase
 
             if (shouldKeepVideo)
             {
-                var videoPath = await Page.Video?.PathAsync();
+                var videoPath = await this.Page.Video?.PathAsync()!;
                 
                 if (!string.IsNullOrEmpty(videoPath) && File.Exists(videoPath))
                 {

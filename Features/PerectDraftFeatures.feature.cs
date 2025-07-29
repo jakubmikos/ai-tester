@@ -50,9 +50,9 @@ namespace PerfectDraftTests.Features
         public static async System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(null, System.Threading.Thread.CurrentThread.ManagedThreadId.ToString());
-            global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "PerfectDraft Website Core Functionality", "    As a beer enthusiast and potential customer\n    I want to browse, purchase an" +
-                    "d manage PerfectDraft products\n    So that I can enjoy the ultimate home beer ex" +
-                    "perience", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+            global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "PerfectDraft Website Core Functionality", ("    As a beer enthusiast and potential customer\r\n    I want to browse, purchase a" +
+                    "nd manage PerfectDraft products\r\n    So that I can enjoy the ultimate home beer " +
+                    "experience"), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
             await testRunner.OnFeatureStartAsync(featureInfo);
         }
         
@@ -335,8 +335,8 @@ await this.FeatureBackgroundAsync();
     await testRunner.ThenAsync("I should see the available regions \"Europe\" and \"America\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 64
-    await testRunner.AndAsync("I should see country options including \"United Kingdom\", \"Deutschland\", \"United S" +
-                        "tates\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync(("I should see country options including \"United Kingdom\", \"Deutschland\", \"United S" +
+                        "tates\""), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 65
     await testRunner.WhenAsync("I select country \"United Kingdom\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
