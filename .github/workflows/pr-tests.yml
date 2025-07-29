@@ -25,9 +25,13 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore --configuration Release
       
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libasound2t64
+        
     - name: Install Playwright browsers
       run: |
-        apt install libasound2t64
         dotnet tool install --global Microsoft.Playwright.CLI
         playwright install-deps
         playwright install
