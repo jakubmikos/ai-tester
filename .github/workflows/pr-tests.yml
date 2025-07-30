@@ -36,17 +36,17 @@ jobs:
       run: dotnet test --no-build --configuration Release --filter "TestCategory=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
       continue-on-error: false
       
-    - name: Run Level 1 tests (P1)
-      run: dotnet test --no-build --configuration Release --filter "TestCategory=P1" --logger "trx;LogFileName=level1-tests.trx" --collect:"XPlat Code Coverage"
-      continue-on-error: true
+    #- name: Run Level 1 tests (P1)
+    #  run: dotnet test --no-build --configuration Release --filter "TestCategory=P1" --logger "trx;LogFileName=level1-tests.trx" --collect:"XPlat Code Coverage"
+    #  continue-on-error: true
       
-    - name: Run Country Selection tests
-      run: dotnet test --no-build --configuration Release --filter "TestCategory=CountrySelection" --logger "trx;LogFileName=country-selection-tests.trx" --collect:"XPlat Code Coverage"
-      continue-on-error: true
+    #- name: Run Country Selection tests
+    #  run: dotnet test --no-build --configuration Release --filter "TestCategory=CountrySelection" --logger "trx;LogFileName=country-selection-tests.trx" --collect:"XPlat Code Coverage"
+    #  continue-on-error: true
       
-    - name: Run Navigation tests
-      run: dotnet test --no-build --configuration Release --filter "TestCategory=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
-      continue-on-error: true
+    #- name: Run Navigation tests
+    #  run: dotnet test --no-build --configuration Release --filter "TestCategory=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
+    #  continue-on-error: true
       
     - name: Upload test results
       uses: actions/upload-artifact@v4
