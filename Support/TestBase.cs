@@ -1,5 +1,6 @@
 using Microsoft.Playwright;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Allure.Net.Commons;
 
 namespace PerfectDraftTests.Support;
 
@@ -58,11 +59,14 @@ public abstract class TestBase
 
                 Directory.CreateDirectory(Path.GetDirectoryName(screenshotPath) ?? "Screenshots");
 
-                await Page.ScreenshotAsync(new PageScreenshotOptions
+                var screenshotBytes = await Page.ScreenshotAsync(new PageScreenshotOptions
                 {
                     Path = screenshotPath,
                     FullPage = true
                 });
+
+                // Attach screenshot to Allure report
+                AllureApi.AddAttachment("Screenshot on Failure", "image/png", screenshotBytes, ".png");
 
                 TestContext.WriteLine($"Screenshot saved: {screenshotPath}");
             }

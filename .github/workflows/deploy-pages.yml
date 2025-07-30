@@ -1,0 +1,141 @@
+name: Deploy Allure Reports to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["PR Tests"]
+    types:
+      - completed
+    branches: [main, dotnet, allure]
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Only run if the previous workflow completed successfully
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js for Allure
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install Allure CLI
+      run: npm install -g allure-commandline
+      
+    - name: Download test artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: allure-report
+        path: allure-report
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Create Pages index
+      run: |
+        cat > allure-report/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>PerfectDraft Test Reports</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+                body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+                .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                h1 { color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+                .report-link { display: inline-block; background: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 10px 0; }
+                .report-link:hover { background: #45a049; }
+                .info { background: #e7f3ff; padding: 15px; border-left: 4px solid #2196F3; margin: 20px 0; }
+                .timestamp { color: #666; font-size: 0.9em; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>🧪 PerfectDraft Test Reports</h1>
+                <div class="info">
+                    <strong>Latest Test Results</strong><br>
+                    <span class="timestamp">Generated: $(date -u)</span><br>
+                    Workflow: ${{ github.event.workflow_run.html_url }}
+                </div>
+                <a href="./report/index.html" class="report-link">📊 View Latest Allure Report</a>
+                <h2>About</h2>
+                <p>This page contains the latest automated test results for the PerfectDraft e-commerce website. The reports are generated using Allure and updated automatically after each test run.</p>
+                <p><strong>Repository:</strong> <a href="${{ github.server_url }}/${{ github.repository }}">${{ github.repository }}</a></p>
+            </div>
+        </body>
+        </html>
+        EOF
+        
+    - name: Move report to subdirectory
+      run: |
+        mkdir -p pages-content/report
+        if [ -f "allure-report/index.html" ]; then
+          # Move the actual Allure report to /report subdirectory
+          mv allure-report/* pages-content/report/ 2>/dev/null || true
+        fi
+        # Create our custom index page
+        cat > pages-content/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>PerfectDraft Test Reports</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+                body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+                .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                h1 { color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+                .report-link { display: inline-block; background: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 10px 0; }
+                .report-link:hover { background: #45a049; }
+                .info { background: #e7f3ff; padding: 15px; border-left: 4px solid #2196F3; margin: 20px 0; }
+                .timestamp { color: #666; font-size: 0.9em; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>🧪 PerfectDraft Test Reports</h1>
+                <div class="info">
+                    <strong>Latest Test Results</strong><br>
+                    <span class="timestamp">Generated: $(date -u)</span><br>
+                    Workflow: ${{ github.event.workflow_run.html_url }}
+                </div>
+                <a href="./report/index.html" class="report-link">📊 View Latest Allure Report</a>
+                <h2>About</h2>
+                <p>This page contains the latest automated test results for the PerfectDraft e-commerce website. The reports are generated using Allure and updated automatically after each test run.</p>
+                <p><strong>Repository:</strong> <a href="${{ github.server_url }}/${{ github.repository }}">${{ github.repository }}</a></p>
+            </div>
+        </body>
+        </html>
+        EOF
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: pages-content
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

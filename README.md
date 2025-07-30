@@ -128,6 +128,20 @@ dotnet test -- MSTest.Headless=true
 - MSTest HTML reports
 - Playwright traces and screenshots
 - Failure screenshots automatically captured
+- Allure HTML reports with detailed test execution data
+
+#### Generating Allure Reports
+
+**Local Generation:**
+1. Install Allure CLI: `npm install -g allure-commandline`
+2. Run tests: `dotnet test`
+3. Generate HTML report: `allure generate allure-results -o allure-report --clean`
+4. Open `allure-report/index.html` in your browser
+
+**Automatic GitHub Pages:**
+- Reports are automatically published to GitHub Pages after each successful test run
+- Live reports available at: `https://[username].github.io/[repository-name]`
+- See `docs/GITHUB_PAGES_SETUP.md` for setup instructions
 
 ## Next Steps
 

@@ -2021,6 +2021,74 @@ await this.FeatureBackgroundAsync();
             }
             await this.ScenarioCleanupAsync();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add new BrewDog keg to shopping cart")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ShoppingCart")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NewProduct")]
+        public async System.Threading.Tasks.Task AddNewBrewDogKegToShoppingCart()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "P1",
+                    "ShoppingCart",
+                    "Smoke",
+                    "NewProduct"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add new BrewDog keg to shopping cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 463
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 7
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 464
+    await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 465
+    await testRunner.AndAsync("my cart is empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 466
+    await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 467
+    await testRunner.AndAsync("I add \"BrewDog Punk IPA 6L Keg\" to the cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 468
+    await testRunner.WhenAsync("I click on the cart icon", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+                global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
+                            "Cart Information"});
+                table18.AddRow(new string[] {
+                            "Product name"});
+                table18.AddRow(new string[] {
+                            "Product image"});
+                table18.AddRow(new string[] {
+                            "Quantity"});
+                table18.AddRow(new string[] {
+                            "Unit price"});
+                table18.AddRow(new string[] {
+                            "Total price"});
+#line 469
+    await testRunner.ThenAsync("I should see the cart contents with:", ((string)(null)), table18, "Then ");
+#line hidden
+#line 476
+    await testRunner.AndAsync("the cart counter should show \"1\" item", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
     }
 }
 #pragma warning restore
