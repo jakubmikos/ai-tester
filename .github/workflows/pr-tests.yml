@@ -25,6 +25,14 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore --configuration Release
       
+    - name: Setup Node.js for Allure
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install Allure CLI
+      run: npm install -g allure-commandline
+        
     - name: Install Playwright browsers
       run: |
         dotnet tool install --global Microsoft.Playwright.CLI
@@ -48,6 +56,17 @@ jobs:
     #  run: dotnet test --no-build --configuration Release --filter "TestCategory=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
     #  continue-on-error: true
       
+    - name: Generate Allure Report  
+      if: always()
+      run: |
+        if [ -d "allure-results" ]; then
+          allure generate allure-results -o allure-report --clean
+          echo "✅ Allure report generated successfully"
+        else
+          echo "❌ No allure-results directory found"
+          exit 1
+        fi
+      
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
@@ -59,6 +78,49 @@ jobs:
           TestResults/**/coverage.cobertura.xml
         retention-days: 30
         
+    - name: Upload Allure Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: allure-report
+        path: allure-report/
+        retention-days: 30
+        
+    - name: Generate Test Summary
+      if: always()
+      run: |
+        echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f "allure-report/widgets/summary.json" ]; then
+          # Extract test metrics from Allure summary
+          TOTAL=$(jq -r '.statistic.total' allure-report/widgets/summary.json)
+          PASSED=$(jq -r '.statistic.passed' allure-report/widgets/summary.json)
+          FAILED=$(jq -r '.statistic.failed' allure-report/widgets/summary.json)
+          BROKEN=$(jq -r '.statistic.broken' allure-report/widgets/summary.json)
+          SKIPPED=$(jq -r '.statistic.skipped' allure-report/widgets/summary.json)
+          
+          echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Tests | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed | $PASSED |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAILED |" >> $GITHUB_STEP_SUMMARY
+          echo "| 💥 Broken | $BROKEN |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⏭️ Skipped | $SKIPPED |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Calculate success rate
+          if [ "$TOTAL" -gt 0 ]; then
+            SUCCESS_RATE=$(echo "scale=1; $PASSED * 100 / $TOTAL" | bc)
+            echo "**Success Rate: ${SUCCESS_RATE}%**" >> $GITHUB_STEP_SUMMARY
+          fi
+        else
+          echo "❌ No Allure summary found" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📊 **Download full Allure report from the artifacts section above**" >> $GITHUB_STEP_SUMMARY
+        
     - name: Upload Playwright videos
       uses: actions/upload-artifact@v4
       if: always()
@@ -68,12 +130,3 @@ jobs:
           test-results/
           playwright-report/
         retention-days: 7
-        
-    #- name: Publish test results
-      #uses: dorny/test-reporter@v1
-      #if: always()
-      #with:
-        #name: Test Results
-        #path: 'TestResults/**/*.trx'
-        #reporter: dotnet-trx
-        #fail-on-error: false

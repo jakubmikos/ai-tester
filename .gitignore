@@ -56,3 +56,6 @@ nunit-*.xml
 .claude
 .idea
 CLAUDE.md
+allure-report
+allure-results
+

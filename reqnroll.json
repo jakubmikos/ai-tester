@@ -1,0 +1,9 @@
+{
+  "reqnroll": {
+    "plugins": [
+      {
+        "name": "Allure.Reqnroll"
+      }
+    ]
+  }
+}

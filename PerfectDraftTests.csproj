@@ -21,6 +21,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Allure.Net.Commons" Version="2.12.1" />
+    <PackageReference Include="Allure.Reqnroll" Version="2.12.1" />
   </ItemGroup>
 
   <ItemGroup>
