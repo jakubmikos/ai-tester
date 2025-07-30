@@ -5,7 +5,7 @@ on:
     workflows: ["PR Tests"]
     types:
       - completed
-    branches: [main, dotnet]
+    branches: [main, dotnet, allure]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:

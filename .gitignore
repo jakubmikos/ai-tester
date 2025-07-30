@@ -54,6 +54,8 @@ TestResult.xml
 nunit-*.xml
 
 .claude
+allure-results
+
 .idea
 CLAUDE.md
 allure-report
