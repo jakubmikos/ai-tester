@@ -69,11 +69,11 @@ jobs:
           playwright-report/
         retention-days: 7
         
-    - name: Publish test results
-      uses: dorny/test-reporter@v1
-      if: always()
-      with:
-        name: Test Results
-        path: 'TestResults/**/*.trx'
-        reporter: dotnet-trx
-        fail-on-error: false
+    #- name: Publish test results
+      #uses: dorny/test-reporter@v1
+      #if: always()
+      #with:
+        #name: Test Results
+        #path: 'TestResults/**/*.trx'
+        #reporter: dotnet-trx
+        #fail-on-error: false
