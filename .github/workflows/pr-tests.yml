@@ -59,11 +59,12 @@ jobs:
     - name: Generate Allure Report  
       if: always()
       run: |
-        if [ -d "allure-results" ]; then
-          allure generate allure-results -o allure-report --clean
+        if [ -d "bin/Release/net8.0/allure-results" ]; then
+          allure generate bin/Release/net8.0/allure-results -o allure-report --clean
           echo "✅ Allure report generated successfully"
         else
-          echo "❌ No allure-results directory found"
+          echo "❌ No allure-results directory found in bin/Release/net8.0/"
+          find . -name "allure-results" -type d
           exit 1
         fi
       
