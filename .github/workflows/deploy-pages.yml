@@ -34,7 +34,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Node.js for Allure
+    - name: Setup Node.js for Allure test
       uses: actions/setup-node@v4
       with:
         node-version: '18'
