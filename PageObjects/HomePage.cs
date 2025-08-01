@@ -14,7 +14,7 @@ namespace PerfectDraftTests.PageObjects
         public async Task NavigateToUKWebsite()
         {
             await _page.GotoAsync("https://www.perfectdraft.co.uk");
-            await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }
 
         public async Task<bool> IsNavigationMenuVisible()
@@ -142,6 +142,45 @@ namespace PerfectDraftTests.PageObjects
                 }
             }
             return false;
+        }
+
+        public async Task NavigateToSection(string sectionName)
+        {
+            // Try to find and click on the section navigation
+            var sectionSelectors = new[]
+            {
+                $"text={sectionName}",
+                $"a[href*='{sectionName.ToLower()}']",
+                $".navigation a:has-text('{sectionName}')",
+                $".menu-item:has-text('{sectionName}')",
+                $"[data-section='{sectionName.ToLower()}']"
+            };
+
+            bool navigationSuccessful = false;
+            
+            foreach (var selector in sectionSelectors)
+            {
+                try
+                {
+                    var element = await _page.QuerySelectorAsync(selector);
+                    if (element != null && await element.IsVisibleAsync())
+                    {
+                        await element.ClickAsync();
+                        await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+                        navigationSuccessful = true;
+                        break;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            if (!navigationSuccessful)
+            {
+                throw new InvalidOperationException($"Could not navigate to section '{sectionName}'. Section not found in navigation.");
+            }
         }
     }
 }

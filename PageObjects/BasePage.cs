@@ -23,7 +23,7 @@ public abstract class BasePage
 
     public virtual async Task WaitForPageLoadAsync()
     {
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     }
 
     public virtual async Task<string> GetPageTitleAsync()
