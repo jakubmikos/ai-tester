@@ -19,7 +19,7 @@ public abstract class StepDefinitionBase
     protected async Task NavigateToAsync(string url)
     {
         await Page.GotoAsync(url);
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     }
 
     protected async Task WaitForElementAsync(string selector, int timeoutMs = 0)
