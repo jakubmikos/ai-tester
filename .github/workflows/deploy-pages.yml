@@ -78,6 +78,7 @@ jobs:
                     Workflow: ${{ github.event.workflow_run.html_url }}
                 </div>
                 <a href="./report/index.html" class="report-link">📊 View Latest Allure Report</a>
+                <p><em>This report is generated as a single HTML file for easy sharing and viewing.</em></p>
                 <h2>About</h2>
                 <p>This page contains the latest automated test results for the PerfectDraft e-commerce website. The reports are generated using Allure and updated automatically after each test run.</p>
                 <p><strong>Repository:</strong> <a href="${{ github.server_url }}/${{ github.repository }}">${{ github.repository }}</a></p>
@@ -120,6 +121,7 @@ jobs:
                     Workflow: ${{ github.event.workflow_run.html_url }}
                 </div>
                 <a href="./report/index.html" class="report-link">📊 View Latest Allure Report</a>
+                <p><em>This report is generated as a single HTML file for easy sharing and viewing.</em></p>
                 <h2>About</h2>
                 <p>This page contains the latest automated test results for the PerfectDraft e-commerce website. The reports are generated using Allure and updated automatically after each test run.</p>
                 <p><strong>Repository:</strong> <a href="${{ github.server_url }}/${{ github.repository }}">${{ github.repository }}</a></p>

@@ -26,20 +26,27 @@ public class CountrySelectionSteps
         _page ??= await _webDriverFactory.InitializeAsync();
         
         await _page.GotoAsync("https://www.perfectdraft.com");
-        await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         
-        // Wait for the country selection page to load
+        // Wait for the country selection page to load with reduced timeout
         try
         {
-            await _page.WaitForSelectorAsync("[data-testid='country-selector'], .country-selection, .region-selector", new PageWaitForSelectorOptions
+            // Try multiple selector strategies with shorter timeout
+            await _page.WaitForSelectorAsync("[data-testid='country-selector'], .country-selection, .region-selector, .country-select, [class*='country'], [class*='region'], h1, h2", new PageWaitForSelectorOptions
             {
-                Timeout = _config.Timeout
+                Timeout = 5000 // Reduced from 15s to 5s
             });
         }
-        catch
+        catch (TimeoutException ex)
         {
-            // If specific selectors don't exist, just continue - the page might have a different structure
+            // Log the timeout but continue - the page might have loaded but with different selectors
+            Console.WriteLine($"Country selection page selectors not found within 5s: {ex.Message}");
+            // Wait a bit more for any remaining content to load
+            await Task.Delay(1000);
         }
+        
+        // Additional wait for any dynamic content or redirects
+        await Task.Delay(500);
     }
 
     [Then(@"I should see the available regions ""(.+)"" and ""(.+)""")]
@@ -124,7 +131,7 @@ public class CountrySelectionSteps
         }
 
         // Wait for navigation or page change
-        await _page!.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await _page!.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     }
 
     [Then(@"I should be redirected to the UK website")]

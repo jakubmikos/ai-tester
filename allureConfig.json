@@ -1,5 +1,15 @@
 {
   "allure": {
-    "directory": "allure-results"
+    "directory": "allure-results",
+    "title": "PerfectDraft E-commerce Test Results",
+    "links": [
+      "https://github.com/perfectdraft/issues/{issue}",
+      "https://perfectdraft.com/testcase/{testcase}"
+    ],
+    "failExceptions": [
+      "Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException",
+      "FluentAssertions.Execution.AssertionFailedException",
+      "System.TimeoutException"
+    ]
   }
 }

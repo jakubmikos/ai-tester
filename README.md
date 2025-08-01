@@ -134,9 +134,15 @@ dotnet test -- MSTest.Headless=true
 
 **Local Generation:**
 1. Install Allure CLI: `npm install -g allure-commandline`
-2. Run tests: `dotnet test`
-3. Generate HTML report: `allure generate allure-results -o allure-report --clean`
+2. Run tests: `dotnet test --settings test.runsettings`
+3. Generate single-file HTML report: `allure generate bin/Debug/net8.0/allure-results -o allure-report --clean --single-file`
 4. Open `allure-report/index.html` in your browser
+
+**Using provided scripts:**
+- **Windows**: `.\generate-allure-report.ps1 -Open`
+- **Linux/macOS**: `./generate-allure-report.sh --open`
+
+The `--single-file` option creates a self-contained HTML report with all assets embedded, making it easier to share and deploy.
 
 **Automatic GitHub Pages:**
 - Reports are automatically published to GitHub Pages after each successful test run
