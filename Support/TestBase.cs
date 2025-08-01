@@ -62,7 +62,7 @@ public abstract class TestBase
                 var screenshotBytes = await Page.ScreenshotAsync(new PageScreenshotOptions
                 {
                     Path = screenshotPath,
-                    FullPage = true
+                    FullPage = false
                 });
 
                 // Attach screenshot to Allure report
@@ -133,7 +133,7 @@ public abstract class TestBase
         if (Page != null)
         {
             await Page.GotoAsync(Config.BaseUrl);
-            await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }
     }
 
@@ -143,7 +143,7 @@ public abstract class TestBase
         if (Page != null)
         {
             await Page.GotoAsync(countryData.Url);
-            await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }
     }
 }
