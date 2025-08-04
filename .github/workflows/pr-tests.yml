@@ -27,6 +27,9 @@ jobs:
       
     - name: Build project
       run: dotnet build --no-restore --configuration Release
+
+    - name: Install Playwright browsers
+      run: pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
       
     - name: Setup Node.js for Allure
       uses: actions/setup-node@v4
