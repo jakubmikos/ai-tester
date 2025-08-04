@@ -73,7 +73,7 @@ jobs:
       with:
         allure_results: bin/Release/net8.0/allure-results
         allure_report: allure-report
-        # gh_pages: gh-pages
+        gh_pages: gh-pages
         allure_history: allure-history
         
     - name: Upload Allure Report
