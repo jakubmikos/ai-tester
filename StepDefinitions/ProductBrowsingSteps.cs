@@ -69,13 +69,16 @@ namespace PerfectDraftTests.StepDefinitions
             
             _catalogPage.Should().NotBeNull("ProductCatalogPage should be initialized after navigating to Kegs section");
 
-            // Check if the keg list is visible
+            Console.WriteLine("Waiting for beer kegs list to load...");
+            
+            // Use Playwright's built-in waiting - these methods now handle the waiting internally
             var isKegListVisible = await _catalogPage!.IsKegListVisible();
             isKegListVisible.Should().BeTrue("A list of beer kegs should be visible on the kegs page");
 
-            // Check that there are actually kegs displayed
             var kegCount = await _catalogPage.GetKegCount();
             kegCount.Should().BeGreaterThan(0, "There should be at least one keg displayed in the catalog");
+            
+            Console.WriteLine($"✓ Successfully found {kegCount} kegs in the catalog");
         }
 
         [Then(@"each keg should display:")]

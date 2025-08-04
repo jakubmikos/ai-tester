@@ -70,10 +70,14 @@ namespace PerfectDraftTests.PageObjects
             {
                 try
                 {
-                    if (await IsElementVisibleAsync(selector))
-                    {
-                        return true;
-                    }
+                    // Use Playwright's built-in waiting with 30 second timeout
+                    await WaitForElementToBeVisibleAsync(selector, 30000);
+                    return true;
+                }
+                catch (TimeoutException)
+                {
+                    // Continue to next selector if this one times out
+                    continue;
                 }
                 catch
                 {
@@ -100,11 +104,24 @@ namespace PerfectDraftTests.PageObjects
             {
                 try
                 {
-                    var count = await GetElementCountAsync(selector);
+                    // Wait for at least one keg to be present using Playwright's built-in waiting
+                    var locator = Page.Locator(selector);
+                    await locator.First.WaitForAsync(new LocatorWaitForOptions 
+                    { 
+                        State = WaitForSelectorState.Attached,
+                        Timeout = 30000 
+                    });
+                    
+                    var count = await locator.CountAsync();
                     if (count > 0)
                     {
                         return count;
                     }
+                }
+                catch (TimeoutException)
+                {
+                    // Continue to next selector if this one times out
+                    continue;
                 }
                 catch
                 {
