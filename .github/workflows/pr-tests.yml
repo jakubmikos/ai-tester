@@ -55,17 +55,17 @@ jobs:
     #  run: dotnet test --no-build --configuration Release --filter "TestCategory=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
     #  continue-on-error: true
       
-    - name: Generate Allure Report  
-      if: always()
-      run: |
-        if [ -d "bin/Release/net8.0/allure-results" ]; then
-          allure generate bin/Release/net8.0/allure-results -o allure-report --clean --single-file
-          echo "✅ Allure report generated successfully with --single-file option"
-        else
-          echo "❌ No allure-results directory found in bin/Release/net8.0/"
-          find . -name "allure-results" -type d
-          exit 1
-        fi
+    # - name: Generate Allure Report  
+    #  if: always()
+    #  run: |
+    #    if [ -d "bin/Release/net8.0/allure-results" ]; then
+    #      allure generate bin/Release/net8.0/allure-results -o allure-report --clean --single-file
+    #      echo "✅ Allure report generated successfully with --single-file option"
+    #    else
+    #      echo "❌ No allure-results directory found in bin/Release/net8.0/"
+    #      find . -name "allure-results" -type d
+    #      exit 1
+    #    fi
     
     - name: Generate Allure Report
       uses: simple-elf/allure-report-action@master
@@ -73,7 +73,7 @@ jobs:
       with:
         allure_results: bin/Release/net8.0/allure-results
         allure_report: allure-report
-        gh_pages: gh-pages
+        # gh_pages: gh-pages
         allure_history: allure-history
         
     - name: Upload Allure Report
@@ -119,12 +119,12 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📊 **Download full Allure report from the artifacts section above**" >> $GITHUB_STEP_SUMMARY
         
-    - name: Upload Playwright videos
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-videos
-        path: |
-          test-results/
-          playwright-report/
-        retention-days: 7
+    #- name: Upload Playwright videos
+    #  uses: actions/upload-artifact@v4
+    #  if: always()
+    #  with:
+    #    name: playwright-videos
+    #    path: |
+    #      test-results/
+    #      playwright-report/
+    #    retention-days: 7
