@@ -57,12 +57,13 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegListSelectors = new[]
             {
-                ".product-list",
-                ".products-grid", 
-                ".keg-list",
-                "[data-testid='product-list']",
-                ".product-container",
-                ".product-grid"
+                // ".product-list",
+                // ".products-grid", 
+                // ".keg-list",
+                // "[data-testid='product-list']",
+                // ".product-container",
+                // ".product-grid",
+                ".ais-InfiniteHits"
             };
 
             foreach (var selector in kegListSelectors)
@@ -87,11 +88,12 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegSelectors = new[]
             {
-                ".product-item",
-                ".product-card",
-                ".keg-item",
-                "[data-product-type='keg']",
-                ".product"
+                // ".product-item",
+                // ".product-card",
+                // ".keg-item",
+                // "[data-product-type='keg']",
+                // ".product",
+                ".result-wrapper",
             };
 
             foreach (var selector in kegSelectors)

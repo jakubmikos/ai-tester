@@ -26,6 +26,10 @@ namespace PerfectDraftTests.StepDefinitions
             _page = await _webDriverFactory.InitializeAsync();
             _homePage = new HomePage(_page);
             await _homePage.NavigateToUKWebsite();
+            
+            // Store in scenario context for sharing between step classes
+            _scenarioContext.Set(_page, "Page");
+            _scenarioContext.Set(_homePage, "HomePage");
         }
 
         [Given(@"I am on the UK website")]
@@ -34,6 +38,10 @@ namespace PerfectDraftTests.StepDefinitions
             _page = await _webDriverFactory.InitializeAsync();
             _homePage = new HomePage(_page);
             await _homePage.NavigateToUKWebsite();
+            
+            // Store in scenario context for sharing between step classes
+            _scenarioContext.Set(_page, "Page");
+            _scenarioContext.Set(_homePage, "HomePage");
         }
 
         [When(@"I view the main navigation menu")]
