@@ -511,7 +511,7 @@ await this.FeatureBackgroundAsync();
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 104
-    await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I navigate to the \"Beer Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 105
     await testRunner.ThenAsync("I should see a list of available beer kegs", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");

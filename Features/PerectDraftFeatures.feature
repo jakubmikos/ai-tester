@@ -101,7 +101,7 @@ Scenario: Main website navigation
 @P1 @ProductBrowsing @Smoke  
 Scenario: Browse beer kegs catalog
     Given I am on the UK website
-    When I navigate to the "Kegs" section
+    When I navigate to the "Beer Kegs" section
     Then I should see a list of available beer kegs
     And each keg should display:
         | Information     |
