@@ -66,17 +66,15 @@ jobs:
           find . -name "allure-results" -type d
           exit 1
         fi
-      
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
+    
+    - name: Generate Allure Report
+      uses: simple-elf/allure-report-action@master
       if: always()
       with:
-        name: test-results
-        path: |
-          TestResults/**/*.trx
-          TestResults/**/*.xml
-          TestResults/**/coverage.cobertura.xml
-        retention-days: 30
+        allure_results: bin/Release/net8.0/allure-results
+        allure_report: allure-report
+        gh_pages: gh-pages
+        allure_history: allure-history
         
     - name: Upload Allure Report
       uses: actions/upload-artifact@v4
