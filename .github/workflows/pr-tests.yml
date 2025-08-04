@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container: 
-      image: mcr.microsoft.com/playwright/dotnet:latest
+      image: mcr.microsoft.com/playwright/dotnet:v1.46.0-jammy
       options: --ipc=host
     
     steps:
