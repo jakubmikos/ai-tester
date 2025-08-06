@@ -1,9 +1,6 @@
-using Microsoft.Playwright;
 using PerfectDraftTests.PageObjects;
-using PerfectDraftTests.Support;
 using Reqnroll;
 using FluentAssertions;
-using Xunit;
 
 namespace PerfectDraftTests.StepDefinitions
 {
@@ -36,21 +33,14 @@ namespace PerfectDraftTests.StepDefinitions
             Console.WriteLine($"✓ Successfully found {kegCount} kegs in the catalog");
         }
 
-        [Then(@"each keg should display:")]
-        public async Task ThenEachKegShouldDisplay(Table table)
+        [Then(@"each keg should display basic information")]
+        public async Task ThenEachKegShouldDisplay()
         {
             ProductCatalogPage.Should().NotBeNull("ProductCatalogPage should be initialized");
 
             // Verify that kegs display the required information
             var displayRequiredInfo = await ProductCatalogPage!.DoKegsDisplayRequiredInformation();
             displayRequiredInfo.Should().BeTrue("Each keg should display the required product information including:");
-
-            // Log what information should be displayed (from the table)
-            foreach (var row in table.Rows)
-            {
-                var information = row["Information"];
-                Console.WriteLine($"✓ Expected information: {information}");
-            }
 
             // Additional verification: ensure we have a reasonable number of kegs
             var kegCount = await ProductCatalogPage.GetKegCount();

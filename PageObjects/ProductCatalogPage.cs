@@ -1,5 +1,4 @@
 using Microsoft.Playwright;
-using FluentAssertions;
 
 namespace PerfectDraftTests.PageObjects
 {
@@ -15,7 +14,7 @@ namespace PerfectDraftTests.PageObjects
             var kegSelectors = new[]
             {
                 "text=Kegs",
-                "text=Beer Kegs", 
+                "text=Beer Kegs",
                 "a[href*='kegs']",
                 "a[href*='beer']",
                 "[data-category='kegs']",
@@ -24,7 +23,7 @@ namespace PerfectDraftTests.PageObjects
             };
 
             bool navigationSuccessful = false;
-            
+
             foreach (var selector in kegSelectors)
             {
                 try
@@ -35,6 +34,7 @@ namespace PerfectDraftTests.PageObjects
                         await element.ClickAsync();
                         await WaitForPageLoadAsync();
                         navigationSuccessful = true;
+                        Console.WriteLine(selector);
                         break;
                     }
                 }
@@ -57,12 +57,6 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegListSelectors = new[]
             {
-                // ".product-list",
-                // ".products-grid", 
-                // ".keg-list",
-                // "[data-testid='product-list']",
-                // ".product-container",
-                // ".product-grid",
                 ".ais-InfiniteHits"
             };
 
@@ -92,11 +86,6 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegSelectors = new[]
             {
-                // ".product-item",
-                // ".product-card",
-                // ".keg-item",
-                // "[data-product-type='keg']",
-                // ".product",
                 ".result-wrapper",
             };
 
@@ -106,12 +95,12 @@ namespace PerfectDraftTests.PageObjects
                 {
                     // Wait for at least one keg to be present using Playwright's built-in waiting
                     var locator = Page.Locator(selector);
-                    await locator.First.WaitForAsync(new LocatorWaitForOptions 
-                    { 
+                    await locator.First.WaitForAsync(new LocatorWaitForOptions
+                    {
                         State = WaitForSelectorState.Attached,
-                        Timeout = 30000 
+                        Timeout = 30000
                     });
-                    
+
                     var count = await locator.CountAsync();
                     if (count > 0)
                     {
@@ -135,7 +124,7 @@ namespace PerfectDraftTests.PageObjects
         public async Task<bool> DoKegsDisplayRequiredInformation()
         {
             var kegItems = await GetKegElements();
-            
+
             if (kegItems.Count == 0)
             {
                 return false;
@@ -143,27 +132,27 @@ namespace PerfectDraftTests.PageObjects
 
             // Check first few kegs for required information
             var kegsToCheck = Math.Min(3, kegItems.Count);
-            
+
             for (int i = 0; i < kegsToCheck; i++)
             {
                 var keg = kegItems[i];
-                
+
                 // Check for product image
                 var hasImage = await HasProductImage(keg);
-                
+
                 // Check for beer name/title
                 var hasName = await HasProductName(keg);
-                
+
                 // Check for price
                 var hasPrice = await HasPriceInfo(keg);
-                
+
                 // Check for ABV (alcohol by volume)
                 var hasABV = await HasABVInfo(keg);
-                
+
                 // If at least most information is present, consider it valid
-                var infoCount = (hasImage ? 1 : 0) + (hasName ? 1 : 0) +  
+                var infoCount = (hasImage ? 1 : 0) + (hasName ? 1 : 0) +
                                (hasPrice ? 1 : 0) + (hasABV ? 1 : 0);
-                
+
                 if (infoCount < 4) // At least 4 out of 6 pieces of info should be present
                 {
                     return false;
@@ -175,31 +164,11 @@ namespace PerfectDraftTests.PageObjects
 
         private async Task<IReadOnlyList<ILocator>> GetKegElements()
         {
-            var kegSelectors = new[]
-            {
-                ".product-item",
-                ".product-card",
-                ".keg-item",
-                "[data-product-type='keg']",
-                ".product",
-                ".result-wrapper",
-            };
+            var elements = Page.Locator(".result-wrapper");
 
-            foreach (var selector in kegSelectors)
+            if (await elements.CountAsync() > 0)
             {
-                try
-                {
-                    var elements = Page.Locator(selector);
-                    var count = await elements.CountAsync();
-                    if (count > 0)
-                    {
-                        return await elements.AllAsync();
-                    }
-                }
-                catch
-                {
-                    continue;
-                }
+                return await elements.AllAsync();
             }
 
             return new List<ILocator>();
@@ -207,57 +176,37 @@ namespace PerfectDraftTests.PageObjects
 
         private async Task<bool> HasProductImage(ILocator kegElement)
         {
-            var imageSelectors = new[] { "img", ".product-image img", ".image img" };
-            
-            foreach (var selector in imageSelectors)
-            {
-                try
-                {
-                    var image = kegElement.Locator(selector);
-                    if (await image.CountAsync() > 0 && await image.First.IsVisibleAsync())
-                    {
-                        return true;
-                    }
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-            return false;
+            var image = kegElement.Locator("img[itemprop=image]");
+            return await image.CountAsync() > 0 && await image.First.IsVisibleAsync();
         }
 
         private async Task<bool> HasProductName(ILocator kegElement)
         {
-            var nameSelectors = new[] 
-            { 
+            var nameSelectors = new[]
+            {
                 ".result-title"
             };
-            
+
             return await HasTextContent(kegElement, nameSelectors);
         }
 
         private async Task<bool> HasPriceInfo(ILocator kegElement)
         {
-            var priceSelectors = new[] 
-            { 
-                ".price", 
-                ".product-price", 
-                ".cost",
-                "[data-testid='price']",
-                ".amount"
+            var priceSelectors = new[]
+            {
+                ".price",
             };
-            
+
             return await HasTextContent(kegElement, priceSelectors, "£");
         }
 
         private async Task<bool> HasABVInfo(ILocator kegElement)
         {
-            var abvSelectors = new[] 
-            { 
-                ".attr-label-abv", 
+            var abvSelectors = new[]
+            {
+                ".attr-label__abv",
             };
-            
+
             return await HasTextContent(kegElement, abvSelectors, "%");
         }
 
@@ -293,7 +242,7 @@ namespace PerfectDraftTests.PageObjects
             var filterSelectors = new[]
             {
                 ".filter",
-                ".filters", 
+                ".filters",
                 ".product-filters",
                 "[data-testid='filters']",
                 ".filter-container",

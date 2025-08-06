@@ -25,7 +25,6 @@ public class PlaywrightHooks
     [BeforeScenario]
     public async Task InitializeAsync()
     {
-        Console.WriteLine("beofre scenrio mf");
         playwright = await Playwright.CreateAsync();
 
         var browserOptions = new BrowserTypeLaunchOptions
@@ -76,7 +75,6 @@ public class PlaywrightHooks
 
     private T GetFromScenarioContext<T>(string? name = null)
     {
-        Console.WriteLine(" get MyPage");
         var propertyName = name ?? typeof(T).Name;
         if (!ScenarioContext.ContainsKey(propertyName))
         {
@@ -88,7 +86,6 @@ public class PlaywrightHooks
 
     private void AddToScenarioContext<T>(T contextItem, string? name = null)
     {
-        Console.WriteLine("add MyPage");
         var propertyName = name ?? typeof(T).Name;
 
         if (!ScenarioContext.ContainsKey(name!))

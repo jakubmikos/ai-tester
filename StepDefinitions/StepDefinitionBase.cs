@@ -13,7 +13,6 @@ public abstract class StepDefinitionBase
     protected IPage Page
     {
         get => this.GetFromScenarioContext<IPage>("MyPage");
-        set => this.AddToScenarioContext(value, "MyPage");
     }
 
     protected HomePage HomePage
@@ -86,7 +85,6 @@ public abstract class StepDefinitionBase
 
     private T GetFromScenarioContext<T>(string? name = null)
     {
-        Console.WriteLine(" get MyPage");
         var propertyName = name ?? typeof(T).Name;
         if (!ScenarioContext.ContainsKey(propertyName))
         {
@@ -94,16 +92,5 @@ public abstract class StepDefinitionBase
         }
 
         return ScenarioContext.Get<T>(name);
-    }
-
-    private void AddToScenarioContext<T>(T contextItem, string? name = null)
-    {
-        Console.WriteLine("add MyPage");
-        var propertyName = name ?? typeof(T).Name;
-
-        if (!ScenarioContext.ContainsKey(name!))
-        {
-            ScenarioContext.Add(propertyName, contextItem);
-        }
     }
 }

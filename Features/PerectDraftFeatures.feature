@@ -103,12 +103,7 @@ Scenario: Browse beer kegs catalog
     Given I am on the UK website
     When I navigate to the "Beer Kegs" section
     Then I should see a list of available beer kegs
-    And each keg should display:
-        | Information     |
-        | Product image   |
-        | Beer name       |
-        | ABV percentage  |
-        | Price in GBP    |
+    And each keg should display basic information
     And I should be able to filter by beer type
     And I should be able to sort by price or popularity
 
