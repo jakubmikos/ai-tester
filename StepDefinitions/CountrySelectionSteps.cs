@@ -219,19 +219,6 @@ public class CountrySelectionSteps : StepDefinitionBase
         }
     }
 
-    private async Task<bool> IsElementVisibleAsync(string selector)
-    {
-        try
-        {
-            var element = Page!.Locator(selector);
-            return await element.IsVisibleAsync();
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     private static string GetCountryUrlPath(string countryName)
     {
         return countryName.ToLower() switch
