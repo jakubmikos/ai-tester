@@ -19,61 +19,48 @@ namespace PerfectDraftTests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class PerfectDraftWebsiteCoreFunctionalityFeature
+    [Xunit.TraitAttribute("Category", "PerfectDraft")]
+    [Xunit.TraitAttribute("Category", "E2E")]
+    public partial class PerfectDraftWebsiteCoreFunctionalityFeature : object, Xunit.IClassFixture<PerfectDraftWebsiteCoreFunctionalityFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private static global::Reqnroll.ITestRunner testRunner;
-        
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
         private static string[] featureTags = new string[] {
                 "PerfectDraft",
                 "E2E"};
         
+        private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
+        
 #line 1 "PerectDraftFeatures.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
+        public PerfectDraftWebsiteCoreFunctionalityFeature(PerfectDraftWebsiteCoreFunctionalityFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
+            this._testOutputHelper = testOutputHelper;
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static async System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        public static async System.Threading.Tasks.Task FeatureSetupAsync()
         {
-            testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(null, System.Threading.Thread.CurrentThread.ManagedThreadId.ToString());
+            testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(null, global::Reqnroll.xUnit.ReqnrollPlugin.XUnitParallelWorkerTracker.Instance.GetWorkerId());
             global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "PerfectDraft Website Core Functionality", ("    As a beer enthusiast and potential customer\r\n    I want to browse, purchase a" +
                     "nd manage PerfectDraft products\r\n    So that I can enjoy the ultimate home beer " +
                     "experience"), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
             await testRunner.OnFeatureStartAsync(featureInfo);
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute(Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupBehavior.EndOfClass)]
         public static async System.Threading.Tasks.Task FeatureTearDownAsync()
         {
+            string testWorkerId = testRunner.TestWorkerId;
             await testRunner.OnFeatureEndAsync();
             testRunner = null;
+            global::Reqnroll.xUnit.ReqnrollPlugin.XUnitParallelWorkerTracker.Instance.ReleaseWorker(testWorkerId);
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public async System.Threading.Tasks.Task TestInitializeAsync()
         {
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "PerfectDraft Website Core Functionality")))
-            {
-                await global::PerfectDraftTests.Features.PerfectDraftWebsiteCoreFunctionalityFeature.FeatureSetupAsync(null);
-            }
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public async System.Threading.Tasks.Task TestTearDownAsync()
         {
             await testRunner.OnScenarioEndAsync();
@@ -82,7 +69,7 @@ namespace PerfectDraftTests.Features
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async System.Threading.Tasks.Task ScenarioStartAsync()
@@ -104,19 +91,27 @@ namespace PerfectDraftTests.Features
 #line hidden
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("User authentication with different email formats")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("UserAuthentication")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user@example.com", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user.name@example.co.uk", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user+tag@example.org", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user123@test-domain.com", "", null)]
-        public async System.Threading.Tasks.Task UserAuthenticationWithDifferentEmailFormats(string email, string notUsed6248, string[] exampleTags)
+        async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
+        {
+            await this.TestInitializeAsync();
+        }
+        
+        async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
+        {
+            await this.TestTearDownAsync();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="User authentication with different email formats")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "User authentication with different email formats")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "UserAuthentication")]
+        [Xunit.TraitAttribute("Category", "Regression")]
+        [Xunit.InlineDataAttribute("user@example.com", new string[0])]
+        [Xunit.InlineDataAttribute("user.name@example.co.uk", new string[0])]
+        [Xunit.InlineDataAttribute("user+tag@example.org", new string[0])]
+        [Xunit.InlineDataAttribute("user123@test-domain.com", new string[0])]
+        public async System.Threading.Tasks.Task UserAuthenticationWithDifferentEmailFormats(string email, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "P2",
@@ -162,17 +157,15 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Apply Beer Tokens during checkout for different users")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("BeerTokens")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user1@example.com", "£10.00", "£10.00", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user2@example.com", "£15.00", "£10.00", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user3@example.com", "£5.00", "£5.00", null)]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Apply Beer Tokens during checkout for different users")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Apply Beer Tokens during checkout for different users")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "BeerTokens")]
+        [Xunit.TraitAttribute("Category", "Regression")]
+        [Xunit.InlineDataAttribute("user1@example.com", "£10.00", "£10.00", new string[0])]
+        [Xunit.InlineDataAttribute("user2@example.com", "£15.00", "£10.00", new string[0])]
+        [Xunit.InlineDataAttribute("user3@example.com", "£5.00", "£5.00", new string[0])]
         public async System.Threading.Tasks.Task ApplyBeerTokensDuringCheckoutForDifferentUsers(string email, string tokenAmount, string applyAmount, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -239,18 +232,16 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email notifications for different user actions")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("EmailNotifications")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user@example.com", "Complete order", "Order confirmation", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user@example.com", "Initiate keg return", "Return instructions", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user@example.com", "Register account", "Email verification", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user@example.com", "Reset password", "Password reset link", null)]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Email notifications for different user actions")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Email notifications for different user actions")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "EmailNotifications")]
+        [Xunit.TraitAttribute("Category", "Regression")]
+        [Xunit.InlineDataAttribute("user@example.com", "Complete order", "Order confirmation", new string[0])]
+        [Xunit.InlineDataAttribute("user@example.com", "Initiate keg return", "Return instructions", new string[0])]
+        [Xunit.InlineDataAttribute("user@example.com", "Register account", "Email verification", new string[0])]
+        [Xunit.InlineDataAttribute("user@example.com", "Reset password", "Password reset link", new string[0])]
         public async System.Threading.Tasks.Task EmailNotificationsForDifferentUserActions(string email, string action, string emailContent, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -299,14 +290,12 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Select country from homepage")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CountrySelection")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="Select country from homepage")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Select country from homepage")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "CountrySelection")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task SelectCountryFromHomepage()
         {
             string[] tagsOfScenario = new string[] {
@@ -354,18 +343,16 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to different country websites")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CountrySelection")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("United Kingdom", "GBP", "English", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Deutschland", "EUR", "German", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("France", "EUR", "French", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("United States", "USD", "English", null)]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Navigate to different country websites")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Navigate to different country websites")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "CountrySelection")]
+        [Xunit.TraitAttribute("Category", "Regression")]
+        [Xunit.InlineDataAttribute("United Kingdom", "GBP", "English", new string[0])]
+        [Xunit.InlineDataAttribute("Deutschland", "EUR", "German", new string[0])]
+        [Xunit.InlineDataAttribute("France", "EUR", "French", new string[0])]
+        [Xunit.InlineDataAttribute("United States", "USD", "English", new string[0])]
         public async System.Threading.Tasks.Task NavigateToDifferentCountryWebsites(string country, string currency, string language, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -414,14 +401,12 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Main website navigation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Navigation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="Main website navigation")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Main website navigation")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "Navigation")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task MainWebsiteNavigation()
         {
             string[] tagsOfScenario = new string[] {
@@ -478,14 +463,12 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Browse beer kegs catalog")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ProductBrowsing")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="Browse beer kegs catalog")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Browse beer kegs catalog")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ProductBrowsing")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task BrowseBeerKegsCatalog()
         {
             string[] tagsOfScenario = new string[] {
@@ -523,34 +506,28 @@ await this.FeatureBackgroundAsync();
                 table2.AddRow(new string[] {
                             "Beer name"});
                 table2.AddRow(new string[] {
-                            "Brand"});
-                table2.AddRow(new string[] {
                             "ABV percentage"});
                 table2.AddRow(new string[] {
                             "Price in GBP"});
-                table2.AddRow(new string[] {
-                            "Stock status"});
 #line 106
     await testRunner.AndAsync("each keg should display:", ((string)(null)), table2, "And ");
 #line hidden
-#line 114
+#line 112
     await testRunner.AndAsync("I should be able to filter by beer type", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 115
+#line 113
     await testRunner.AndAsync("I should be able to sort by price or popularity", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View PerfectDraft machine options")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ProductBrowsing")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="View PerfectDraft machine options")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "View PerfectDraft machine options")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ProductBrowsing")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task ViewPerfectDraftMachineOptions()
         {
             string[] tagsOfScenario = new string[] {
@@ -559,7 +536,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View PerfectDraft machine options", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 118
+#line 116
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -572,10 +549,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 119
+#line 117
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 120
+#line 118
     await testRunner.WhenAsync("I navigate to the \"Machines\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
@@ -584,30 +561,28 @@ await this.FeatureBackgroundAsync();
                             "PerfectDraft"});
                 table3.AddRow(new string[] {
                             "PerfectDraft Pro"});
-#line 121
+#line 119
     await testRunner.ThenAsync("I should see both machine types:", ((string)(null)), table3, "Then ");
 #line hidden
-#line 125
+#line 123
     await testRunner.AndAsync("each machine should display specifications", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 126
+#line 124
     await testRunner.AndAsync("I should see feature comparisons between Standard and Pro", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 127
+#line 125
     await testRunner.AndAsync("bundle options should be available", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View detailed product information")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ProductDetails")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="View detailed product information")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "View detailed product information")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ProductDetails")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ViewDetailedProductInformation()
         {
             string[] tagsOfScenario = new string[] {
@@ -616,7 +591,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View detailed product information", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 130
+#line 128
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -629,16 +604,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 131
+#line 129
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 132
+#line 130
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 133
+#line 131
     await testRunner.AndAsync("I click on a beer keg \"Stella Artois 6L Keg\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 134
+#line 132
     await testRunner.ThenAsync("I should see the product detail page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
@@ -655,27 +630,25 @@ await this.FeatureBackgroundAsync();
                             "Stock availability"});
                 table4.AddRow(new string[] {
                             "Customer reviews"});
-#line 135
+#line 133
     await testRunner.AndAsync("I should see detailed product information:", ((string)(null)), table4, "And ");
 #line hidden
-#line 143
+#line 141
     await testRunner.AndAsync("I should see an \"Add to Cart\" button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 144
+#line 142
     await testRunner.AndAsync("I should see related product recommendations", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Search for specific products")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Search")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="Search for specific products")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Search for specific products")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "Search")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task SearchForSpecificProducts()
         {
             string[] tagsOfScenario = new string[] {
@@ -684,7 +657,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Search for specific products", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 147
+#line 145
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -697,48 +670,46 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 148
+#line 146
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 149
+#line 147
     await testRunner.WhenAsync("I enter \"Stella\" in the search box", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 150
+#line 148
     await testRunner.AndAsync("I click the search button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 151
+#line 149
     await testRunner.ThenAsync("I should see search results containing \"Stella\" products", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 152
+#line 150
     await testRunner.AndAsync("the results should include both kegs and bundles", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 153
+#line 151
     await testRunner.AndAsync("I should be able to filter the search results", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 154
+#line 152
     await testRunner.WhenAsync("I enter \"InvalidProductName123\" in the search box", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 155
+#line 153
     await testRunner.AndAsync("I click the search button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 156
+#line 154
     await testRunner.ThenAsync("I should see a \"no results found\" message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 157
+#line 155
     await testRunner.AndAsync("I should see suggestions for alternative searches", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add products to shopping cart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ShoppingCart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="Add products to shopping cart")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Add products to shopping cart")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ShoppingCart")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task AddProductsToShoppingCart()
         {
             string[] tagsOfScenario = new string[] {
@@ -747,7 +718,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add products to shopping cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 160
+#line 158
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -760,19 +731,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 161
+#line 159
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 162
+#line 160
     await testRunner.AndAsync("my cart is empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 163
+#line 161
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 164
+#line 162
     await testRunner.AndAsync("I add \"PerfectDraft Stella Artois 6L Keg\" to the cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 167
+#line 165
     await testRunner.WhenAsync("I click on the cart icon", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
@@ -787,21 +758,19 @@ await this.FeatureBackgroundAsync();
                             "Unit price"});
                 table5.AddRow(new string[] {
                             "Total price"});
-#line 168
+#line 166
     await testRunner.ThenAsync("I should see the cart contents with:", ((string)(null)), table5, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Modify cart contents")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ShoppingCart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="Modify cart contents")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Modify cart contents")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ShoppingCart")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ModifyCartContents()
         {
             string[] tagsOfScenario = new string[] {
@@ -810,7 +779,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Modify cart contents", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 177
+#line 175
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -823,45 +792,43 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 178
+#line 176
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 179
+#line 177
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 180
+#line 178
     await testRunner.WhenAsync("I view my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 181
+#line 179
     await testRunner.AndAsync("I increase the quantity to \"2\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 182
+#line 180
     await testRunner.ThenAsync("the cart should show quantity \"2\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 183
+#line 181
     await testRunner.AndAsync("the total price should be updated accordingly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 184
+#line 182
     await testRunner.WhenAsync("I click \"Remove\" for the item", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 185
+#line 183
     await testRunner.ThenAsync("the cart should be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 186
+#line 184
     await testRunner.AndAsync("the cart counter should show \"0\" items", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add bundle products to cart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ShoppingCart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="Add bundle products to cart")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Add bundle products to cart")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ShoppingCart")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task AddBundleProductsToCart()
         {
             string[] tagsOfScenario = new string[] {
@@ -870,7 +837,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add bundle products to cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 189
+#line 187
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -883,16 +850,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 190
+#line 188
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 191
+#line 189
     await testRunner.WhenAsync("I navigate to the \"Bundles\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 192
+#line 190
     await testRunner.AndAsync("I select a \"PerfectDraft Machine Bundle\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 193
+#line 191
     await testRunner.AndAsync("I add the bundle to my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
@@ -903,27 +870,25 @@ await this.FeatureBackgroundAsync();
                             "Beer keg"});
                 table6.AddRow(new string[] {
                             "Glasses"});
-#line 194
+#line 192
     await testRunner.ThenAsync("the cart should contain all bundle items:", ((string)(null)), table6, "Then ");
 #line hidden
-#line 199
+#line 197
     await testRunner.AndAsync("the bundle discount should be applied", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 200
+#line 198
     await testRunner.AndAsync("the total should reflect the bundle price", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Register new user account")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("UserRegistration")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="Register new user account")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Register new user account")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "UserRegistration")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task RegisterNewUserAccount()
         {
             string[] tagsOfScenario = new string[] {
@@ -932,7 +897,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Register new user account", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 203
+#line 201
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -945,13 +910,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 204
+#line 202
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 205
+#line 203
     await testRunner.WhenAsync("I click on \"Account\" in the navigation", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 206
+#line 204
     await testRunner.AndAsync("I click \"Register\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
@@ -972,39 +937,37 @@ await this.FeatureBackgroundAsync();
                 table7.AddRow(new string[] {
                             "Date of Birth",
                             "15/06/1990"});
-#line 207
+#line 205
     await testRunner.AndAsync("I fill in the registration form with email \"test.user@example.com\":", ((string)(null)), table7, "And ");
 #line hidden
-#line 214
+#line 212
     await testRunner.AndAsync("I accept the terms and conditions", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 215
+#line 213
     await testRunner.AndAsync("I accept age verification (18+)", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 216
+#line 214
     await testRunner.AndAsync("I click \"Create Account\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 217
+#line 215
     await testRunner.ThenAsync("I should see a registration confirmation message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 218
+#line 216
     await testRunner.AndAsync("I should receive an email verification for \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 219
+#line 217
     await testRunner.AndAsync("I should be automatically logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("User login and logout")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("UserAuthentication")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
+        [Xunit.SkippableFactAttribute(DisplayName="User login and logout")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "User login and logout")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "UserAuthentication")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
         public async System.Threading.Tasks.Task UserLoginAndLogout()
         {
             string[] tagsOfScenario = new string[] {
@@ -1013,7 +976,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User login and logout", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 222
+#line 220
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1026,48 +989,46 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 223
+#line 221
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 224
+#line 222
     await testRunner.AndAsync("I have a registered account with email \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 225
+#line 223
     await testRunner.WhenAsync("I click on \"Account\" in the navigation", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 226
+#line 224
     await testRunner.AndAsync("I click \"Login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 227
+#line 225
     await testRunner.AndAsync("I login with email \"test.user@example.com\" and password \"SecurePassword123\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 228
+#line 226
     await testRunner.ThenAsync("I should be logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 229
+#line 227
     await testRunner.AndAsync("I should see \"Welcome John\" in the account section", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 230
+#line 228
     await testRunner.WhenAsync("I click \"Logout\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 231
+#line 229
     await testRunner.ThenAsync("I should be logged out", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 232
+#line 230
     await testRunner.AndAsync("I should see the \"Login\" option again", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Complete checkout process as registered user")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Checkout")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Critical")]
+        [Xunit.SkippableFactAttribute(DisplayName="Complete checkout process as registered user")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Complete checkout process as registered user")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "Checkout")]
+        [Xunit.TraitAttribute("Category", "Critical")]
         public async System.Threading.Tasks.Task CompleteCheckoutProcessAsRegisteredUser()
         {
             string[] tagsOfScenario = new string[] {
@@ -1076,7 +1037,7 @@ await this.FeatureBackgroundAsync();
                     "Critical"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Complete checkout process as registered user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 235
+#line 233
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1089,16 +1050,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 236
+#line 234
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 237
+#line 235
     await testRunner.AndAsync("I am logged in with email \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 238
+#line 236
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 239
+#line 237
     await testRunner.WhenAsync("I proceed to checkout", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table8 = new global::Reqnroll.Table(new string[] {
@@ -1111,13 +1072,13 @@ await this.FeatureBackgroundAsync();
                             "Delivery options"});
                 table8.AddRow(new string[] {
                             "Payment method"});
-#line 240
+#line 238
     await testRunner.ThenAsync("I should see the checkout page with:", ((string)(null)), table8, "Then ");
 #line hidden
-#line 246
+#line 244
     await testRunner.WhenAsync("I confirm my shipping address", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 247
+#line 245
     await testRunner.AndAsync("I select \"Standard Delivery\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
@@ -1135,33 +1096,31 @@ await this.FeatureBackgroundAsync();
                 table9.AddRow(new string[] {
                             "Cardholder Name",
                             "John Doe"});
-#line 248
+#line 246
     await testRunner.AndAsync("I enter valid payment details:", ((string)(null)), table9, "And ");
 #line hidden
-#line 254
+#line 252
     await testRunner.AndAsync("I click \"Place Order\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 255
+#line 253
     await testRunner.ThenAsync("I should see an order confirmation page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 256
+#line 254
     await testRunner.AndAsync("I should receive an order confirmation email at \"test.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 257
+#line 255
     await testRunner.AndAsync("I should see an order tracking number", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Complete checkout process as guest user")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Checkout")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Critical")]
+        [Xunit.SkippableFactAttribute(DisplayName="Complete checkout process as guest user")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Complete checkout process as guest user")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "Checkout")]
+        [Xunit.TraitAttribute("Category", "Critical")]
         public async System.Threading.Tasks.Task CompleteCheckoutProcessAsGuestUser()
         {
             string[] tagsOfScenario = new string[] {
@@ -1170,7 +1129,7 @@ await this.FeatureBackgroundAsync();
                     "Critical"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Complete checkout process as guest user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 260
+#line 258
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1183,19 +1142,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 261
+#line 259
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 262
+#line 260
     await testRunner.AndAsync("I am not logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 263
+#line 261
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 264
+#line 262
     await testRunner.WhenAsync("I proceed to checkout", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 265
+#line 263
     await testRunner.AndAsync("I select \"Checkout as Guest\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
@@ -1219,39 +1178,37 @@ await this.FeatureBackgroundAsync();
                 table10.AddRow(new string[] {
                             "Postcode",
                             "SW1A 1AA"});
-#line 266
+#line 264
     await testRunner.AndAsync("I fill in guest checkout information with email \"guest.user@example.com\":", ((string)(null)), table10, "And ");
 #line hidden
-#line 274
+#line 272
     await testRunner.AndAsync("I select \"Standard Delivery\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 275
+#line 273
     await testRunner.AndAsync("I enter valid payment details", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 276
+#line 274
     await testRunner.AndAsync("I confirm age verification (18+)", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 277
+#line 275
     await testRunner.AndAsync("I click \"Place Order\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 278
+#line 276
     await testRunner.ThenAsync("I should see an order confirmation page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 279
+#line 277
     await testRunner.AndAsync("I should receive an order confirmation email at \"guest.user@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View Beer Token information")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("BeerTokens")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="View Beer Token information")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "View Beer Token information")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "BeerTokens")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ViewBeerTokenInformation()
         {
             string[] tagsOfScenario = new string[] {
@@ -1260,7 +1217,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View Beer Token information", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 282
+#line 280
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1273,16 +1230,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 283
+#line 281
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 284
+#line 282
     await testRunner.AndAsync("I am logged in as a registered user", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 285
+#line 283
     await testRunner.WhenAsync("I navigate to my account dashboard", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 286
+#line 284
     await testRunner.ThenAsync("I should see my Beer Token balance", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
@@ -1297,27 +1254,25 @@ await this.FeatureBackgroundAsync();
                 table11.AddRow(new string[] {
                             "Guest order (3 days)",
                             "Variable"});
-#line 287
+#line 285
     await testRunner.AndAsync("I should see information about earning tokens:", ((string)(null)), table11, "And ");
 #line hidden
-#line 292
+#line 290
     await testRunner.AndAsync("I should see token expiration information \"6 months\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 293
+#line 291
     await testRunner.AndAsync("I should see how to redeem tokens", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Apply Beer Tokens during checkout")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("BeerTokens")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="Apply Beer Tokens during checkout")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Apply Beer Tokens during checkout")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "BeerTokens")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ApplyBeerTokensDuringCheckout()
         {
             string[] tagsOfScenario = new string[] {
@@ -1326,7 +1281,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Apply Beer Tokens during checkout", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 296
+#line 294
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1339,51 +1294,49 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 297
+#line 295
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 298
+#line 296
     await testRunner.AndAsync("I am logged in as a user with \"£10.00\" in Beer Tokens", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 299
+#line 297
     await testRunner.AndAsync("I have \"Stella Artois 6L Keg\" priced at \"£32.50\" in my cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 300
+#line 298
     await testRunner.WhenAsync("I proceed to checkout", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 301
+#line 299
     await testRunner.ThenAsync("I should see my Beer Token balance \"£10.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 302
+#line 300
     await testRunner.WhenAsync("I select \"Apply Beer Tokens\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 303
+#line 301
     await testRunner.AndAsync("I choose to apply \"£10.00\" tokens", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 304
+#line 302
     await testRunner.ThenAsync("the order total should be reduced by \"£10.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 305
+#line 303
     await testRunner.AndAsync("my new total should be \"£22.50\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 306
+#line 304
     await testRunner.WhenAsync("I complete the checkout process", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 307
+#line 305
     await testRunner.ThenAsync("my Beer Token balance should be \"£0.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Initiate keg return process")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("KegReturns")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="Initiate keg return process")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Initiate keg return process")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "KegReturns")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task InitiateKegReturnProcess()
         {
             string[] tagsOfScenario = new string[] {
@@ -1392,7 +1345,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initiate keg return process", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 310
+#line 308
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1405,16 +1358,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 311
+#line 309
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 312
+#line 310
     await testRunner.AndAsync("I am logged in as a registered user", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 313
+#line 311
     await testRunner.WhenAsync("I navigate to \"Keg Returns\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 314
+#line 312
     await testRunner.AndAsync("I click \"Return Kegs\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
                 global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
@@ -1423,39 +1376,37 @@ await this.FeatureBackgroundAsync();
                             "Courier Collection"});
                 table12.AddRow(new string[] {
                             "Community Store"});
-#line 315
+#line 313
     await testRunner.ThenAsync("I should see the keg return options:", ((string)(null)), table12, "Then ");
 #line hidden
-#line 319
+#line 317
     await testRunner.WhenAsync("I select \"Courier Collection\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 320
+#line 318
     await testRunner.AndAsync("I specify \"2\" kegs to return", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 321
+#line 319
     await testRunner.AndAsync("I confirm my collection address", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 322
+#line 320
     await testRunner.ThenAsync("I should be able to generate return labels", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 323
+#line 321
     await testRunner.AndAsync("I should see the estimated Beer Token credit \"£10.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 324
+#line 322
     await testRunner.AndAsync("I should receive return instructions", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find Community Store locations")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CommunityStore")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="Find Community Store locations")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Find Community Store locations")]
+        [Xunit.TraitAttribute("Category", "P3")]
+        [Xunit.TraitAttribute("Category", "CommunityStore")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task FindCommunityStoreLocations()
         {
             string[] tagsOfScenario = new string[] {
@@ -1464,7 +1415,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Find Community Store locations", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 327
+#line 325
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1477,19 +1428,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 328
+#line 326
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 329
+#line 327
     await testRunner.WhenAsync("I navigate to \"Community Store Network\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 330
+#line 328
     await testRunner.AndAsync("I enter postcode \"SW1A 1AA\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 331
+#line 329
     await testRunner.AndAsync("I click \"Find Stores\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 332
+#line 330
     await testRunner.ThenAsync("I should see a list of nearby Community Stores", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
@@ -1504,24 +1455,22 @@ await this.FeatureBackgroundAsync();
                             "Opening hours"});
                 table13.AddRow(new string[] {
                             "Available services"});
-#line 333
+#line 331
     await testRunner.AndAsync("each store should show:", ((string)(null)), table13, "And ");
 #line hidden
-#line 340
+#line 338
     await testRunner.AndAsync("I should be able to get directions to selected stores", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View and select bundle options")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Bundles")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="View and select bundle options")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "View and select bundle options")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "Bundles")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ViewAndSelectBundleOptions()
         {
             string[] tagsOfScenario = new string[] {
@@ -1530,7 +1479,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View and select bundle options", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 343
+#line 341
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1543,10 +1492,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 344
+#line 342
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 345
+#line 343
     await testRunner.WhenAsync("I navigate to \"Bundles\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
@@ -1559,36 +1508,34 @@ await this.FeatureBackgroundAsync();
                             "Match Day Keg Pack"});
                 table14.AddRow(new string[] {
                             "Seasonal Keg Packs"});
-#line 346
+#line 344
     await testRunner.ThenAsync("I should see available bundle types:", ((string)(null)), table14, "Then ");
 #line hidden
-#line 352
+#line 350
     await testRunner.WhenAsync("I select \"PerfectDraft Pro Bundle\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 353
+#line 351
     await testRunner.ThenAsync("I should see bundle contents clearly listed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 354
+#line 352
     await testRunner.AndAsync("I should see bundle price vs individual prices", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 355
+#line 353
     await testRunner.AndAsync("I should see savings amount", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 356
+#line 354
     await testRunner.AndAsync("bundle customization options should be available", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View promotional keg packs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PromotionalOffers")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="View promotional keg packs")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "View promotional keg packs")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "PromotionalOffers")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ViewPromotionalKegPacks()
         {
             string[] tagsOfScenario = new string[] {
@@ -1597,7 +1544,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View promotional keg packs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 359
+#line 357
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1610,13 +1557,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 360
+#line 358
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 361
+#line 359
     await testRunner.WhenAsync("I navigate to promotional keg packs", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 362
+#line 360
     await testRunner.ThenAsync("I should see current offers like \"Match Day Keg Pack\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
@@ -1628,33 +1575,31 @@ await this.FeatureBackgroundAsync();
                 table15.AddRow(new string[] {
                             "3 kegs",
                             "£85.00"});
-#line 363
+#line 361
     await testRunner.AndAsync("I should see pricing options:", ((string)(null)), table15, "And ");
 #line hidden
-#line 367
+#line 365
     await testRunner.WhenAsync("I select \"3 kegs for £85.00\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 368
+#line 366
     await testRunner.ThenAsync("I should be able to choose from available keg options", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 369
+#line 367
     await testRunner.AndAsync("I should see the discount calculation", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 370
+#line 368
     await testRunner.AndAsync("promotional terms should be clearly displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View order history as registered user")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OrderHistory")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Regression")]
+        [Xunit.SkippableFactAttribute(DisplayName="View order history as registered user")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "View order history as registered user")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "OrderHistory")]
+        [Xunit.TraitAttribute("Category", "Regression")]
         public async System.Threading.Tasks.Task ViewOrderHistoryAsRegisteredUser()
         {
             string[] tagsOfScenario = new string[] {
@@ -1663,7 +1608,7 @@ await this.FeatureBackgroundAsync();
                     "Regression"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("View order history as registered user", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 373
+#line 371
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1676,16 +1621,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 374
+#line 372
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 375
+#line 373
     await testRunner.AndAsync("I am logged in as a user with previous orders", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 376
+#line 374
     await testRunner.WhenAsync("I navigate to \"My Orders\" in my account", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 377
+#line 375
     await testRunner.ThenAsync("I should see a list of my previous orders", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
                 global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
@@ -1700,37 +1645,35 @@ await this.FeatureBackgroundAsync();
                             "Order status"});
                 table16.AddRow(new string[] {
                             "Tracking info"});
-#line 378
+#line 376
     await testRunner.AndAsync("each order should display:", ((string)(null)), table16, "And ");
 #line hidden
-#line 385
+#line 383
     await testRunner.WhenAsync("I click on an order", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 386
+#line 384
     await testRunner.ThenAsync("I should see detailed order information", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 387
+#line 385
     await testRunner.AndAsync("I should be able to track the shipment", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 388
+#line 386
     await testRunner.AndAsync("I should have options to reorder or contact support", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Responsive design functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResponsiveDesign")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CrossBrowser")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Mobile Phone", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Tablet", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Desktop", "", null)]
-        public async System.Threading.Tasks.Task ResponsiveDesignFunctionality(string device, string notUsed6248, string[] exampleTags)
+        [Xunit.SkippableTheoryAttribute(DisplayName="Responsive design functionality")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Responsive design functionality")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ResponsiveDesign")]
+        [Xunit.TraitAttribute("Category", "CrossBrowser")]
+        [Xunit.InlineDataAttribute("Mobile Phone", new string[0])]
+        [Xunit.InlineDataAttribute("Tablet", new string[0])]
+        [Xunit.InlineDataAttribute("Desktop", new string[0])]
+        public async System.Threading.Tasks.Task ResponsiveDesignFunctionality(string device, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "P1",
@@ -1744,7 +1687,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Device", device);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Responsive design functionality", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 391
+#line 389
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1757,39 +1700,37 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 392
+#line 390
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 393
+#line 391
     await testRunner.WhenAsync(string.Format("I access the site on \"{0}\"", device), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 394
+#line 392
     await testRunner.ThenAsync(string.Format("the layout should be optimized for \"{0}\"", device), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 395
+#line 393
     await testRunner.AndAsync("all navigation elements should be accessible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 396
+#line 394
     await testRunner.AndAsync("the shopping cart functionality should work", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 397
+#line 395
     await testRunner.AndAsync("the checkout process should be functional", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 398
+#line 396
     await testRunner.AndAsync("text should be readable without zooming", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Website performance requirements")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Performance")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NonFunctional")]
+        [Xunit.SkippableFactAttribute(DisplayName="Website performance requirements")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Website performance requirements")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "Performance")]
+        [Xunit.TraitAttribute("Category", "NonFunctional")]
         public async System.Threading.Tasks.Task WebsitePerformanceRequirements()
         {
             string[] tagsOfScenario = new string[] {
@@ -1798,7 +1739,7 @@ await this.FeatureBackgroundAsync();
                     "NonFunctional"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Website performance requirements", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 407
+#line 405
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1811,36 +1752,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 408
+#line 406
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 409
+#line 407
     await testRunner.WhenAsync("I navigate to any page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 410
+#line 408
     await testRunner.ThenAsync("the page should load within \"3\" seconds", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 411
+#line 409
     await testRunner.AndAsync("images should load progressively", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 412
+#line 410
     await testRunner.AndAsync("the shopping cart should respond within \"1\" second", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 413
+#line 411
     await testRunner.AndAsync("the search functionality should return results within \"2\" seconds", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Basic accessibility compliance")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Accessibility")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NonFunctional")]
+        [Xunit.SkippableFactAttribute(DisplayName="Basic accessibility compliance")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Basic accessibility compliance")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "Accessibility")]
+        [Xunit.TraitAttribute("Category", "NonFunctional")]
         public async System.Threading.Tasks.Task BasicAccessibilityCompliance()
         {
             string[] tagsOfScenario = new string[] {
@@ -1849,7 +1788,7 @@ await this.FeatureBackgroundAsync();
                     "NonFunctional"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Basic accessibility compliance", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 416
+#line 414
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1862,45 +1801,43 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 417
+#line 415
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 418
+#line 416
     await testRunner.WhenAsync("I navigate through the site using keyboard only", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 419
+#line 417
     await testRunner.ThenAsync("all interactive elements should be accessible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 420
+#line 418
     await testRunner.AndAsync("focus indicators should be clearly visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 421
+#line 419
     await testRunner.AndAsync("alt text should be provided for all images", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 422
+#line 420
     await testRunner.AndAsync("color contrast should meet accessibility standards", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 423
+#line 421
     await testRunner.AndAsync("screen reader compatibility should be maintained", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Handle common error scenarios")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ErrorHandling")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Edge")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Page not found (404)", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Server error (500)", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Network connection timeout", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Payment processing failure", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Out of stock during checkout", "", null)]
-        public async System.Threading.Tasks.Task HandleCommonErrorScenarios(string errorScenario, string notUsed6248, string[] exampleTags)
+        [Xunit.SkippableTheoryAttribute(DisplayName="Handle common error scenarios")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Handle common error scenarios")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ErrorHandling")]
+        [Xunit.TraitAttribute("Category", "Edge")]
+        [Xunit.InlineDataAttribute("Page not found (404)", new string[0])]
+        [Xunit.InlineDataAttribute("Server error (500)", new string[0])]
+        [Xunit.InlineDataAttribute("Network connection timeout", new string[0])]
+        [Xunit.InlineDataAttribute("Payment processing failure", new string[0])]
+        [Xunit.InlineDataAttribute("Out of stock during checkout", new string[0])]
+        public async System.Threading.Tasks.Task HandleCommonErrorScenarios(string errorScenario, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "P1",
@@ -1914,7 +1851,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Error Scenario", errorScenario);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle common error scenarios", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 426
+#line 424
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1927,38 +1864,36 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 427
+#line 425
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 428
+#line 426
     await testRunner.WhenAsync(string.Format("I encounter the scenario \"{0}\"", errorScenario), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 429
+#line 427
     await testRunner.ThenAsync("I should see an appropriate error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 430
+#line 428
     await testRunner.AndAsync("I should have options to recover or get help", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 431
+#line 429
     await testRunner.AndAsync("the error should be logged for support purposes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Form validation and security")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DataValidation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("invalid-email", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("@example.com", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user@", "", null)]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("user..name@example.com", "", null)]
-        public async System.Threading.Tasks.Task FormValidationAndSecurity(string email, string notUsed6248, string[] exampleTags)
+        [Xunit.SkippableTheoryAttribute(DisplayName="Form validation and security")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Form validation and security")]
+        [Xunit.TraitAttribute("Category", "P2")]
+        [Xunit.TraitAttribute("Category", "DataValidation")]
+        [Xunit.TraitAttribute("Category", "Security")]
+        [Xunit.InlineDataAttribute("invalid-email", new string[0])]
+        [Xunit.InlineDataAttribute("@example.com", new string[0])]
+        [Xunit.InlineDataAttribute("user@", new string[0])]
+        [Xunit.InlineDataAttribute("user..name@example.com", new string[0])]
+        public async System.Threading.Tasks.Task FormValidationAndSecurity(string email, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "P2",
@@ -1972,7 +1907,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Email", email);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Form validation and security", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 442
+#line 440
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1985,7 +1920,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 443
+#line 441
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
                 global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
@@ -2003,34 +1938,32 @@ await this.FeatureBackgroundAsync();
                 table17.AddRow(new string[] {
                             "Missing required fields",
                             "<empty>"});
-#line 444
+#line 442
     await testRunner.WhenAsync(string.Format("I attempt to register with email \"{0}\" and invalid data:", email), ((string)(null)), table17, "When ");
 #line hidden
-#line 450
+#line 448
     await testRunner.ThenAsync("I should see appropriate validation messages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 451
+#line 449
     await testRunner.AndAsync("the form should not submit", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 452
+#line 450
     await testRunner.AndAsync("security measures should prevent malicious input", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 453
+#line 451
     await testRunner.AndAsync("sensitive data should be properly encrypted", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add new BrewDog keg to shopping cart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PerfectDraft")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("E2E")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("P1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ShoppingCart")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Smoke")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NewProduct")]
+        [Xunit.SkippableFactAttribute(DisplayName="Add new BrewDog keg to shopping cart")]
+        [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
+        [Xunit.TraitAttribute("Description", "Add new BrewDog keg to shopping cart")]
+        [Xunit.TraitAttribute("Category", "P1")]
+        [Xunit.TraitAttribute("Category", "ShoppingCart")]
+        [Xunit.TraitAttribute("Category", "Smoke")]
+        [Xunit.TraitAttribute("Category", "NewProduct")]
         public async System.Threading.Tasks.Task AddNewBrewDogKegToShoppingCart()
         {
             string[] tagsOfScenario = new string[] {
@@ -2040,7 +1973,7 @@ await this.FeatureBackgroundAsync();
                     "NewProduct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add new BrewDog keg to shopping cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 463
+#line 461
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -2053,19 +1986,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 464
+#line 462
     await testRunner.GivenAsync("I am on the UK website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 465
+#line 463
     await testRunner.AndAsync("my cart is empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 466
+#line 464
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 467
+#line 465
     await testRunner.AndAsync("I add \"BrewDog Punk IPA 6L Keg\" to the cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 468
+#line 466
     await testRunner.WhenAsync("I click on the cart icon", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
                 global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
@@ -2080,14 +2013,30 @@ await this.FeatureBackgroundAsync();
                             "Unit price"});
                 table18.AddRow(new string[] {
                             "Total price"});
-#line 469
+#line 467
     await testRunner.ThenAsync("I should see the cart contents with:", ((string)(null)), table18, "Then ");
 #line hidden
-#line 476
+#line 474
     await testRunner.AndAsync("the cart counter should show \"1\" item", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
+        }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
+        [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        public class FixtureData : object, Xunit.IAsyncLifetime
+        {
+            
+            async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
+            {
+                await PerfectDraftWebsiteCoreFunctionalityFeature.FeatureSetupAsync();
+            }
+            
+            async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
+            {
+                await PerfectDraftWebsiteCoreFunctionalityFeature.FeatureTearDownAsync();
+            }
         }
     }
 }

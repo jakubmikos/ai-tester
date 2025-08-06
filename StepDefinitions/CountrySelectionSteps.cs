@@ -6,33 +6,23 @@ using Reqnroll;
 namespace PerfectDraftTests.StepDefinitions;
 
 [Binding]
-public class CountrySelectionSteps
+public class CountrySelectionSteps : StepDefinitionBase
 {
-    private readonly ScenarioContext _scenarioContext;
-    private readonly WebDriverFactory _webDriverFactory;
-    private readonly TestConfiguration _config;
-    private IPage? _page;
-
-    public CountrySelectionSteps(ScenarioContext scenarioContext, WebDriverFactory webDriverFactory)
+    public CountrySelectionSteps(ScenarioContext scenarioContext) : base(scenarioContext)
     {
-        _scenarioContext = scenarioContext;
-        _webDriverFactory = webDriverFactory;
-        _config = TestConfiguration.Instance;
     }
 
     [When(@"I am on the country selection page")]
     public async Task WhenIAmOnTheCountrySelectionPage()
     {
-        _page ??= await _webDriverFactory.InitializeAsync();
-        
-        await _page.GotoAsync("https://www.perfectdraft.com");
-        await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
-        
+        await Page.GotoAsync("https://www.perfectdraft.com");
+        await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+
         // Wait for the country selection page to load with reduced timeout
         try
         {
             // Try multiple selector strategies with shorter timeout
-            await _page.WaitForSelectorAsync("[data-testid='country-selector'], .country-selection, .region-selector, .country-select, [class*='country'], [class*='region'], h1, h2", new PageWaitForSelectorOptions
+            await Page.WaitForSelectorAsync("[data-testid='country-selector'], .country-selection, .region-selector, .country-select, [class*='country'], [class*='region'], h1, h2", new PageWaitForSelectorOptions
             {
                 Timeout = 5000 // Reduced from 15s to 5s
             });
@@ -44,7 +34,7 @@ public class CountrySelectionSteps
             // Wait a bit more for any remaining content to load
             await Task.Delay(1000);
         }
-        
+
         // Additional wait for any dynamic content or redirects
         await Task.Delay(500);
     }
@@ -52,11 +42,11 @@ public class CountrySelectionSteps
     [Then(@"I should see the available regions ""(.+)"" and ""(.+)""")]
     public async Task ThenIShouldSeeTheAvailableRegions(string region1, string region2)
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        
+        Page.Should().NotBeNull("Page should be initialized");
+
         // Look for region selectors or text containing the regions
         var regions = new[] { region1, region2 };
-        
+
         foreach (var region in regions)
         {
             var regionFound = await IsElementVisibleAsync($"[data-region='{region}']") ||
@@ -64,8 +54,8 @@ public class CountrySelectionSteps
                              await IsElementVisibleAsync($"h1:has-text('{region}')") ||
                              await IsElementVisibleAsync($"h2:has-text('{region}')") ||
                              await IsElementVisibleAsync($"h3:has-text('{region}')") ||
-                             await _page!.GetByRole(AriaRole.Heading, new() { Name = region }).IsVisibleAsync();
-            
+                             await Page!.GetByRole(AriaRole.Heading, new() { Name = region }).IsVisibleAsync();
+
             regionFound.Should().BeTrue($"Region '{region}' should be visible on the country selection page");
         }
     }
@@ -73,19 +63,19 @@ public class CountrySelectionSteps
     [Then(@"I should see country options including ""(.+)"", ""(.+)"", ""(.+)""")]
     public async Task ThenIShouldSeeCountryOptionsIncluding(string country1, string country2, string country3)
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        
+        Page.Should().NotBeNull("Page should be initialized");
+
         var countries = new[] { country1, country2, country3 };
-        
+
         foreach (var country in countries)
         {
             var countryFound = await IsElementVisibleAsync($"[data-country='{country}']") ||
                               await IsElementVisibleAsync($"[aria-label*='{country}']") ||
                               await IsElementVisibleAsync($"a:has-text('{country}')") ||
                               await IsElementVisibleAsync($"button:has-text('{country}')") ||
-                              await _page!.GetByRole(AriaRole.Link, new() { Name = country }).IsVisibleAsync() ||
-                              await _page!.GetByRole(AriaRole.Button, new() { Name = country }).IsVisibleAsync();
-            
+                              await Page!.GetByRole(AriaRole.Link, new() { Name = country }).IsVisibleAsync() ||
+                              await Page!.GetByRole(AriaRole.Button, new() { Name = country }).IsVisibleAsync();
+
             countryFound.Should().BeTrue($"Country '{country}' should be visible on the country selection page");
         }
     }
@@ -93,8 +83,8 @@ public class CountrySelectionSteps
     [When(@"I select country ""(.+)""")]
     public async Task WhenISelectCountry(string countryName)
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        
+        Page.Should().NotBeNull("Page should be initialized");
+
         // Try multiple selectors to find and click the country
         var selectors = new[]
         {
@@ -110,7 +100,7 @@ public class CountrySelectionSteps
         {
             try
             {
-                var element = _page!.Locator(selector);
+                var element = Page!.Locator(selector);
                 if (await element.IsVisibleAsync())
                 {
                     await element.ClickAsync();
@@ -127,36 +117,36 @@ public class CountrySelectionSteps
         if (!clicked)
         {
             // Fallback: try to find by text content
-            await _page!.GetByText(countryName, new PageGetByTextOptions { Exact = false }).ClickAsync();
+            await Page!.GetByText(countryName, new PageGetByTextOptions { Exact = false }).ClickAsync();
         }
 
         // Wait for navigation or page change
-        await _page!.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+        await Page!.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     }
 
     [Then(@"I should be redirected to the UK website")]
     public void ThenIShouldBeRedirectedToTheUKWebsite()
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        var currentUrl = _page!.Url;
+        Page.Should().NotBeNull("Page should be initialized");
+        var currentUrl = Page!.Url;
         currentUrl.Should().Contain("/en-gb", "Should be redirected to the UK website");
     }
 
     [Then(@"I should be redirected to the ""(.+)"" website")]
     public void ThenIShouldBeRedirectedToTheWebsite(string countryName)
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        var currentUrl = _page!.Url;
+        Page.Should().NotBeNull("Page should be initialized");
+        var currentUrl = Page!.Url;
         var expectedPath = GetCountryUrlPath(countryName);
-        
+
         currentUrl.Should().Contain(expectedPath, $"Should be redirected to the {countryName} website");
     }
 
     [Then(@"the currency should be displayed in ""(.+)""")]
     public async Task ThenTheCurrencyShouldBeDisplayedIn(string expectedCurrency)
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        
+        Page.Should().NotBeNull("Page should be initialized");
+
         // Look for currency symbols or text on the page
         var currencySelectors = new[]
         {
@@ -172,7 +162,7 @@ public class CountrySelectionSteps
         {
             try
             {
-                var element = _page!.Locator(selector);
+                var element = Page!.Locator(selector);
                 if (await element.IsVisibleAsync())
                 {
                     var content = await element.TextContentAsync();
@@ -193,7 +183,7 @@ public class CountrySelectionSteps
         {
             // Check if currency symbol is visible anywhere on the page
             var currencySymbol = GetCurrencySymbol(expectedCurrency);
-            var currencyElements= _page!.GetByText(currencySymbol, new PageGetByTextOptions { Exact = false });
+            var currencyElements = Page!.GetByText(currencySymbol, new PageGetByTextOptions { Exact = false });
 
             currencyFound = await currencyElements.CountAsync() > 0;
         }
@@ -204,11 +194,11 @@ public class CountrySelectionSteps
     [Then(@"the language should be ""(.+)""")]
     public async Task ThenTheLanguageShouldBe(string expectedLanguage)
     {
-        _page.Should().NotBeNull("Page should be initialized");
-        
+        Page.Should().NotBeNull("Page should be initialized");
+
         // Check HTML lang attribute or page content language indicators
-        var htmlLang = await _page!.GetAttributeAsync("html", "lang");
-        
+        var htmlLang = await Page!.GetAttributeAsync("html", "lang");
+
         if (!string.IsNullOrEmpty(htmlLang))
         {
             var isCorrectLanguage = expectedLanguage.ToLower() switch
@@ -218,7 +208,7 @@ public class CountrySelectionSteps
                 "french" => htmlLang.StartsWith("fr"),
                 _ => htmlLang.Contains(expectedLanguage.ToLower())
             };
-            
+
             isCorrectLanguage.Should().BeTrue($"HTML lang attribute should indicate {expectedLanguage} language");
         }
         else
@@ -233,7 +223,7 @@ public class CountrySelectionSteps
     {
         try
         {
-            var element = _page!.Locator(selector);
+            var element = Page!.Locator(selector);
             return await element.IsVisibleAsync();
         }
         catch
@@ -277,7 +267,7 @@ public class CountrySelectionSteps
 
         foreach (var keyword in languageKeywords)
         {
-            if (await _page!.GetByText(keyword, new PageGetByTextOptions { Exact = false }).IsVisibleAsync())
+            if (await Page!.GetByText(keyword, new PageGetByTextOptions { Exact = false }).IsVisibleAsync())
             {
                 return true;
             }

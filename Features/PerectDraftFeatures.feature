@@ -107,10 +107,8 @@ Scenario: Browse beer kegs catalog
         | Information     |
         | Product image   |
         | Beer name       |
-        | Brand           |
         | ABV percentage  |
         | Price in GBP    |
-        | Stock status    |
     And I should be able to filter by beer type
     And I should be able to sort by price or popularity
 

@@ -7,41 +7,28 @@ using FluentAssertions;
 namespace PerfectDraftTests.StepDefinitions
 {
     [Binding]
-    public class NavigationSteps
+    public class NavigationSteps : StepDefinitionBase
     {
-        private readonly ScenarioContext _scenarioContext;
-        private readonly WebDriverFactory _webDriverFactory;
-        private IPage? _page;
         private HomePage? _homePage;
 
-        public NavigationSteps(ScenarioContext scenarioContext, WebDriverFactory webDriverFactory)
+        public NavigationSteps(ScenarioContext scenarioContext) : base(scenarioContext)
         {
-            _scenarioContext = scenarioContext;
-            _webDriverFactory = webDriverFactory;
         }
 
         [Given(@"I navigate to the PerfectDraft website")]
         public async Task GivenINavigateToThePerfectDraftWebsite()
         {
-            _page = await _webDriverFactory.InitializeAsync();
-            _homePage = new HomePage(_page);
+            _homePage = new HomePage(Page);
             await _homePage.NavigateToUKWebsite();
-            
-            // Store in scenario context for sharing between step classes
-            _scenarioContext.Set(_page, "Page");
-            _scenarioContext.Set(_homePage, "HomePage");
         }
 
         [Given(@"I am on the UK website")]
         public async Task GivenIAmOnTheUKWebsite()
         {
-            _page = await _webDriverFactory.InitializeAsync();
-            _homePage = new HomePage(_page);
+            _homePage = new HomePage(Page);
             await _homePage.NavigateToUKWebsite();
-            
-            // Store in scenario context for sharing between step classes
-            _scenarioContext.Set(_page, "Page");
-            _scenarioContext.Set(_homePage, "HomePage");
+
+            ScenarioContext.Set(_homePage, "HomePage");
         }
 
         [When(@"I view the main navigation menu")]
@@ -56,7 +43,7 @@ namespace PerfectDraftTests.StepDefinitions
         public async Task ThenIShouldSeeNavigationOptions(Table table)
         {
             _homePage.Should().NotBeNull("HomePage should be initialized");
-            
+
             foreach (var row in table.Rows)
             {
                 var menuItem = row["Menu Item"];
@@ -77,10 +64,10 @@ namespace PerfectDraftTests.StepDefinitions
         public async Task ThenTheCartIconShouldShowItems(string expectedCount)
         {
             _homePage.Should().NotBeNull("HomePage should be initialized");
-            
+
             var isCartVisible = await _homePage!.IsCartIconVisible();
             isCartVisible.Should().BeTrue("Cart icon should be visible");
-            
+
             var actualCount = await _homePage.GetCartItemCount();
             actualCount.Should().Be(expectedCount, $"Cart should show {expectedCount} items");
         }

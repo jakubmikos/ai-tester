@@ -38,10 +38,6 @@ public class AllureHooks
     [AfterScenario]
     public void AfterScenario(ScenarioContext scenarioContext)
     {
-        if (scenarioContext.TestError != null)
-        {
-            AllureApi.AddAttachment("Error Details", scenarioContext.TestError.ToString());
-        }
     }
 
     [AfterStep]

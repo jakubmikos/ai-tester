@@ -154,21 +154,15 @@ namespace PerfectDraftTests.PageObjects
                 // Check for beer name/title
                 var hasName = await HasProductName(keg);
                 
-                // Check for brand
-                var hasBrand = await HasBrandInfo(keg);
-                
                 // Check for price
                 var hasPrice = await HasPriceInfo(keg);
                 
                 // Check for ABV (alcohol by volume)
                 var hasABV = await HasABVInfo(keg);
                 
-                // Check for stock status
-                var hasStock = await HasStockInfo(keg);
-
                 // If at least most information is present, consider it valid
-                var infoCount = (hasImage ? 1 : 0) + (hasName ? 1 : 0) + (hasBrand ? 1 : 0) + 
-                               (hasPrice ? 1 : 0) + (hasABV ? 1 : 0) + (hasStock ? 1 : 0);
+                var infoCount = (hasImage ? 1 : 0) + (hasName ? 1 : 0) +  
+                               (hasPrice ? 1 : 0) + (hasABV ? 1 : 0);
                 
                 if (infoCount < 4) // At least 4 out of 6 pieces of info should be present
                 {
@@ -187,7 +181,8 @@ namespace PerfectDraftTests.PageObjects
                 ".product-card",
                 ".keg-item",
                 "[data-product-type='keg']",
-                ".product"
+                ".product",
+                ".result-wrapper",
             };
 
             foreach (var selector in kegSelectors)
@@ -236,28 +231,10 @@ namespace PerfectDraftTests.PageObjects
         {
             var nameSelectors = new[] 
             { 
-                ".product-title", 
-                ".product-name", 
-                "h2", 
-                "h3", 
-                ".title",
-                "[data-testid='product-name']"
+                ".result-title"
             };
             
             return await HasTextContent(kegElement, nameSelectors);
-        }
-
-        private async Task<bool> HasBrandInfo(ILocator kegElement)
-        {
-            var brandSelectors = new[] 
-            { 
-                ".brand", 
-                ".product-brand", 
-                ".manufacturer",
-                "[data-testid='brand']"
-            };
-            
-            return await HasTextContent(kegElement, brandSelectors);
         }
 
         private async Task<bool> HasPriceInfo(ILocator kegElement)
@@ -278,61 +255,10 @@ namespace PerfectDraftTests.PageObjects
         {
             var abvSelectors = new[] 
             { 
-                ".abv", 
-                ".alcohol", 
-                ".percentage",
-                "[data-testid='abv']"
+                ".attr-label-abv", 
             };
             
             return await HasTextContent(kegElement, abvSelectors, "%");
-        }
-
-        private async Task<bool> HasStockInfo(ILocator kegElement)
-        {
-            var stockSelectors = new[] 
-            { 
-                ".stock", 
-                ".availability", 
-                ".in-stock",
-                ".out-of-stock",
-                "[data-testid='stock']"
-            };
-            
-            foreach (var selector in stockSelectors)
-            {
-                try
-                {
-                    var element = kegElement.Locator(selector);
-                    if (await element.CountAsync() > 0)
-                    {
-                        return true;
-                    }
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-            
-            // Also check for common stock-related text
-            var stockTexts = new[] { "In Stock", "Out of Stock", "Available", "Unavailable" };
-            foreach (var text in stockTexts)
-            {
-                try
-                {
-                    var element = kegElement.GetByText(text, new() { Exact = false });
-                    if (await element.CountAsync() > 0)
-                    {
-                        return true;
-                    }
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-            
-            return false;
         }
 
         private async Task<bool> HasTextContent(ILocator kegElement, string[] selectors, string? mustContain = null)

@@ -21,7 +21,7 @@ namespace PerfectDraftTests.PageObjects
         {
             // Look for main navigation - trying multiple selectors
             var navSelectors = new[] { "nav", ".navigation", ".main-nav", "[role='navigation']" };
-            
+
             foreach (var selector in navSelectors)
             {
                 try
@@ -56,15 +56,15 @@ namespace PerfectDraftTests.PageObjects
 
         public async Task<bool> IsSearchFunctionalityAvailable()
         {
-            var searchSelectors = new[] 
-            { 
-                "input[type='search']", 
-                "[placeholder*='Search']", 
+            var searchSelectors = new[]
+            {
+                "input[type='search']",
+                "[placeholder*='Search']",
                 "[placeholder*='search']",
                 "input[name*='search']",
                 ".search input"
             };
-            
+
             foreach (var selector in searchSelectors)
             {
                 try
@@ -88,11 +88,11 @@ namespace PerfectDraftTests.PageObjects
             var cartSelectors = new[]
             {
                 ".cart-count",
-                ".cart-counter", 
+                ".cart-counter",
                 "[data-cart-count]",
                 ".basket-count"
             };
-            
+
             foreach (var selector in cartSelectors)
             {
                 try
@@ -109,7 +109,7 @@ namespace PerfectDraftTests.PageObjects
                     continue;
                 }
             }
-            
+
             // If no specific counter found, default to "0"
             return "0";
         }
@@ -119,13 +119,13 @@ namespace PerfectDraftTests.PageObjects
             var cartSelectors = new[]
             {
                 "text=Cart",
-                "text=Basket", 
+                "text=Basket",
                 "[href*='cart']",
                 "[href*='basket']",
                 ".cart-icon",
                 ".basket-icon"
             };
-            
+
             foreach (var selector in cartSelectors)
             {
                 try
@@ -146,41 +146,12 @@ namespace PerfectDraftTests.PageObjects
 
         public async Task NavigateToSection(string sectionName)
         {
+            var link = _page.GetByText(sectionName);
+            //var sectionLinkLocator = _page.Locator(".main-nav__link", new PageLocatorOptions { HasText = sectionName });
             // Try to find and click on the section navigation
-            var sectionSelectors = new[]
-            {
-                $"text={sectionName}",
-                $"a[href*='{sectionName.ToLower()}']",
-                $".navigation a:has-text('{sectionName}')",
-                $".menu-item:has-text('{sectionName}')",
-                $"[data-section='{sectionName.ToLower()}']"
-            };
-
-            bool navigationSuccessful = false;
-            
-            foreach (var selector in sectionSelectors)
-            {
-                try
-                {
-                    var element = await _page.QuerySelectorAsync(selector);
-                    if (element != null && await element.IsVisibleAsync())
-                    {
-                        await element.ClickAsync();
-                        await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
-                        navigationSuccessful = true;
-                        break;
-                    }
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-
-            if (!navigationSuccessful)
-            {
-                throw new InvalidOperationException($"Could not navigate to section '{sectionName}'. Section not found in navigation.");
-            }
+            //
+            await link.ClickAsync();
+            await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }
     }
 }

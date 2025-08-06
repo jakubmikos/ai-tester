@@ -7,12 +7,10 @@ namespace PerfectDraftTests.PageObjects;
 public abstract class BasePage
 {
     protected readonly IPage Page;
-    protected readonly TestConfiguration Config;
 
     protected BasePage(IPage page)
     {
         Page = page;
-        Config = TestConfiguration.Instance;
     }
 
     public virtual async Task NavigateToAsync(string url)
@@ -108,7 +106,7 @@ public abstract class BasePage
 
     protected async Task WaitForElementAsync(string selector, int timeoutMs = 0)
     {
-        var timeout = timeoutMs > 0 ? timeoutMs : Config.Timeout;
+        var timeout = timeoutMs > 0 ? timeoutMs : TestConfiguration.Instance.Timeout;
         await Page.WaitForSelectorAsync(selector, new PageWaitForSelectorOptions
         {
             Timeout = timeout
@@ -117,7 +115,7 @@ public abstract class BasePage
 
     protected async Task WaitForElementToBeVisibleAsync(string selector, int timeoutMs = 0)
     {
-        var timeout = timeoutMs > 0 ? timeoutMs : Config.Timeout;
+        var timeout = timeoutMs > 0 ? timeoutMs : TestConfiguration.Instance.Timeout;
         await Page.WaitForSelectorAsync(selector, new PageWaitForSelectorOptions
         {
             State = WaitForSelectorState.Visible,
@@ -127,7 +125,7 @@ public abstract class BasePage
 
     protected async Task WaitForElementToBeHiddenAsync(string selector, int timeoutMs = 0)
     {
-        var timeout = timeoutMs > 0 ? timeoutMs : Config.Timeout;
+        var timeout = timeoutMs > 0 ? timeoutMs : TestConfiguration.Instance.Timeout;
         await Page.WaitForSelectorAsync(selector, new PageWaitForSelectorOptions
         {
             State = WaitForSelectorState.Hidden,
