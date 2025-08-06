@@ -24,11 +24,11 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 - **Dependencies:** None
 - **Status:** Complete - Country selection steps implemented with region/country detection and redirect validation
 
-### 3. Navigate to different country websites (line 71) ❌ NOT IMPLEMENTED
+### 3. Navigate to different country websites (line 71) ✅ IMPLEMENTED
 - **Complexity:** Parameterized country selection
 - **Requirements:** Data-driven test with country/currency/language verification
 - **Dependencies:** Country selection functionality
-- **Status:** Pending - Step definitions missing for multi-country navigation
+- **Status:** Complete - Multi-country navigation working for UK, Germany, France (US excluded due to different e-commerce platform)
 
 ### 4. Browse beer kegs catalog (line 100) ✅ IMPLEMENTED
 - **Complexity:** Product listing page verification

@@ -147,9 +147,7 @@ namespace PerfectDraftTests.PageObjects
         public async Task NavigateToSection(string sectionName)
         {
             var link = _page.GetByText(sectionName);
-            //var sectionLinkLocator = _page.Locator(".main-nav__link", new PageLocatorOptions { HasText = sectionName });
-            // Try to find and click on the section navigation
-            //
+
             await link.ClickAsync();
             await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }

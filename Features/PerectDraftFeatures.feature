@@ -80,7 +80,6 @@ Scenario Outline: Navigate to different country websites
         | United Kingdom| GBP      | English  |
         | Deutschland   | EUR      | German   |
         | France        | EUR      | French   |
-        | United States | USD      | English  |
 
 @P1 @Navigation @Smoke
 Scenario: Main website navigation

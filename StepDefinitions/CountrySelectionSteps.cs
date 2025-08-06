@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.Playwright;
 using PerfectDraftTests.Support;
 using Reqnroll;
@@ -146,49 +147,24 @@ public class CountrySelectionSteps : StepDefinitionBase
     public async Task ThenTheCurrencyShouldBeDisplayedIn(string expectedCurrency)
     {
         Page.Should().NotBeNull("Page should be initialized");
+        
+        var currencySymbol = GetCurrencySymbol(expectedCurrency);
+        
+        // Use the price element selector that was identified through debugging
+        var priceElement = Page!.Locator("[class*='price']");
+        await priceElement.First.WaitForAsync(new LocatorWaitForOptions 
+        { 
+            State = WaitForSelectorState.Visible,
+            Timeout = 10000 
+        });
 
-        // Look for currency symbols or text on the page
-        var currencySelectors = new[]
-        {
-            $"text={expectedCurrency}",
-            $"[data-currency='{expectedCurrency}']",
-            ".currency",
-            ".price-currency",
-            "[class*='currency']"
-        };
+        var priceText = await priceElement.First.TextContentAsync();
+        priceText.Should().NotBeNullOrEmpty("Price element should display text");
 
-        bool currencyFound = false;
-        foreach (var selector in currencySelectors)
-        {
-            try
-            {
-                var element = Page!.Locator(selector);
-                if (await element.IsVisibleAsync())
-                {
-                    var content = await element.TextContentAsync();
-                    if (!string.IsNullOrEmpty(content) && content.Contains(expectedCurrency))
-                    {
-                        currencyFound = true;
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                // Continue to next selector
-            }
-        }
-
-        if (!currencyFound)
-        {
-            // Check if currency symbol is visible anywhere on the page
-            var currencySymbol = GetCurrencySymbol(expectedCurrency);
-            var currencyElements = Page!.GetByText(currencySymbol, new PageGetByTextOptions { Exact = false });
-
-            currencyFound = await currencyElements.CountAsync() > 0;
-        }
-
-        currencyFound.Should().BeTrue($"Currency '{expectedCurrency}' should be displayed on the page");
+        var currencyFound = priceText!.Contains(currencySymbol) || priceText.Contains(expectedCurrency);
+        currencyFound.Should().BeTrue($"Currency '{expectedCurrency}' (symbol: {currencySymbol}) should be displayed in price element: '{priceText}'");
+        
+        Console.WriteLine($"✓ Found {expectedCurrency} currency: {priceText}");
     }
 
     [Then(@"the language should be ""(.+)""")]
