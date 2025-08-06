@@ -70,5 +70,55 @@ namespace PerfectDraftTests.StepDefinitions
 
             Console.WriteLine("✓ Sort functionality is available (price, popularity, etc.)");
         }
+
+        [Then(@"I should see all machine types:")]
+        public async Task ThenIShouldSeeAllMachineTypes(Table table)
+        {
+            ProductCatalogPage.Should().NotBeNull("ProductCatalogPage should be initialized");
+
+            foreach (var row in table.Rows)
+            {
+                var machineType = row["Machine Type"];
+                var isMachineVisible = await ProductCatalogPage!.IsMachineTypeVisible(machineType);
+                isMachineVisible.Should().BeTrue($"Machine type '{machineType}' should be visible on the machines page");
+            }
+
+            Console.WriteLine("✓ Both PerfectDraft machine types are visible");
+        }
+
+        [Then(@"I should see a feature comparison link")]
+        public async Task ThenIShouldSeeAFeatureComparisonLink()
+        {
+            ProductCatalogPage.Should().NotBeNull("ProductCatalogPage should be initialized");
+
+            var comparisonLinkVisible = await ProductCatalogPage!.IsComparisonLinkVisible();
+            comparisonLinkVisible.Should().BeTrue("Feature comparison link should be visible on the machines page");
+
+            Console.WriteLine("✓ Feature comparison link is available");
+        }
+
+        [When(@"I click on a machine to view details")]
+        public async Task WhenIClickOnAMachineToViewDetails()
+        {
+            ProductCatalogPage.Should().NotBeNull("ProductCatalogPage should be initialized");
+
+            await ProductCatalogPage!.ClickOnFirstMachine();
+            
+            Console.WriteLine("✓ Navigated to machine detail page");
+        }
+
+        [Then(@"I should see machine specifications including keg size")]
+        public async Task ThenIShouldSeeMachineSpecificationsIncludingKegSize()
+        {
+            ProductCatalogPage.Should().NotBeNull("ProductCatalogPage should be initialized");
+
+            var specsVisible = await ProductCatalogPage!.AreSpecificationsVisible();
+            specsVisible.Should().BeTrue("Machine specifications should be visible on the detail page");
+
+            var kegSizeVisible = await ProductCatalogPage!.IsKegSizeSpecificationVisible();
+            kegSizeVisible.Should().BeTrue("Keg size specification should be visible in machine details");
+
+            Console.WriteLine("✓ Machine specifications including keg size are visible");
+        }
     }
 }

@@ -333,5 +333,98 @@ namespace PerfectDraftTests.PageObjects
 
             return false;
         }
+
+        public async Task<bool> IsMachineTypeVisible(string machineType)
+        {
+            if (machineType == "PerfectDraft")
+            {
+                // For standard PerfectDraft, find text that contains "PerfectDraft" 
+                // but does NOT contain "Pro" or "Black"
+                var allPerfectDraftElements = await Page.GetByText("PerfectDraft").AllAsync();
+                
+                foreach (var element in allPerfectDraftElements)
+                {
+                    if (await element.IsVisibleAsync())
+                    {
+                        var text = await element.TextContentAsync();
+                        if (text != null && 
+                            text.Contains("PerfectDraft") && 
+                            !text.Contains("Pro") && 
+                            !text.Contains("Black"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                // For other machine types (like "PerfectDraft Pro"), use contains match
+                try
+                {
+                    var element = Page.GetByText(machineType, new() { Exact = false });
+                    return await element.CountAsync() > 0 && await element.First.IsVisibleAsync();
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public async Task<bool> IsComparisonLinkVisible()
+        {
+            try
+            {
+                var comparisonLink = Page.Locator("#dy-banner-104346742");
+                return await comparisonLink.CountAsync() > 0 && await comparisonLink.First.IsVisibleAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task ClickOnFirstMachine()
+        {
+            try
+            {
+                // Click on the actual link element instead of the content div
+                var firstMachineLink = Page.Locator("a.result.product__link").First;
+                await firstMachineLink.ClickAsync();
+                await WaitForPageLoadAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to click on first machine: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> AreSpecificationsVisible()
+        {
+            try
+            {
+                var specsContainer = Page.Locator(".specs");
+                return await specsContainer.CountAsync() > 0 && await specsContainer.First.IsVisibleAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsKegSizeSpecificationVisible()
+        {
+            try
+            {
+                var kegSizeElement = Page.Locator("[data-code=\"bottle_size\"]");
+                return await kegSizeElement.CountAsync() > 0 && await kegSizeElement.First.IsVisibleAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

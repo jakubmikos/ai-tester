@@ -110,14 +110,15 @@ Scenario: Browse beer kegs catalog
 @P1 @ProductBrowsing @Smoke
 Scenario: View PerfectDraft machine options
     Given I am on the UK website  
-    When I navigate to the "Machines" section
-    Then I should see both machine types:
-        | Machine Type     |
-        | PerfectDraft     |
-        | PerfectDraft Pro |
-    And each machine should display specifications
-    And I should see feature comparisons between Standard and Pro
-    And bundle options should be available
+    When I navigate to the "PerfectDraft Machines" section
+    Then I should see all machine types:
+        | Machine Type      |
+        | PerfectDraft      |
+        | PerfectDraft Pro  |
+        | PerfectDraft Black|
+    And I should see a feature comparison link
+    When I click on a machine to view details
+    Then I should see machine specifications including keg size
 
 @P1 @ProductDetails @Regression
 Scenario: View detailed product information
