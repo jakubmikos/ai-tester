@@ -40,19 +40,19 @@ jobs:
       run: npm install -g allure-commandline
       
     - name: Run Level 1 tests (Smoke)
-      run: dotnet test --no-build --configuration Release --filter "TestCategory=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
+      run: dotnet test --no-build --configuration Release --filter "Category=Smoke" --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
       continue-on-error: false
       
     #- name: Run Level 1 tests (P1)
-    #  run: dotnet test --no-build --configuration Release --filter "TestCategory=P1" --logger "trx;LogFileName=level1-tests.trx" --collect:"XPlat Code Coverage"
+    #  run: dotnet test --no-build --configuration Release --filter "Category=P1" --logger "trx;LogFileName=level1-tests.trx" --collect:"XPlat Code Coverage"
     #  continue-on-error: true
       
     #- name: Run Country Selection tests
-    #  run: dotnet test --no-build --configuration Release --filter "TestCategory=CountrySelection" --logger "trx;LogFileName=country-selection-tests.trx" --collect:"XPlat Code Coverage"
+    #  run: dotnet test --no-build --configuration Release --filter "Category=CountrySelection" --logger "trx;LogFileName=country-selection-tests.trx" --collect:"XPlat Code Coverage"
     #  continue-on-error: true
       
     #- name: Run Navigation tests
-    #  run: dotnet test --no-build --configuration Release --filter "TestCategory=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
+    #  run: dotnet test --no-build --configuration Release --filter "Category=Navigation" --logger "trx;LogFileName=navigation-tests.trx" --collect:"XPlat Code Coverage"
     #  continue-on-error: true
       
     # - name: Generate Allure Report  
