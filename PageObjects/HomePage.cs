@@ -146,9 +146,25 @@ namespace PerfectDraftTests.PageObjects
 
         public async Task NavigateToSection(string sectionName)
         {
-            var link = _page.GetByText(sectionName);
-
-            await link.ClickAsync();
+            if (sectionName == "Kegs")
+            {
+                // Use the specific main navigation link for kegs
+                var kegsLink = _page.Locator("a[data-menu='menu-605']").First;
+                await kegsLink.ClickAsync();
+            }
+            else if (sectionName == "Machines" || sectionName == "PerfectDraft Machines")
+            {
+                // Use the specific link for machines
+                var machinesLink = _page.GetByText("PerfectDraft Machines").First;
+                await machinesLink.ClickAsync();
+            }
+            else
+            {
+                // Fallback to text search for other sections
+                var link = _page.GetByText(sectionName).First;
+                await link.ClickAsync();
+            }
+            
             await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }
     }

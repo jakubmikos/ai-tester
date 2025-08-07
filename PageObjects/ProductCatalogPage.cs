@@ -426,5 +426,35 @@ namespace PerfectDraftTests.PageObjects
                 return false;
             }
         }
+
+        public async Task ClickOnProductByName(string productName)
+        {
+            try
+            {
+                // First wait for products to load
+                await WaitForElementToBeVisibleAsync(".result-wrapper", 10000);
+
+                // Simple approach - just click on first Stella Artois link found
+                if (productName.Contains("Stella"))
+                {
+                    // Find link containing "stella-artois" in href
+                    var productLink = Page.Locator("a.result.product__link[href*='stella-artois']").First;
+                    await productLink.ClickAsync();
+                }
+                else
+                {
+                    // For other products, try to find by partial name match in href
+                    var searchName = productName.Split(' ')[0].ToLower();
+                    var productLink = Page.Locator($"a.result.product__link[href*='{searchName}']").First;
+                    await productLink.ClickAsync();
+                }
+
+                await WaitForPageLoadAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to click on product '{productName}': {ex.Message}", ex);
+            }
+        }
     }
 }

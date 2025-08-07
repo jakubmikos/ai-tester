@@ -1,6 +1,7 @@
 using PerfectDraftTests.PageObjects;
 using Reqnroll;
 using FluentAssertions;
+using Microsoft.Playwright;
 
 namespace PerfectDraftTests.StepDefinitions
 {
@@ -119,6 +120,106 @@ namespace PerfectDraftTests.StepDefinitions
             kegSizeVisible.Should().BeTrue("Keg size specification should be visible in machine details");
 
             Console.WriteLine("✓ Machine specifications including keg size are visible");
+        }
+
+        [When(@"I click on a beer keg ""([^""]*)""")]
+        public async Task WhenIClickOnABeerKeg(string kegName)
+        {
+            ProductCatalogPage.Should().NotBeNull("ProductCatalogPage should be initialized");
+
+            // Navigate to kegs section first if not already there
+            await this.HomePage.NavigateToSection("Kegs");
+            
+            // Click on the specified keg
+            await ProductCatalogPage!.ClickOnProductByName(kegName);
+            
+            Console.WriteLine($"✓ Clicked on {kegName}");
+        }
+
+        [Then(@"I should see the product detail page")]
+        public async Task ThenIShouldSeeTheProductDetailPage()
+        {
+            // Wait for page to fully load
+            await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            
+            // Check if we're on a product detail page by URL pattern
+            var currentUrl = Page.Url;
+            Console.WriteLine($"Current URL: {currentUrl}");
+            
+            // Product detail pages typically contain the product name in the URL
+            var isProductDetailUrl = currentUrl.Contains("stella-artois") || 
+                                   currentUrl.Contains("product") || 
+                                   currentUrl.Contains("keg");
+            
+            // Also check for basic elements that should exist on any product page
+            var hasTitle = await Page.Locator("h1").CountAsync() > 0;
+            
+            var isProductPage = isProductDetailUrl && hasTitle;
+            isProductPage.Should().BeTrue($"Should be on a product detail page. URL: {currentUrl}, Has H1: {hasTitle}");
+
+            Console.WriteLine("✓ Product detail page is displayed");
+        }
+
+        [Then(@"I should see detailed product information:")]
+        public async Task ThenIShouldSeeDetailedProductInformation(Table table)
+        {
+            var productDetailPage = new ProductDetailPage(Page);
+
+            foreach (var row in table.Rows)
+            {
+                var detailType = row["Detail Type"];
+                bool isVisible = false;
+
+                switch (detailType)
+                {
+                    case "Product images":
+                        isVisible = await productDetailPage.IsProductImageVisible();
+                        break;
+                    case "Full description":
+                        isVisible = await productDetailPage.IsFullDescriptionVisible();
+                        break;
+                    case "ABV and volume":
+                        isVisible = await productDetailPage.IsABVAndVolumeVisible();
+                        break;
+                    case "Price information":
+                        isVisible = await productDetailPage.IsPriceInformationVisible();
+                        break;
+                    case "Stock availability":
+                        isVisible = await productDetailPage.IsStockAvailabilityVisible();
+                        break;
+                    case "Customer reviews":
+                        isVisible = await productDetailPage.IsCustomerReviewsVisible();
+                        break;
+                    default:
+                        throw new ArgumentException($"Unknown detail type: {detailType}");
+                }
+
+                isVisible.Should().BeTrue($"{detailType} should be visible on the product detail page");
+            }
+
+            Console.WriteLine("✓ All detailed product information is displayed");
+        }
+
+        [Then(@"I should see an ""([^""]*)"" button")]
+        public async Task ThenIShouldSeeAnAddToCartButton(string buttonText)
+        {
+            var productDetailPage = new ProductDetailPage(Page);
+
+            var isButtonVisible = await productDetailPage.IsAddToCartButtonVisible();
+            isButtonVisible.Should().BeTrue($"{buttonText} button should be visible on the product detail page");
+
+            Console.WriteLine($"✓ {buttonText} button is visible");
+        }
+
+        [Then(@"I should see related product recommendations")]
+        public async Task ThenIShouldSeeRelatedProductRecommendations()
+        {
+            var productDetailPage = new ProductDetailPage(Page);
+
+            var areRelatedProductsVisible = await productDetailPage.AreRelatedProductsVisible();
+            areRelatedProductsVisible.Should().BeTrue("Related product recommendations should be visible on the product detail page");
+
+            Console.WriteLine("✓ Related product recommendations are displayed");
         }
     }
 }
