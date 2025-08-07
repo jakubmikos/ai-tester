@@ -221,5 +221,91 @@ namespace PerfectDraftTests.StepDefinitions
 
             Console.WriteLine("✓ Related product recommendations are displayed");
         }
+
+        // Search functionality step definitions
+        [When(@"I enter ""([^""]*)"" in the search box")]
+        public async Task WhenIEnterInTheSearchBox(string searchTerm)
+        {
+            var searchPage = new SearchPage(Page);
+
+            await searchPage.EnterSearchTerm(searchTerm);
+            
+            Console.WriteLine($"✓ Entered '{searchTerm}' in search box");
+        }
+
+        [When(@"I click the search button")]
+        public async Task WhenIClickTheSearchButton()
+        {
+            var searchPage = new SearchPage(Page);
+
+            await searchPage.ClickSearchButton();
+            
+            Console.WriteLine("✓ Clicked search button");
+        }
+
+        [Then(@"I should see search results containing ""([^""]*)"" products")]
+        public async Task ThenIShouldSeeSearchResultsContainingProducts(string searchTerm)
+        {
+            var searchPage = new SearchPage(Page);
+
+            var hasResults = await searchPage.AreSearchResultsVisible();
+            hasResults.Should().BeTrue("Search results should be visible");
+
+            var containsSearchTerm = await searchPage.DoSearchResultsContainTerm(searchTerm);
+            containsSearchTerm.Should().BeTrue($"Search results should contain products related to '{searchTerm}'");
+
+            Console.WriteLine($"✓ Search results containing '{searchTerm}' products are displayed");
+        }
+
+        [Then(@"the results should include both kegs and bundles")]
+        public async Task ThenTheResultsShouldIncludeBothKegsAndBundles()
+        {
+            var searchPage = new SearchPage(Page);
+
+            var includesBoth = await searchPage.DoResultsIncludeBothKegsAndBundles();
+            includesBoth.Should().BeTrue("Search results should include both kegs and bundles");
+
+            Console.WriteLine("✓ Search results include both kegs and bundles");
+        }
+
+        [Then(@"I should be able to filter the search results")]
+        public async Task ThenIShouldBeAbleToFilterTheSearchResults()
+        {
+            var searchPage = new SearchPage(Page);
+
+            var filtersAvailable = await searchPage.AreFiltersAvailable();
+            filtersAvailable.Should().BeTrue("Filter options should be available on the search results page");
+
+            Console.WriteLine("✓ Filter functionality is available for search results");
+        }
+
+        [Then(@"I should see a ""([^""]*)"" message")]
+        public async Task ThenIShouldSeeAMessage(string messageType)
+        {
+            var searchPage = new SearchPage(Page);
+
+            if (messageType.ToLower().Contains("no results"))
+            {
+                var noResultsVisible = await searchPage.IsNoResultsMessageVisible();
+                noResultsVisible.Should().BeTrue("No results message should be visible");
+
+                Console.WriteLine($"✓ '{messageType}' message is displayed");
+            }
+            else
+            {
+                throw new ArgumentException($"Unknown message type: {messageType}");
+            }
+        }
+
+        [Then(@"I should see suggestions for alternative searches")]
+        public async Task ThenIShouldSeeSuggestionsForAlternativeSearches()
+        {
+            var searchPage = new SearchPage(Page);
+
+            var suggestionsVisible = await searchPage.AreSearchSuggestionsVisible();
+            suggestionsVisible.Should().BeTrue("Search suggestions should be visible when no results are found");
+
+            Console.WriteLine("✓ Alternative search suggestions are displayed");
+        }
     }
 }
