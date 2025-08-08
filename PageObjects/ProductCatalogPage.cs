@@ -434,11 +434,17 @@ namespace PerfectDraftTests.PageObjects
                 // First wait for products to load
                 await WaitForElementToBeVisibleAsync(".result-wrapper", 10000);
 
-                // Simple approach - just click on first Stella Artois link found
+                // Handle specific product types
                 if (productName.Contains("Stella"))
                 {
                     // Find link containing "stella-artois" in href
                     var productLink = Page.Locator("a.result.product__link[href*='stella-artois']").First;
+                    await productLink.ClickAsync();
+                }
+                else if (productName.Contains("Camden"))
+                {
+                    // Find link containing "camden" in href
+                    var productLink = Page.Locator("a.result.product__link[href*='camden']").First;
                     await productLink.ClickAsync();
                 }
                 else
@@ -484,6 +490,10 @@ namespace PerfectDraftTests.PageObjects
                     {
                         productContainer = Page.Locator(".result-wrapper").Filter(new() { HasText = "Stella" });
                     }
+                    else if (productName.Contains("Camden"))
+                    {
+                        productContainer = Page.Locator(".result-wrapper").Filter(new() { HasText = "Camden" });
+                    }
                     else
                     {
                         var searchName = productName.Split(' ')[0];
@@ -528,19 +538,25 @@ namespace PerfectDraftTests.PageObjects
                 }
 
                 // If still not found, it might be on product detail page
-                // Navigate to product detail page first
-                await ClickOnProductByName(productName);
+                try 
+                {
+                    // Navigate to product detail page first
+                    await ClickOnProductByName(productName);
+                    
+                    // Now try to add from product detail page
+                    var pdpAddButton = Page.Locator("#product-addtocart-button, .action.tocart.primary").First;
+                    if (await pdpAddButton.IsVisibleAsync())
+                    {
+                        await pdpAddButton.ClickAsync();
+                        return;
+                    }
+                }
+                catch
+                {
+                    // Product not found, use fallback approach
+                }
                 
-                // Now try to add from product detail page
-                var pdpAddButton = Page.Locator("#product-addtocart-button, .action.tocart.primary").First;
-                if (await pdpAddButton.IsVisibleAsync())
-                {
-                    await pdpAddButton.ClickAsync();
-                }
-                else
-                {
-                    throw new InvalidOperationException("Could not find add to cart button");
-                }
+                throw new InvalidOperationException($"Could not find add to cart button for product: {productName}");
             }
             catch (Exception ex)
             {

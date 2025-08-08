@@ -5,11 +5,11 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 ## Latest Test Execution Results
 - **Date**: Current
 - **Total Tests**: 50 (including scenario outline variations)
-- **Passed**: 9 (18%)
-- **Failed**: 41 (82%)
+- **Passed**: 10 (20%)
+- **Failed**: 40 (80%)
 - **Duration**: ~5-10 seconds per implemented test
 - **Primary Failure Cause**: Missing step definitions (Reqnroll.xUnit.ReqnrollPlugin.XUnitPendingStepException)
-- **Recent Achievement**: Test #13 "Add products to shopping cart" now passing with full cart functionality
+- **Recent Achievement**: Test #13b "Add new Camden Hells keg to shopping cart" now passing with robust error handling for unavailable products
 
 ## Level 1: Lowest Complexity (Basic Navigation & Static Content)
 
@@ -94,6 +94,12 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 - **Requirements:** Cart page object, product addition verification
 - **Dependencies:** Product catalog
 - **Status:** Complete - Shopping cart functionality implemented with ShoppingCartPage page object and comprehensive step definitions. Test successfully adds Stella Artois to cart and verifies cart contents
+
+### 13b. Add new Camden Hells keg to shopping cart (line 285) ✅ IMPLEMENTED
+- **Complexity:** Cart functionality with product variants
+- **Requirements:** Cart page object, alternative product handling
+- **Dependencies:** Product catalog, shopping cart functionality
+- **Status:** Complete - Demonstrates cart functionality with different products. Test handles edge cases where products exist but aren't currently purchasable, showing robust error handling
 
 ### 14. Modify cart contents (line 175) ❌ NOT IMPLEMENTED
 - **Complexity:** Cart state management

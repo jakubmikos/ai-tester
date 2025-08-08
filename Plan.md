@@ -117,7 +117,7 @@ ai-tester/
 **Scenarios to Implement:**
 11. ❌ User login and logout - **PENDING**
 12. ❌ Register new user account - **PENDING**
-13. ✅ Add products to shopping cart - **COMPLETED**
+13. ✅ Add products to shopping cart - **COMPLETED** (includes Stella Artois and Camden Hells variants)
 14. ❌ Modify cart contents - **PENDING**
 15. ❌ View Beer Token information - **PENDING**
 16. ❌ View order history as registered user - **PENDING**

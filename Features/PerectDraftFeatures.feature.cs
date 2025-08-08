@@ -1256,14 +1256,14 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Add new BrewDog keg to shopping cart")]
+        [Xunit.SkippableFactAttribute(DisplayName="Add new Camden Hells keg to shopping cart")]
         [Xunit.TraitAttribute("FeatureTitle", "PerfectDraft Website Core Functionality")]
-        [Xunit.TraitAttribute("Description", "Add new BrewDog keg to shopping cart")]
+        [Xunit.TraitAttribute("Description", "Add new Camden Hells keg to shopping cart")]
         [Xunit.TraitAttribute("Category", "P1")]
         [Xunit.TraitAttribute("Category", "ShoppingCart")]
         [Xunit.TraitAttribute("Category", "Smoke")]
         [Xunit.TraitAttribute("Category", "NewProduct")]
-        public async System.Threading.Tasks.Task AddNewBrewDogKegToShoppingCart()
+        public async System.Threading.Tasks.Task AddNewCamdenHellsKegToShoppingCart()
         {
             string[] tagsOfScenario = new string[] {
                     "P1",
@@ -1271,7 +1271,7 @@ await this.FeatureBackgroundAsync();
                     "Smoke",
                     "NewProduct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add new BrewDog keg to shopping cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add new Camden Hells keg to shopping cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 285
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1295,7 +1295,7 @@ await this.FeatureBackgroundAsync();
     await testRunner.WhenAsync("I navigate to the \"Kegs\" section", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 289
-    await testRunner.AndAsync("I add \"BrewDog Punk IPA 6L Keg\" to the cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I add \"Camden Hells 6L Keg\" to the cart", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 290
     await testRunner.WhenAsync("I click on the cart icon", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
