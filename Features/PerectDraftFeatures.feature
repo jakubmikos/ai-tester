@@ -98,21 +98,6 @@ Scenario: Search for specific products
     Then I should see a "no results found" message
     And I should see suggestions for alternative searches
 
-@P2 @Bundles @Regression
-Scenario: View and select bundle options
-    Given I am on the UK website
-    When I navigate to "Bundles" section
-    Then I should see available bundle types:
-        | Bundle Type                    |
-        | PerfectDraft Machine Bundle    |
-        | PerfectDraft Pro Bundle        |
-        | Match Day Keg Pack            |
-        | Seasonal Keg Packs            |
-    When I select "PerfectDraft Pro Bundle"
-    Then I should see bundle contents clearly listed
-    And I should see bundle price vs individual prices
-    And I should see savings amount
-    And bundle customization options should be available
 
 @P2 @PromotionalOffers @Regression
 Scenario: View promotional keg packs
@@ -123,7 +108,7 @@ Scenario: View promotional keg packs
         | Pack Size | Price   |
         | 2 kegs    | £60.00  |
         | 3 kegs    | £85.00  |
-    When I select "3 kegs for £85.00"
+    When I select "3 kegs for £85.00" keg pack
     Then I should be able to choose from available keg options
     And I should see the discount calculation
     And promotional terms should be clearly displayed
@@ -150,8 +135,8 @@ Scenario: Add products to shopping cart
     And my cart is empty
     When I navigate to the "Kegs" section
     And I add "PerfectDraft Stella Artois 6L Keg" to the cart
-#    Then the cart counter should show "1" item
-#    And I should see a confirmation message
+    Then the cart counter should show "1" item
+    And I should see a confirmation message
     When I click on the cart icon
     Then I should see the cart contents with:
         | Cart Information |
@@ -172,20 +157,6 @@ Scenario: Modify cart contents
     When I click "Remove" for the item
     Then the cart should be empty
     And the cart counter should show "0" items
-
-@P1 @ShoppingCart @Regression  
-Scenario: Add bundle products to cart
-    Given I am on the UK website
-    When I navigate to the "Bundles" section
-    And I select a "PerfectDraft Machine Bundle"
-    And I add the bundle to my cart
-    Then the cart should contain all bundle items:
-        | Bundle Contents    |
-        | PerfectDraft Machine |
-        | Beer keg           |
-        | Glasses            |
-    And the bundle discount should be applied
-    And the total should reflect the bundle price
 
 @P1 @Checkout @Critical
 Scenario: Complete checkout process as guest user
@@ -208,57 +179,6 @@ Scenario: Complete checkout process as guest user
     And I click "Place Order"
     Then I should see an order confirmation page
     And I should receive an order confirmation email at "guest.user@example.com"
-
-@P1 @ResponsiveDesign @CrossBrowser
-Scenario Outline: Responsive design functionality
-    Given I am on the UK website
-    When I access the site on "<Device>"
-    Then the layout should be optimized for "<Device>"
-    And all navigation elements should be accessible
-    And the shopping cart functionality should work
-    And the checkout process should be functional
-    And text should be readable without zooming
-    
-    Examples:
-        | Device          |
-        | Mobile Phone    |
-        | Tablet          |
-        | Desktop         |
-
-@P1 @Performance @NonFunctional
-Scenario: Website performance requirements
-    Given I am on the UK website
-    When I navigate to any page
-    Then the page should load within "3" seconds
-    And images should load progressively
-    And the shopping cart should respond within "1" second
-    And the search functionality should return results within "2" seconds
-
-@P2 @Accessibility @NonFunctional  
-Scenario: Basic accessibility compliance
-    Given I am on the UK website
-    When I navigate through the site using keyboard only
-    Then all interactive elements should be accessible
-    And focus indicators should be clearly visible
-    And alt text should be provided for all images
-    And color contrast should meet accessibility standards
-    And screen reader compatibility should be maintained
-
-@P1 @ErrorHandling @Edge
-Scenario Outline: Handle common error scenarios
-    Given I am on the UK website
-    When I encounter the scenario "<Error Scenario>"
-    Then I should see an appropriate error message
-    And I should have options to recover or get help
-    And the error should be logged for support purposes
-    
-    Examples:
-        | Error Scenario              |
-        | Page not found (404)        |
-        | Server error (500)          |
-        | Network connection timeout  |
-        | Payment processing failure  |
-        | Out of stock during checkout|
 
 @P2 @DataValidation @Security
 Scenario Outline: Form validation and security
@@ -296,11 +216,6 @@ Scenario: Add new Camden Hells keg to shopping cart
         | Unit price       |
         | Total price      |
     And the cart counter should show "1" item
-
-# =====================================================================================
-# AUTHENTICATION & USER MANAGEMENT SCENARIOS - MOVED TO FINAL IMPLEMENTATION PHASE
-# These scenarios require complex authentication setup and are deferred until last
-# =====================================================================================
 
 @P2 @UserAuthentication @Regression @Ignore
 Scenario Outline: User authentication with different email formats

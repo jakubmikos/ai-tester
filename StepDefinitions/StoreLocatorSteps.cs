@@ -184,23 +184,14 @@ namespace PerfectDraftTests.StepDefinitions
             Console.WriteLine($"✓ Entered postcode: {postcode}");
         }
 
-        [When(@"I click ""([^""]*)""")]
-        public async Task WhenIClick(string buttonName)
+        [When(@"I click ""Find Stores""")]
+        public async Task WhenIClickFindStores()
         {
             // For the store finder, the search is already performed by entering the postcode
             // This step is more of a formality as the search happens on Enter
-            switch (buttonName.ToLower())
-            {
-                case "find stores":
-                case "search":
-                    // Search already performed in previous step, just verify results
-                    var hasResults = await StoreLocatorPage.AreStoreResultsDisplayed();
-                    Console.WriteLine($"✓ Clicked {buttonName} - search results: {hasResults}");
-                    break;
-                default:
-                    Console.WriteLine($"✓ Button action for '{buttonName}' simulated");
-                    break;
-            }
+            // Search already performed in previous step, just verify results
+            var hasResults = await StoreLocatorPage.AreStoreResultsDisplayed();
+            Console.WriteLine($"✓ Clicked Find Stores - search results: {hasResults}");
         }
 
         [Then(@"I should see a list of nearby Community Stores")]

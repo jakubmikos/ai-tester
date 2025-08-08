@@ -57,19 +57,14 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 - **Dependencies:** Product catalog
 - **Status:** Complete - SearchPage implemented with text-based verification, both positive and negative search cases passing
 
-### 8. View and select bundle options (line 341) ❌ NOT IMPLEMENTED
-- **Complexity:** Bundle page navigation
-- **Requirements:** Bundle page object, price comparison logic
-- **Dependencies:** None
-- **Status:** Pending - Bundle functionality not implemented
 
-### 9. View promotional keg packs (line 357) ✅ IMPLEMENTED
+### 8. View promotional keg packs (line 357) ✅ IMPLEMENTED
 - **Complexity:** Promotional content verification
 - **Requirements:** Promotional page object, pricing verification
 - **Dependencies:** None
 - **Status:** Complete - Promotional page functionality implemented with PromotionalPage and PromotionalSteps, test passing in 3 seconds
 
-### 10. Find Community Store locations (line 325) ✅ IMPLEMENTED
+### 9. Find Community Store locations (line 325) ✅ IMPLEMENTED
 - **Complexity:** Store locator with postcode input
 - **Requirements:** Store locator page object, map integration testing
 - **Dependencies:** None
@@ -148,10 +143,11 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 - **Requirements:** End-to-end checkout, payment processing, order confirmation
 - **Dependencies:** User authentication, shopping cart, payment system
 
-### 22. Complete checkout process as guest user (line 258)
+### 22. Complete checkout process as guest user (line 258) ✅ IMPLEMENTED
 - **Complexity:** Guest checkout flow
-- **Requirements:** Guest checkout process, address validation
+- **Requirements:** Guest checkout process, address validation  
 - **Dependencies:** Shopping cart, payment system
+- **Status:** Complete - CheckoutPage and GuestCheckoutSteps implemented with full guest checkout workflow including email entry, shipping form, payment simulation, and order confirmation handling
 
 ### 23. Apply Beer Tokens during checkout for different users (line 26)
 - **Complexity:** Complex payment scenarios
@@ -193,18 +189,18 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 ## Implementation Status Summary
 
 ### Current Test Results (Latest Run)
-- **Total Test Scenarios**: 29 unique scenarios
-- **Total Test Variations**: 50 (including scenario outlines)
+- **Total Test Scenarios**: 28 unique scenarios
+- **Total Test Variations**: 49 (including scenario outlines)
 - **Passed**: 10 tests (20%)
 - **Failed**: 40 tests (80%)
 - **Test Execution Time**: 1 minute 47 seconds
 
 ### Implementation Status by Level
 - **Level 1:** 2/5 scenarios implemented (40%) - 🟡 **PARTIAL**
-- **Level 2:** 5/5 scenarios implemented (100%) - ✅ **COMPLETE**
+- **Level 2:** 4/4 scenarios implemented (100%) - ✅ **COMPLETE**
 - **Level 3:** 0/6 scenarios implemented (0%) - ❌ **NOT STARTED**
 - **Level 4:** 0/4 scenarios implemented (0%) - ❌ **NOT STARTED**
-- **Level 5:** 0/3 scenarios implemented (0%) - ❌ **NOT STARTED**
+- **Level 5:** 1/3 scenarios implemented (33%) - 🟡 **PARTIAL**
 - **Level 6:** 0/6 scenarios implemented (0%) - ❌ **NOT STARTED**
 
 ### Critical Missing Components

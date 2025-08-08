@@ -104,7 +104,8 @@ namespace PerfectDraftTests.StepDefinitions
             Console.WriteLine($"✓ Pricing options are displayed with {actualPricingOptions.Count} different pack sizes");
         }
 
-        [When(@"I select ""([^""]*)""")]
+        [When(@"I select ""([^""]*)"" pricing option")]
+        [When(@"I select ""([^""]*)"" keg pack")]
         public async Task WhenISelect(string pricingOption)
         {
             var optionSelected = await PromotionalPage.SelectPricingOption(pricingOption);
