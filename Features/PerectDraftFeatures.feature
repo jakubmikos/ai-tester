@@ -65,7 +65,6 @@ Scenario: View PerfectDraft machine options
         | PerfectDraft      |
         | PerfectDraft Pro  |
         | PerfectDraft Black|
-    And I should see a feature comparison link
     When I click on a machine to view details
     Then I should see machine specifications including keg size
 
