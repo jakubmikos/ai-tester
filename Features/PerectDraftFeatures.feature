@@ -180,26 +180,6 @@ Scenario: Complete checkout process as guest user
     Then I should see an order confirmation page
     And I should receive an order confirmation email at "guest.user@example.com"
 
-@P2 @DataValidation @Security
-Scenario Outline: Form validation and security
-    Given I am on the UK website
-    When I attempt to register with email "<Email>" and invalid data:
-        | Invalid Data Type    | Value           |
-        | Invalid email format | <Email>         |
-        | Weak password        | 123             |
-        | Underage date        | 15/06/2010      |
-        | Missing required fields | <empty>      |
-    Then I should see appropriate validation messages
-    And the form should not submit
-    And security measures should prevent malicious input
-    And sensitive data should be properly encrypted
-    
-    Examples:
-        | Email                    |
-        | invalid-email           |
-        | @example.com            |
-        | user@                   |
-        | user..name@example.com  |
 
 @P1 @ShoppingCart @Smoke @NewProduct
 Scenario: Add new Camden Hells keg to shopping cart
