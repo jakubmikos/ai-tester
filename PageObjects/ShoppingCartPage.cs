@@ -46,15 +46,72 @@ namespace PerfectDraftTests.PageObjects
         {
             try
             {
-                var counterElement = await Page.Locator(CartCounter).First.TextContentAsync();
-                if (string.IsNullOrEmpty(counterElement)) return 0;
+                // Wait a moment for cart to update after product addition
+                await Page.WaitForTimeoutAsync(1000);
                 
-                // Extract number from text (could be "1" or "1 item" etc.)
-                var numberOnly = System.Text.RegularExpressions.Regex.Match(counterElement, @"\d+").Value;
-                return int.TryParse(numberOnly, out int count) ? count : 0;
+                // Try multiple selectors for cart counter
+                var possibleSelectors = new[]
+                {
+                    ".counter.qty .counter-number",
+                    ".counter-number",
+                    ".badge",
+                    ".counter.qty",
+                    ".minicart-wrapper .counter",
+                    ".cart-counter",
+                    "[data-role='cart-qty']",
+                    ".qty-container .counter"
+                };
+                
+                foreach (var selector in possibleSelectors)
+                {
+                    try
+                    {
+                        var elements = await Page.Locator(selector).AllAsync();
+                        foreach (var element in elements)
+                        {
+                            if (await element.IsVisibleAsync())
+                            {
+                                var text = await element.TextContentAsync();
+                                if (!string.IsNullOrEmpty(text))
+                                {
+                                    // Extract number from text (could be "1" or "1 item" etc.)
+                                    var numberOnly = System.Text.RegularExpressions.Regex.Match(text.Trim(), @"\d+").Value;
+                                    if (int.TryParse(numberOnly, out int count) && count > 0)
+                                    {
+                                        Console.WriteLine($"Found cart count {count} using selector: {selector}");
+                                        return count;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Try next selector
+                    }
+                }
+                
+                // If no specific counter found, try to detect if cart has items by checking cart content
+                try
+                {
+                    var cartItems = await Page.Locator(CartItems).CountAsync();
+                    if (cartItems > 0)
+                    {
+                        Console.WriteLine($"No cart counter found, but detected {cartItems} items in cart content");
+                        return cartItems;
+                    }
+                }
+                catch
+                {
+                    // Continue to return 0
+                }
+                
+                Console.WriteLine("No cart counter found and no items detected");
+                return 0;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error getting cart count: {ex.Message}");
                 return 0;
             }
         }
@@ -157,6 +214,11 @@ namespace PerfectDraftTests.PageObjects
         {
             try
             {
+                // Check for the cart popover that appears after adding items to cart
+                var cartPopoverVisible = await Page.Locator(".minicart-popover.show-popover").IsVisibleAsync();
+                if (cartPopoverVisible) return true;
+                
+                // Also check for traditional confirmation messages
                 return await Page.Locator(ConfirmationMessage).IsVisibleAsync();
             }
             catch

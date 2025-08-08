@@ -57,7 +57,7 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegListSelectors = new[]
             {
-                ".ais-InfiniteHits"
+                ".result.product__link"
             };
 
             foreach (var selector in kegListSelectors)
@@ -86,7 +86,7 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegSelectors = new[]
             {
-                ".result-wrapper",
+                ".result.product__link",
             };
 
             foreach (var selector in kegSelectors)
@@ -164,7 +164,7 @@ namespace PerfectDraftTests.PageObjects
 
         private async Task<IReadOnlyList<ILocator>> GetKegElements()
         {
-            var elements = Page.Locator(".result-wrapper");
+            var elements = Page.Locator(".result.product__link");
 
             if (await elements.CountAsync() > 0)
             {
@@ -468,92 +468,50 @@ namespace PerfectDraftTests.PageObjects
             try
             {
                 // Wait for products to load
-                await WaitForElementToBeVisibleAsync(".result-wrapper", 10000);
+                await WaitForElementToBeVisibleAsync(".result.product__link", 10000);
 
-                // Multiple selectors for add to cart button
-                var addToCartSelectors = new[]
-                {
-                    ".action.tocart.primary",
-                    "button[title*='Add to']",
-                    "button:has-text('Add to cart')",
-                    "button:has-text('Add to basket')",
-                    ".btn-cart",
-                    "[data-action='add-to-cart']"
-                };
+                // The add to cart button selector based on actual website structure
+                var addToCartSelector = "button[title*='Add']";
 
-                // If product name is specified, find the specific product container first
+                // If product name is specified, find the specific product's add to cart button
                 if (!string.IsNullOrEmpty(productName))
                 {
-                    ILocator productContainer;
+                    // Find the add to cart button for the specific product
+                    ILocator addToCartButton;
                     
                     if (productName.Contains("Stella"))
                     {
-                        productContainer = Page.Locator(".result-wrapper").Filter(new() { HasText = "Stella" });
+                        // Find Stella Artois add to cart button by data attributes
+                        addToCartButton = Page.Locator("button[data-name*='Stella Artois']");
+                    }
+                    else if (productName.Contains("Corona"))
+                    {
+                        addToCartButton = Page.Locator("button[data-name*='Corona']");
                     }
                     else if (productName.Contains("Camden"))
                     {
-                        productContainer = Page.Locator(".result-wrapper").Filter(new() { HasText = "Camden" });
+                        addToCartButton = Page.Locator("button[data-name*='Camden']");
                     }
                     else
                     {
+                        // For other products, try to find by partial name match
                         var searchName = productName.Split(' ')[0];
-                        productContainer = Page.Locator(".result-wrapper").Filter(new() { HasText = searchName });
+                        addToCartButton = Page.Locator($"button[data-name*='{searchName}']");
                     }
 
-                    // Try to find add to cart button within the product container
-                    foreach (var selector in addToCartSelectors)
+                    if (await addToCartButton.CountAsync() > 0)
                     {
-                        try
-                        {
-                            var button = productContainer.Locator(selector).First;
-                            if (await button.IsVisibleAsync())
-                            {
-                                await button.ClickAsync();
-                                return;
-                            }
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                // Fallback: try to find any add to cart button on the page
-                foreach (var selector in addToCartSelectors)
-                {
-                    try
-                    {
-                        var button = Page.Locator(selector).First;
-                        if (await button.IsVisibleAsync())
-                        {
-                            await button.ClickAsync();
-                            return;
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
-
-                // If still not found, it might be on product detail page
-                try 
-                {
-                    // Navigate to product detail page first
-                    await ClickOnProductByName(productName);
-                    
-                    // Now try to add from product detail page
-                    var pdpAddButton = Page.Locator("#product-addtocart-button, .action.tocart.primary").First;
-                    if (await pdpAddButton.IsVisibleAsync())
-                    {
-                        await pdpAddButton.ClickAsync();
+                        await addToCartButton.First.ClickAsync();
                         return;
                     }
                 }
-                catch
+
+                // Fallback: try to find any add to cart button on the page (first product)
+                var fallbackButton = Page.Locator(addToCartSelector).First;
+                if (await fallbackButton.IsVisibleAsync())
                 {
-                    // Product not found, use fallback approach
+                    await fallbackButton.ClickAsync();
+                    return;
                 }
                 
                 throw new InvalidOperationException($"Could not find add to cart button for product: {productName}");

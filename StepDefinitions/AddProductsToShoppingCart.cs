@@ -40,6 +40,8 @@ namespace PerfectDraftTests.StepDefinitions
             // Store product name for later verification
             ScenarioContext["ProductName"] = productName;
             
+            Console.WriteLine($"Attempting to add product to cart: {productName}");
+            
             // Special handling for BrewDog products that may not be available
             if (productName.Contains("BrewDog"))
             {
@@ -63,8 +65,42 @@ namespace PerfectDraftTests.StepDefinitions
                 await CatalogPage.AddProductToCart(productName);
             }
             
-            // Wait for cart update
-            await Page.WaitForTimeoutAsync(1000);
+            // Wait longer for cart to update and verify
+            await Page.WaitForTimeoutAsync(3000);
+            
+            // Try to verify the product was added by checking for cart updates
+            try
+            {
+                // Look for common success indicators
+                var successIndicators = new[]
+                {
+                    ".message.success",
+                    ".alert.success", 
+                    ".notification.success",
+                    ":has-text('added to cart')",
+                    ":has-text('added to basket')",
+                    ".minicart-wrapper:visible"
+                };
+                
+                foreach (var indicator in successIndicators)
+                {
+                    try
+                    {
+                        if (await Page.Locator(indicator).IsVisibleAsync())
+                        {
+                            Console.WriteLine($"Success indicator found: {indicator}");
+                            break;
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch
+            {
+                // Continue even if we can't find success indicators
+            }
+            
+            Console.WriteLine("Product addition completed");
         }
 
         [Then(@"the cart counter should show ""([^""]*)"" item")]
@@ -157,7 +193,7 @@ namespace PerfectDraftTests.StepDefinitions
             var currentUrl = Page.Url;
             if (!currentUrl.Contains("perfectdraft"))
             {
-                await Page.GotoAsync("https://www.perfectdraft.co.uk");
+                await Page.GotoAsync("https://www.perfectdraft.com/en-gb");
                 // Accept cookies if present
                 try
                 {
@@ -189,7 +225,7 @@ namespace PerfectDraftTests.StepDefinitions
             try
             {
                 // Go to kegs page directly
-                await Page.GotoAsync("https://www.perfectdraft.co.uk/en-gb/perfect-draft-range/perfect-draft-kegs");
+                await Page.GotoAsync("https://www.perfectdraft.com/en-gb/perfect-draft-range/perfect-draft-kegs");
                 await Page.WaitForTimeoutAsync(2000);
                 
                 // Find Stella product
