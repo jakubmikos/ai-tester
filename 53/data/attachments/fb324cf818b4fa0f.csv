@@ -1,0 +1,5 @@
+﻿Invalid Data Type,Value
+Invalid email format,user..name@example.com
+Weak password,123
+Underage date,15/06/2010
+Missing required fields,<empty>

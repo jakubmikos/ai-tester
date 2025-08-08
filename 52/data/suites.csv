@@ -1,7 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","3026","Main website navigation","","Fri Aug 08 14:33:22 GMT 2025","passed","Fri Aug 08 14:33:25 GMT 2025","","","",""
-"","4824","Select country from homepage","","Fri Aug 08 14:33:10 GMT 2025","passed","Fri Aug 08 14:33:15 GMT 2025","","","",""
-"","6124","View PerfectDraft machine options","","Fri Aug 08 14:33:15 GMT 2025","passed","Fri Aug 08 14:33:21 GMT 2025","","","",""
-"","16822","Add new Camden Hells keg to shopping cart","","Fri Aug 08 14:32:47 GMT 2025","passed","Fri Aug 08 14:33:04 GMT 2025","","","",""
-"","5353","Browse beer kegs catalog","","Fri Aug 08 14:33:04 GMT 2025","failed","Fri Aug 08 14:33:10 GMT 2025","","","",""
-"","15141","Add products to shopping cart","","Fri Aug 08 14:33:25 GMT 2025","passed","Fri Aug 08 14:33:40 GMT 2025","","","",""
