@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","6229","Select country from homepage","","Fri Aug 08 10:07:58 GMT 2025","passed","Fri Aug 08 10:08:04 GMT 2025","","","",""
+"","12283","View PerfectDraft machine options","","Fri Aug 08 10:08:05 GMT 2025","passed","Fri Aug 08 10:08:17 GMT 2025","","","",""
+"","3611","Add products to shopping cart","","Fri Aug 08 10:08:26 GMT 2025","broken","Fri Aug 08 10:08:29 GMT 2025","","","",""
+"","4505","Main website navigation","","Fri Aug 08 10:08:17 GMT 2025","passed","Fri Aug 08 10:08:22 GMT 2025","","","",""
+"","8806","Browse beer kegs catalog","","Fri Aug 08 10:07:49 GMT 2025","passed","Fri Aug 08 10:07:57 GMT 2025","","","",""
+"","3277","Add new BrewDog keg to shopping cart","","Fri Aug 08 10:08:22 GMT 2025","broken","Fri Aug 08 10:08:25 GMT 2025","","","",""
