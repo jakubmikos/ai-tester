@@ -271,12 +271,11 @@ namespace PerfectDraftTests.StepDefinitions
         [Then(@"the cart should show quantity ""([^""]*)""")]
         public async Task ThenTheCartShouldShowQuantity(string expectedQuantity)
         {
-            // This would need a method to get specific product quantity
-            // For now, we'll verify the cart counter reflects the change
-            var cartCount = await CartPage.GetCartItemCount();
+            // Get the actual product quantity from the cart page
+            var actualQuantity = await CartPage.GetProductQuantity();
             var expected = int.Parse(expectedQuantity);
             
-            Assert.Equal(expected, cartCount);
+            Assert.Equal(expected, actualQuantity);
         }
 
         [Then(@"the total price should be updated accordingly")]

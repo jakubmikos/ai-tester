@@ -57,7 +57,7 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegListSelectors = new[]
             {
-                ".result.product__link"
+                ".result-wrapper"
             };
 
             foreach (var selector in kegListSelectors)
@@ -86,7 +86,7 @@ namespace PerfectDraftTests.PageObjects
         {
             var kegSelectors = new[]
             {
-                ".result.product__link",
+                ".result-wrapper",
             };
 
             foreach (var selector in kegSelectors)
@@ -164,7 +164,7 @@ namespace PerfectDraftTests.PageObjects
 
         private async Task<IReadOnlyList<ILocator>> GetKegElements()
         {
-            var elements = Page.Locator(".result.product__link");
+            var elements = Page.Locator(".result-wrapper");
 
             if (await elements.CountAsync() > 0)
             {

@@ -96,11 +96,11 @@ This document categorizes all test scenarios from `PerectDraftFeatures.feature` 
 - **Dependencies:** Product catalog, shopping cart functionality
 - **Status:** Complete - Demonstrates cart functionality with different products. Test handles edge cases where products exist but aren't currently purchasable, showing robust error handling
 
-### 14. Modify cart contents (line 175) ❌ NOT IMPLEMENTED
+### 14. Modify cart contents (line 175) ✅ IMPLEMENTED
 - **Complexity:** Cart state management
 - **Requirements:** Cart manipulation, quantity updates, item removal
 - **Dependencies:** Shopping cart functionality
-- **Status:** Pending - Depends on basic cart functionality implementation
+- **Status:** Complete - Covers full cart modification workflow including quantity increase/decrease using +/- buttons, price updates, item removal with confirmation dialog handling, and empty cart verification
 
 ### 15. View Beer Token information (line 280) ❌ NOT IMPLEMENTED
 - **Complexity:** Account-specific content
