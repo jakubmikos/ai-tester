@@ -1,6 +1,38 @@
 {
   "allure": {
-    "directory": "allure-results"
-      
+    "directory": "allure-results",
+    "links": [
+      {
+        "name": "Repository",
+        "url": "https://github.com/your-username/perfectdraft-ai-tester"
+      }
+    ]
+  },
+  "reporting": {
+    "reportName": "PerfectDraft Test Automation Report",
+    "reportTitle": "PerfectDraft E-commerce Test Results",
+    "historyTrend": {
+      "enabled": true,
+      "buildOrder": "byExecutionTime"
+    },
+    "retryTrend": {
+      "enabled": true
+    },
+    "categoriesTrend": {
+      "enabled": true
+    },
+    "durationTrend": {
+      "enabled": true
+    }
+  },
+  "history": {
+    "maxBuilds": 20,
+    "historyId": "perfectdraft-tests"
+  },
+  "environment": {
+    "Browser": "Chromium (Playwright)",
+    "Framework": "Reqnroll + Playwright",
+    "Test.Type": "E2E Browser Automation",
+    "Platform": "Ubuntu Latest (GitHub Actions)"
   }
 }

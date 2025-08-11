@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Critical Business Flows",
+    "description": "Core e-commerce functionality that directly impacts business revenue",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*@P1.*|.*@Critical.*|.*@Smoke.*"
+  },
+  {
+    "name": "Shopping Cart Issues",
+    "description": "Problems with cart functionality - add, modify, checkout",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*cart.*|.*shopping.*|.*checkout.*",
+    "traceRegex": ".*ShoppingCart.*|.*AddProducts.*|.*Modify.*cart.*"
+  },
+  {
+    "name": "Product Catalog Issues", 
+    "description": "Problems with product browsing, search, and display",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*catalog.*|.*product.*|.*browse.*|.*search.*",
+    "traceRegex": ".*ProductBrowsing.*|.*ProductCatalog.*"
+  },
+  {
+    "name": "User Authentication Issues",
+    "description": "Login, registration, and user account related failures",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*login.*|.*register.*|.*auth.*|.*account.*",
+    "traceRegex": ".*Authentication.*|.*Login.*|.*Register.*"
+  },
+  {
+    "name": "Navigation & UI Issues",
+    "description": "Website navigation, country selection, and general UI problems",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*navigate.*|.*country.*|.*homepage.*",
+    "traceRegex": ".*Navigation.*|.*HomePage.*"
+  },
+  {
+    "name": "Payment & Checkout Issues",
+    "description": "Payment processing and order completion problems",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*payment.*|.*order.*|.*guest.*checkout.*",
+    "traceRegex": ".*Checkout.*|.*Payment.*|.*GuestCheckout.*"
+  },
+  {
+    "name": "Infrastructure Issues",
+    "description": "Test environment, browser, or framework related problems",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*timeout.*|.*connection.*|.*browser.*|.*driver.*",
+    "traceRegex": ".*WebDriver.*|.*Browser.*|.*Connection.*"
+  },
+  {
+    "name": "Test Data Issues",
+    "description": "Problems with test data, product availability, or external dependencies",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*not.*available.*|.*out.*of.*stock.*|.*product.*not.*found.*"
+  },
+  {
+    "name": "Flaky Tests",
+    "description": "Tests that pass/fail intermittently due to timing or environment issues",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*element.*not.*visible.*|.*element.*not.*found.*|.*wait.*timeout.*"
+  },
+  {
+    "name": "Priority 1 - Smoke Tests",
+    "description": "High priority smoke tests that must always pass",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*@P1.*"
+  },
+  {
+    "name": "Priority 2 - Regression Tests", 
+    "description": "Medium priority regression tests",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*@P2.*"
+  },
+  {
+    "name": "Priority 3 - Extended Tests",
+    "description": "Lower priority extended functionality tests",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*@P3.*"
+  }
+]

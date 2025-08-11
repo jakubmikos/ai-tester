@@ -43,20 +43,80 @@ jobs:
       run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=smoke-tests.trx" --collect:"XPlat Code Coverage"
       continue-on-error: false
       
+    # Download existing history from gh-pages branch
+    - name: Download Allure history
+      uses: actions/checkout@v4
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages-history
+        
+    # Copy existing history to preserve trends
+    - name: Copy existing Allure history 
+      if: always()
+      run: |
+        if [ -d "gh-pages-history/history" ]; then
+          echo "Copying existing Allure history..."
+          mkdir -p bin/Release/net8.0/allure-results/history
+          cp -r gh-pages-history/history/* bin/Release/net8.0/allure-results/history/ || echo "No history files to copy"
+        else
+          echo "No existing history found, starting fresh"
+        fi
+        
+        # Copy categories configuration for test classification
+        if [ -f "allure-categories.json" ]; then
+          echo "Adding test categories configuration..."
+          cp allure-categories.json bin/Release/net8.0/allure-results/
+        fi
+        
+        # Copy Allure configuration
+        if [ -f "allureConfig.json" ]; then
+          echo "Adding Allure configuration..."
+          cp allureConfig.json bin/Release/net8.0/allure-results/
+        fi
+        
+        # Copy environment configuration
+        if [ -f "environment.properties" ]; then
+          echo "Adding environment properties..."
+          cp environment.properties bin/Release/net8.0/allure-results/
+        fi
+      shell: bash
+      
     - name: Generate Allure Report
-      uses: simple-elf/allure-report-action@master
+      uses: simple-elf/allure-report-action@v1.7
       if: always()
       with:
         allure_results: bin/Release/net8.0/allure-results
         allure_report: allure-report
         gh_pages: gh-pages
         allure_history: allure-history
-
+        keep_reports: 20
+        
+    # Add build information to report
+    - name: Add build info to Allure report
+      if: always()
+      run: |
+        echo "BUILD_NUMBER=${{ github.run_number }}" > allure-history/environment.properties
+        echo "BRANCH_NAME=${{ github.ref_name }}" >> allure-history/environment.properties
+        echo "COMMIT_HASH=${{ github.sha }}" >> allure-history/environment.properties
+        echo "BUILD_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> allure-history/environment.properties
+        
+    # Backup history as artifact for safety
+    - name: Upload Allure history as artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: allure-history-backup-${{ github.run_number }}
+        path: allure-history/history
+        retention-days: 30
 
     - name: Deploy report to Github Pages
       if: always()
-      uses: peaceiris/actions-gh-pages@v2
-      env:
-        PERSONAL_TOKEN: ${{ secrets.ALLURE_GH_PAGES_TOKEN }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: allure-history
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        personal_token: ${{ secrets.ALLURE_GH_PAGES_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: allure-history
+        keep_files: false
+        force_orphan: false
