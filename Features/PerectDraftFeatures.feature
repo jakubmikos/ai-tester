@@ -197,6 +197,15 @@ Scenario: Add new Camden Hells keg to shopping cart
         | Total price      |
     And the cart counter should show "1" item
 
+@P2 @Navigation @InformationPages @Regression
+Scenario: Navigate to About PerfectDraft page
+    Given I am on the UK website
+    When I look for "About PerfectDraft" in the footer
+    And I click on "About PerfectDraft"
+    Then I should be on the "About PerfectDraft" page
+    And I should see company information content
+    And the page should have proper navigation back to main site
+
 @P2 @UserAuthentication @Regression @Ignore
 Scenario Outline: User authentication with different email formats
     Given I am on the UK website

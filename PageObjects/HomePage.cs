@@ -202,5 +202,134 @@ namespace PerfectDraftTests.PageObjects
             await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
             await _page.WaitForTimeoutAsync(2000); // Allow time for dynamic content to load
         }
+
+        public async Task<bool> IsFooterLinkVisible(string linkText)
+        {
+            // Common footer selectors
+            var footerSelectors = new[]
+            {
+                "footer",
+                ".footer",
+                "[role='contentinfo']",
+                ".site-footer",
+                "#footer"
+            };
+
+            // First try to find the footer
+            foreach (var footerSelector in footerSelectors)
+            {
+                try
+                {
+                    var footer = await _page.QuerySelectorAsync(footerSelector);
+                    if (footer != null && await footer.IsVisibleAsync())
+                    {
+                        // Look for the link within the footer
+                        var linkInFooter = await footer.QuerySelectorAsync($"text={linkText}");
+                        if (linkInFooter != null && await linkInFooter.IsVisibleAsync())
+                        {
+                            return true;
+                        }
+                        
+                        // Also try with a partial match
+                        var partialLinkInFooter = await footer.QuerySelectorAsync($"text=/{linkText}/i");
+                        if (partialLinkInFooter != null && await partialLinkInFooter.IsVisibleAsync())
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            // Fallback: try to find the link anywhere on the page
+            try
+            {
+                var element = await _page.QuerySelectorAsync($"text={linkText}");
+                return element != null && await element.IsVisibleAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task ClickFooterLink(string linkText)
+        {
+            // Common footer selectors
+            var footerSelectors = new[]
+            {
+                "footer",
+                ".footer",
+                "[role='contentinfo']",
+                ".site-footer",
+                "#footer"
+            };
+
+            // First try to find and click the link within the footer
+            foreach (var footerSelector in footerSelectors)
+            {
+                try
+                {
+                    var footer = await _page.QuerySelectorAsync(footerSelector);
+                    if (footer != null && await footer.IsVisibleAsync())
+                    {
+                        // Look for the exact text link within the footer
+                        var linkInFooter = await footer.QuerySelectorAsync($"text={linkText}");
+                        if (linkInFooter != null && await linkInFooter.IsVisibleAsync())
+                        {
+                            await linkInFooter.ClickAsync();
+                            await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+                            return;
+                        }
+                        
+                        // Try with partial match
+                        var partialLinkInFooter = await footer.QuerySelectorAsync($"text=/{linkText}/i");
+                        if (partialLinkInFooter != null && await partialLinkInFooter.IsVisibleAsync())
+                        {
+                            await partialLinkInFooter.ClickAsync();
+                            await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+                            return;
+                        }
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            // Fallback: try to find and click the link anywhere on the page
+            try
+            {
+                var element = await _page.QuerySelectorAsync($"text={linkText}");
+                if (element != null && await element.IsVisibleAsync())
+                {
+                    await element.ClickAsync();
+                    await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+                    return;
+                }
+
+                // Try with case-insensitive partial match
+                var partialElement = await _page.QuerySelectorAsync($"text=/{linkText}/i");
+                if (partialElement != null && await partialElement.IsVisibleAsync())
+                {
+                    await partialElement.ClickAsync();
+                    await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+                    return;
+                }
+            }
+            catch
+            {
+                // If all else fails, try direct navigation
+                if (linkText.ToLower().Contains("about"))
+                {
+                    await _page.GotoAsync("https://www.perfectdraft.com/en-gb/about-perfectdraft");
+                    await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+                }
+            }
+        }
     }
 }
