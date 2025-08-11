@@ -87,7 +87,7 @@ namespace PerfectDraftTests.StepDefinitions
             await _homePage!.ClickFooterLink(linkText);
         }
 
-        [When(@"I click on ""([^""]*)"")")]
+        [When(@"I click on ""([^""]*)""")]
         public async Task WhenIClickOn(string linkText)
         {
             _homePage.Should().NotBeNull("HomePage should be initialized");
