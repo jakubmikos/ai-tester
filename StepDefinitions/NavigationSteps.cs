@@ -71,5 +71,107 @@ namespace PerfectDraftTests.StepDefinitions
             var actualCount = await _homePage.GetCartItemCount();
             actualCount.Should().Be(expectedCount, $"Cart should show {expectedCount} items");
         }
+
+        [When(@"I look for ""([^""]*)"" in the footer")]
+        public async Task WhenILookForInTheFooter(string linkText)
+        {
+            _homePage.Should().NotBeNull("HomePage should be initialized");
+            var isLinkFound = await _homePage!.IsFooterLinkVisible(linkText);
+            isLinkFound.Should().BeTrue($"Link '{linkText}' should be visible in the footer");
+        }
+
+        [When(@"I click on ""([^""]*)"" in the footer")]
+        public async Task WhenIClickOnInTheFooter(string linkText)
+        {
+            _homePage.Should().NotBeNull("HomePage should be initialized");
+            await _homePage!.ClickFooterLink(linkText);
+        }
+
+        [When(@"I click on ""([^""]*)""")]
+        public async Task WhenIClickOn(string linkText)
+        {
+            _homePage.Should().NotBeNull("HomePage should be initialized");
+            await _homePage!.ClickFooterLink(linkText);
+        }
+
+        [Then(@"I should be on the ""([^""]*)"" page")]
+        public async Task ThenIShouldBeOnThePage(string expectedPageTitle)
+        {
+            await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            
+            // Check URL contains relevant keywords
+            var currentUrl = Page.Url;
+            var normalizedPageTitle = expectedPageTitle.ToLower().Replace(" ", "-");
+            currentUrl.Should().Contain(normalizedPageTitle, $"Current URL should contain '{normalizedPageTitle}' for the '{expectedPageTitle}' page");
+        }
+
+        [Then(@"I should see company information content")]
+        public async Task ThenIShouldSeeCompanyInformationContent()
+        {
+            // Wait for page to load
+            await Page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+            
+            // Check for typical company information content indicators
+            var contentIndicators = new[]
+            {
+                "about", "company", "information", "business", "story", "mission", "vision"
+            };
+
+            var hasCompanyContent = false;
+            foreach (var indicator in contentIndicators)
+            {
+                try
+                {
+                    var element = await Page.QuerySelectorAsync($"text=/{indicator}/i");
+                    if (element != null && await element.IsVisibleAsync())
+                    {
+                        hasCompanyContent = true;
+                        break;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            hasCompanyContent.Should().BeTrue("Page should contain company information content");
+        }
+
+        [Then(@"the page should have proper navigation back to main site")]
+        public async Task ThenThePageShouldHaveProperNavigationBackToMainSite()
+        {
+            // Check for navigation elements back to main site
+            var navigationSelectors = new[]
+            {
+                "a[href*='perfectdraft.com']",
+                "text=/home/i", 
+                "text=/back/i",
+                ".logo",
+                "[class*='logo']",
+                "a[href='/']",
+                "a[href='/en-gb']"
+            };
+
+            var hasNavigation = false;
+            foreach (var selector in navigationSelectors)
+            {
+                try
+                {
+                    var element = await Page.QuerySelectorAsync(selector);
+                    if (element != null && await element.IsVisibleAsync())
+                    {
+                        hasNavigation = true;
+                        break;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            hasNavigation.Should().BeTrue("Page should have proper navigation back to main site");
+        }
     }
 }
