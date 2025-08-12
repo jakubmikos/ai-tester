@@ -1,0 +1,38 @@
+{
+  "name": "perfectdraft-tests",
+  "version": "1.0.0",
+  "description": "PerfectDraft e-commerce test automation using Playwright with BDD",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:chrome": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:debug": "playwright test --debug",
+    "test:tag": "playwright test --grep",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "test:report": "npm run test && npm run allure:generate && npm run allure:open",
+    "playwright:install": "playwright install"
+  },
+  "keywords": [
+    "playwright",
+    "bdd",
+    "cucumber",
+    "testing",
+    "e2e",
+    "perfectdraft",
+    "allure"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "playwright-bdd": "^7.4.1",
+    "allure-playwright": "^3.0.0",
+    "allure-commandline": "^2.29.0",
+    "dotenv": "^16.4.0"
+  }
+}
