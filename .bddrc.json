@@ -1,0 +1,18 @@
+{
+  "verbose": false,
+  "quotes": "double",
+  "paths": {
+    "features": "src/features/**/*.feature",
+    "steps": "src/steps/**/*.js"
+  },
+  "require": [],
+  "importTestFrom": "src/support/fixtures.js",
+  "statefulPoms": true,
+  "enrichReporterData": true,
+  "tags": {
+    "smoke": "@smoke",
+    "regression": "@regression",
+    "critical": "@critical",
+    "wip": "@wip"
+  }
+}
