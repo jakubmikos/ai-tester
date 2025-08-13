@@ -42,11 +42,11 @@ module.exports = defineConfig({
   ],
 
   // Global timeout for each test
-  timeout: 60000,
+  timeout: 30000,
 
   // Global test expectations timeout
   expect: {
-    timeout: 10000
+    timeout: 5000
   },
 
   // Shared settings for all the projects below
@@ -55,7 +55,7 @@ module.exports = defineConfig({
     baseURL: process.env.BASE_URL || 'https://www.perfectdraft.com',
 
     // Collect trace when retrying the failed test
-    trace: 'on-first-retry',
+    trace: 'off',
 
     // Screenshot only on failure
     screenshot: 'only-on-failure',
@@ -70,7 +70,7 @@ module.exports = defineConfig({
     ignoreHTTPSErrors: true,
 
     // Timeout for each action
-    actionTimeout: 15000,
+    actionTimeout: 5000,
 
     // Locale
     locale: 'en-GB',
@@ -85,9 +85,20 @@ module.exports = defineConfig({
       name: 'chromium',
       use: { 
         ...devices['Desktop Chrome'],
-        // Launch options
+        // Launch options for better performance
         launchOptions: {
-          args: ['--disable-blink-features=AutomationControlled']
+          args: [
+            '--disable-blink-features=AutomationControlled',
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-background-timer-throttling',
+            '--disable-renderer-backgrounding',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-dev-shm-usage',
+            '--disable-gpu-sandbox',
+            '--no-sandbox',
+            '--disable-web-security'
+          ]
         }
       },
     },

@@ -43,8 +43,7 @@ class HomePage extends BasePage {
    * Navigate to UK website
    */
   async navigateToUKWebsite() {
-    await this.page.goto('https://www.perfectdraft.com/en-gb');
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.goto('https://www.perfectdraft.com/en-gb', { waitUntil: 'domcontentloaded' });
   }
 
   /**
@@ -53,8 +52,7 @@ class HomePage extends BasePage {
    */
   async navigateToCountry(countryCode) {
     const url = this.config.getCountryUrl(countryCode);
-    await this.page.goto(url);
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.goto(url, { waitUntil: 'domcontentloaded' });
   }
 
   /**
