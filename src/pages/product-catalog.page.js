@@ -320,32 +320,42 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async isMachineTypeVisible(machineType) {
-    if (machineType === 'PerfectDraft') {
-      // For standard PerfectDraft, find text that contains "PerfectDraft" 
-      // but does NOT contain "Pro" or "Black"
-      const allPerfectDraftElements = await this.page.getByText('PerfectDraft').all();
+    try {
+      // Look for product headings that contain the machine type
+      const productHeadings = this.page.locator('h3');
+      const headingCount = await productHeadings.count();
       
-      for (const element of allPerfectDraftElements) {
-        if (await element.isVisible()) {
-          const text = await element.textContent();
-          if (text && 
-              text.includes('PerfectDraft') && 
-              !text.includes('Pro') && 
-              !text.includes('Black')) {
-            return true;
+      for (let i = 0; i < headingCount; i++) {
+        const heading = productHeadings.nth(i);
+        if (await heading.isVisible()) {
+          const text = await heading.textContent();
+          if (text) {
+            if (machineType === 'PerfectDraft') {
+              // For standard PerfectDraft, find headings that contain "PerfectDraft" 
+              // but NOT "Pro" or "Black"
+              if (text.includes('PerfectDraft') && 
+                  !text.includes('Pro') && 
+                  !text.includes('Black')) {
+                return true;
+              }
+            } else if (machineType === 'PerfectDraft Pro') {
+              // Look for "PerfectDraft Pro" in headings
+              if (text.includes('PerfectDraft Pro')) {
+                return true;
+              }
+            } else if (machineType === 'PerfectDraft Black') {
+              // Look for "PerfectDraft Black" in headings
+              if (text.includes('PerfectDraft Black')) {
+                return true;
+              }
+            }
           }
         }
       }
       return false;
-    } else {
-      // For other machine types (like "PerfectDraft Pro"), use contains match
-      try {
-        const element = this.page.getByText(machineType, { exact: false });
-        const count = await element.count();
-        return count > 0 && await element.first().isVisible();
-      } catch {
-        return false;
-      }
+    } catch (error) {
+      console.log(`Error checking machine type visibility: ${error}`);
+      return false;
     }
   }
 
