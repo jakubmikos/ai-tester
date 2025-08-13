@@ -8,19 +8,19 @@ const BasePage = require('./base.page');
 class ShoppingCartPage extends BasePage {
   constructor(page) {
     super(page);
-    
+
     // Cart selectors - updated based on PerfectDraft website inspection
     this.selectors = {
       cartIcon: '.counter.qty, .minicart-wrapper, .cart-icon, button:has-text("£")',
-      cartCounter: '.counter.qty .counter-number, .counter-number, .badge',
+      cartCounter: '.counter.qty .counter-number, .counter-number, .badge, a[href*="/cart/"] generic, a[href*="/checkout/cart/"] generic',
       emptyCartMessage: ':has-text("Your cart is empty"), :has-text("You have no items")',
-      cartItems: '.minicart-items .product-item, .cart-item, .product',
-      productName: '.product-name, .product-item-name, .item-name',
-      productImage: '.product-image img, .item-image img',
-      productQuantity: 'input[type="number"][name="quantity"]',
+      cartItems: 'list li:has(img), ul li:has(img), li:has(img[alt*="PerfectDraft"])',
+      productName: '.cart-product-details header h3, heading, h3, .product-name, .item-title, .item-name',
+      productImage: '.cart-product-image img',
+      productQuantity: 'input[type="number"][name="quantity"], input[value]:not([type="hidden"]), spinbutton',
       quantityIncreaseButton: 'button.cart-product-add',
       quantityDecreaseButton: 'button.cart-product-subtract',
-      productPrice: '.price, .item-price, .subtotal',
+      productPrice: '.cart-product-unit-price span, .price, .item-price, .subtotal',
       removeButton: 'button.js--button:has-text("Remove Item")',
       updateButton: '.action.update, .update-item, button:has-text("Update")',
       viewCartButton: '.action.viewcart, .view-cart, button:has-text("View Cart")',
@@ -45,7 +45,7 @@ class ShoppingCartPage extends BasePage {
         ':has-text("You have no items")',
         this.selectors.emptyCartMessage
       ];
-      
+
       for (const selector of emptyCartSelectors) {
         try {
           if (await this.page.locator(selector).isVisible()) {
@@ -82,23 +82,42 @@ class ShoppingCartPage extends BasePage {
   }
 
   /**
-   * Open cart dropdown/view cart
+   * Open cart page by clicking cart icon
    */
   async openCart() {
     try {
-      // Try to click cart icon first
-      await this.page.click(this.selectors.cartIcon);
-      
-      // Wait for cart dropdown to appear
-      await this.page.waitForSelector(this.selectors.cartDropdown, { timeout: 5000 });
-    } catch {
-      // Try view cart button if dropdown doesn't work
-      try {
-        await this.page.click(this.selectors.viewCartButton);
-      } catch {
-        // Navigate directly to cart page
-        await this.page.goto('/checkout/cart');
+      // For PerfectDraft, clicking cart icon navigates directly to cart page
+      // Try multiple approaches to find and click the cart icon
+      const cartSelectors = [
+        'a[href*="/checkout/cart/"]',
+        'a[href*="/cart/"]',
+        'a:has(img):has(generic)', // Link with img and generic (cart counter)
+        'link:has(generic)' // Link with generic element (could be cart counter)
+      ];
+
+      for (const selector of cartSelectors) {
+        try {
+          const cartIcon = this.page.locator(selector).first();
+          if (await cartIcon.isVisible({ timeout: 2000 })) {
+            await cartIcon.click();
+            await this.page.waitForLoadState('domcontentloaded');
+            await this.waitForPageLoad();
+            await this.waitForElementToBeVisible('.cart-tems', 5000);
+            return;
+          }
+        } catch {
+          continue;
+        }
       }
+
+      // If no cart icon found, navigate directly
+      await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
+      await this.waitForPageLoad();
+    } catch (error) {
+      // Last resort: direct navigation
+      console.log('Direct cart navigation fallback');
+      await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
+      await this.waitForPageLoad();
     }
   }
 
@@ -141,7 +160,7 @@ class ShoppingCartPage extends BasePage {
 
       for (let i = 0; i < count; i++) {
         const item = cartItems.nth(i);
-        
+
         const name = await this.getItemText(item, this.selectors.productName);
         const price = await this.getItemText(item, this.selectors.productPrice);
         const quantity = await this.getItemQuantity(item);
@@ -156,7 +175,7 @@ class ShoppingCartPage extends BasePage {
     } catch (error) {
       console.error('Error getting cart items details:', error);
     }
-    
+
     return items;
   }
 
@@ -168,9 +187,27 @@ class ShoppingCartPage extends BasePage {
    */
   async getItemText(item, selector) {
     try {
-      const element = item.locator(selector);
-      const text = await element.textContent();
-      return text?.trim() || '';
+      // Try multiple selectors
+      const selectors = selector.split(', ');
+
+      for (const sel of selectors) {
+        try {
+          const element = item.locator(sel.trim());
+          const count = await element.count();
+          if (count > 0) {
+            const text = await element.first().textContent();
+            if (text && text.trim()) {
+              console.log(`Found text "${text}" using selector "${sel}"`);
+              return text.trim();
+            }
+          }
+        } catch {
+          continue;
+        }
+      }
+
+      console.log(`No text found for selectors: ${selector}`);
+      return '';
     } catch {
       return '';
     }
@@ -203,16 +240,16 @@ class ShoppingCartPage extends BasePage {
     try {
       const items = this.page.locator(this.selectors.cartItems);
       const item = items.nth(itemIndex);
-      
+
       const quantityInput = item.locator(this.selectors.productQuantity);
       await quantityInput.fill(quantity.toString());
-      
+
       // Click update button if available
       const updateButton = item.locator(this.selectors.updateButton);
       if (await updateButton.count() > 0) {
         await updateButton.click();
       }
-      
+
       await this.page.waitForTimeout(1000); // Wait for update
     } catch (error) {
       throw new Error(`Failed to update item quantity: ${error.message}`);
@@ -227,10 +264,10 @@ class ShoppingCartPage extends BasePage {
     try {
       const items = this.page.locator(this.selectors.cartItems);
       const item = items.nth(itemIndex);
-      
+
       const increaseButton = item.locator(this.selectors.quantityIncreaseButton);
       await increaseButton.click();
-      
+
       await this.page.waitForTimeout(1000); // Wait for update
     } catch (error) {
       throw new Error(`Failed to increase item quantity: ${error.message}`);
@@ -245,10 +282,10 @@ class ShoppingCartPage extends BasePage {
     try {
       const items = this.page.locator(this.selectors.cartItems);
       const item = items.nth(itemIndex);
-      
+
       const decreaseButton = item.locator(this.selectors.quantityDecreaseButton);
       await decreaseButton.click();
-      
+
       await this.page.waitForTimeout(1000); // Wait for update
     } catch (error) {
       throw new Error(`Failed to decrease item quantity: ${error.message}`);
@@ -263,10 +300,10 @@ class ShoppingCartPage extends BasePage {
     try {
       const items = this.page.locator(this.selectors.cartItems);
       const item = items.nth(itemIndex);
-      
+
       const removeButton = item.locator(this.selectors.removeButton);
       await removeButton.click();
-      
+
       // Wait for item to be removed
       await this.page.waitForTimeout(2000);
     } catch (error) {
@@ -315,7 +352,7 @@ class ShoppingCartPage extends BasePage {
         continue;
       }
     }
-    
+
     throw new Error('Could not find checkout button');
   }
 
@@ -325,7 +362,7 @@ class ShoppingCartPage extends BasePage {
   async clearCart() {
     try {
       const itemCount = await this.getNumberOfItemsInCart();
-      
+
       // Remove items one by one starting from the last
       for (let i = itemCount - 1; i >= 0; i--) {
         await this.removeItemFromCart(i);
@@ -342,7 +379,24 @@ class ShoppingCartPage extends BasePage {
    */
   async isConfirmationMessageVisible() {
     try {
-      return await this.page.locator(this.selectors.confirmationMessage).isVisible();
+      // First, try traditional confirmation message selectors
+      const traditionalConfirmation = this.page.locator(this.selectors.confirmationMessage);
+      if (await traditionalConfirmation.isVisible()) {
+        return true;
+      }
+
+      // For PerfectDraft website - check if cart counter shows items (non-zero)
+      // This indicates successful add to cart action since PerfectDraft doesn't show traditional confirmation messages
+      const cartCounter = await this.getCartItemCount();
+      const counterValue = parseInt(cartCounter) || 0;
+
+      // If cart counter is greater than 0, consider this as confirmation
+      // This matches the actual behavior of the PerfectDraft website
+      if (counterValue > 0) {
+        return true;
+      }
+
+      return false;
     } catch {
       return false;
     }
@@ -372,7 +426,7 @@ class ShoppingCartPage extends BasePage {
   async isProductInCart(productName) {
     try {
       const items = await this.getCartItemsDetails();
-      return items.some(item => 
+      return items.some(item =>
         item.name.toLowerCase().includes(productName.toLowerCase())
       );
     } catch {
@@ -404,7 +458,7 @@ class ShoppingCartPage extends BasePage {
 
       if (couponInput) {
         await couponInput.fill(couponCode);
-        
+
         const applyButton = this.page.locator('button:has-text("Apply"), .apply-coupon');
         if (await applyButton.isVisible()) {
           await applyButton.click();

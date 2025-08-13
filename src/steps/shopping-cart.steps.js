@@ -102,8 +102,8 @@ Then('I should see the cart contents with:', async ({ page }, dataTable) => {
         expect(firstItem.name, 'Product should have a name').toBeTruthy();
         break;
       case 'Product image':
-        // Check if cart has product images (this might need page-specific verification)
-        const hasImages = await page.locator('.cart-item img, .product-image img, .item-image img').count() > 0;
+        // Check if cart has product images using the correct selector
+        const hasImages = await page.locator('.cart-product-image img').count() > 0;
         expect(hasImages, 'Cart should show product images').toBeTruthy();
         break;
       case 'Quantity':
