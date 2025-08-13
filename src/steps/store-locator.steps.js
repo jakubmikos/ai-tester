@@ -1,7 +1,9 @@
 // src/steps/store-locator.steps.js
-const { Given, When, Then } = require('playwright-bdd/decorators');
 const { expect } = require('@playwright/test');
+const { createBdd } = require('playwright-bdd');
 const HomePage = require('../pages/home.page');
+
+const { Given, When, Then } = createBdd();
 
 // Store locator navigation
 When('I navigate to {string}', async ({ page }, sectionName) => {
@@ -74,7 +76,7 @@ When('I enter postcode {string}', async ({ page }, postcode) => {
   }
 });
 
-When('I click {string}', async ({ page }, buttonText) => {
+When('I click {string} for store search', async ({ page }, buttonText) => {
   if (buttonText === 'Find Stores') {
     // Try to find and click the search button
     const searchSelectors = [

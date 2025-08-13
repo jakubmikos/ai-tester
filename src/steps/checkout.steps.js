@@ -1,8 +1,10 @@
 // src/steps/checkout.steps.js
-const { Given, When, Then } = require('playwright-bdd/decorators');
 const { expect } = require('@playwright/test');
+const { createBdd } = require('playwright-bdd');
 const CheckoutPage = require('../pages/checkout.page');
 const ShoppingCartPage = require('../pages/shopping-cart.page');
+
+const { Given, When, Then } = createBdd();
 
 // Authentication state
 Given('I am not logged in', async ({ page }) => {
@@ -24,7 +26,7 @@ When('I proceed to checkout', async ({ page }) => {
 });
 
 // Guest checkout steps
-When('I select {string}', async ({ page }, checkoutType) => {
+When('I select {string} checkout option', async ({ page }, checkoutType) => {
   const checkoutPage = new CheckoutPage(page);
   
   if (checkoutType === 'Checkout as Guest') {
@@ -33,7 +35,7 @@ When('I select {string}', async ({ page }, checkoutType) => {
   }
 });
 
-When('I fill in guest checkout information with email {string}:', async ({ page, testData }, email, dataTable) => {
+When('I fill in guest checkout information with email {string}:', async ({ page }, email, dataTable) => {
   const checkoutPage = new CheckoutPage(page);
   
   // First, select guest checkout with email
@@ -73,7 +75,7 @@ When('I fill in guest checkout information with email {string}:', async ({ page,
   await checkoutPage.fillShippingAddress(shippingData);
 });
 
-When('I select {string}', async ({ page }, deliveryOption) => {
+When('I select {string} delivery', async ({ page }, deliveryOption) => {
   if (deliveryOption === 'Standard Delivery') {
     const checkoutPage = new CheckoutPage(page);
     await checkoutPage.selectDeliveryOption(deliveryOption);
@@ -98,7 +100,7 @@ When('I confirm age verification \\(18+\\)', async ({ page }) => {
   await checkoutPage.confirmAgeVerification();
 });
 
-When('I click {string}', async ({ page }, buttonText) => {
+When('I click {string} button', async ({ page }, buttonText) => {
   const checkoutPage = new CheckoutPage(page);
   
   if (buttonText === 'Place Order') {

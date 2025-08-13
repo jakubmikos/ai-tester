@@ -1,9 +1,11 @@
 // src/steps/shopping-cart.steps.js
-const { Given, When, Then } = require('playwright-bdd/decorators');
 const { expect } = require('@playwright/test');
+const { createBdd } = require('playwright-bdd');
 const ShoppingCartPage = require('../pages/shopping-cart.page');
 const ProductCatalogPage = require('../pages/product-catalog.page');
 const HomePage = require('../pages/home.page');
+
+const { Given, When, Then } = createBdd();
 
 // Cart state setup steps
 Given('my cart is empty', async ({ page }) => {

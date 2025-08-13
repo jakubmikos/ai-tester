@@ -12,7 +12,7 @@ Background:
 Scenario: Find Community Store locations
     When I navigate to "Community Store Network"
     And I enter postcode "SW1A 1AA"
-    And I click "Find Stores"
+    And I click "Find Stores" for store search
     Then I should see a list of nearby Community Stores
     And each store should show:
         | Store Information |

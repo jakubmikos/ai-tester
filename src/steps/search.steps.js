@@ -1,8 +1,10 @@
 // src/steps/search.steps.js
-const { Given, When, Then } = require('playwright-bdd/decorators');
 const { expect } = require('@playwright/test');
+const { createBdd } = require('playwright-bdd');
 const SearchPage = require('../pages/search.page');
 const HomePage = require('../pages/home.page');
+
+const { Given, When, Then } = createBdd();
 
 // Search action steps
 When('I enter {string} in the search box', async ({ page }, searchTerm) => {

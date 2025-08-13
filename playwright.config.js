@@ -3,11 +3,8 @@ const { defineConfig, devices } = require('@playwright/test');
 const { defineBddConfig } = require('playwright-bdd');
 
 const testDir = defineBddConfig({
-  features: 'src/features/**/*.feature',
-  steps: 'src/steps/**/*.js',
-  statefulPoms: true,
-  quotes: 'double',
-  publishQuiet: true
+  paths: ['src/features/**/*.feature'],
+  require: ['src/steps/*.steps.js']
 });
 
 /**

@@ -13,7 +13,7 @@ Scenario: Complete checkout process as guest user
     Given I am not logged in
     And I have "Stella Artois 6L Keg" in my cart
     When I proceed to checkout
-    And I select "Checkout as Guest"
+    And I select "Checkout as Guest" checkout option
     And I fill in guest checkout information with email "guest.user@example.com":
         | Field            | Value                    |
         | First Name      | Jane                     |
@@ -22,9 +22,9 @@ Scenario: Complete checkout process as guest user
         | Address Line 1  | 123 Test Street         |
         | City            | London                  |
         | Postcode        | SW1A 1AA                |
-    And I select "Standard Delivery"
+    And I select "Standard" delivery
     And I enter valid payment details
     And I confirm age verification (18+)
-    And I click "Place Order"
+    And I click "Place Order" button
     Then I should see an order confirmation page
     And I should receive an order confirmation email at "guest.user@example.com"

@@ -1,7 +1,9 @@
 // src/steps/navigation.steps.js
-const { Given, When, Then } = require('playwright-bdd/decorators');
 const { expect } = require('@playwright/test');
+const { createBdd } = require('playwright-bdd');
 const HomePage = require('../pages/home.page');
+
+const { Given, When, Then } = createBdd();
 
 // Background steps
 Given('I navigate to the PerfectDraft website', async ({ page }) => {

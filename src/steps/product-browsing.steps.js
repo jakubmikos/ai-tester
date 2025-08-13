@@ -1,9 +1,11 @@
 // src/steps/product-browsing.steps.js
-const { Given, When, Then } = require('playwright-bdd/decorators');
 const { expect } = require('@playwright/test');
+const { createBdd } = require('playwright-bdd');
 const HomePage = require('../pages/home.page');
 const ProductCatalogPage = require('../pages/product-catalog.page');
 const ProductDetailPage = require('../pages/product-detail.page');
+
+const { Given, When, Then } = createBdd();
 
 // Navigation to product sections
 When('I navigate to the {string} section', async ({ page }, sectionName) => {
