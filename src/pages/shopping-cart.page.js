@@ -9,26 +9,26 @@ class ShoppingCartPage extends BasePage {
   constructor(page) {
     super(page);
 
-    // Cart selectors - updated based on PerfectDraft website inspection
+    // Cart selectors - updated based on actual PerfectDraft website inspection
     this.selectors = {
       cartIcon: '.counter.qty, .minicart-wrapper, .cart-icon, button:has-text("£")',
       cartCounter: '.counter.qty .counter-number, .counter-number, .badge, a[href*="/cart/"] generic, a[href*="/checkout/cart/"] generic',
       emptyCartMessage: ':has-text("Your cart is empty"), :has-text("You have no items")',
-      cartItems: 'list li:has(img), ul li:has(img), li:has(img[alt*="PerfectDraft"])',
-      productName: '.cart-product-details header h3, heading, h3, .product-name, .item-title, .item-name',
-      productImage: '.cart-product-image img',
+      cartItems: '.cart-items-list > .cart-product-container > .cart-product', // Each cart item is a listitem in the cart list
+      productName: 'h3', // Product name is in h3 heading within the cart item
+      productImage: 'img', // Product image is img element within cart item  
       productQuantity: 'input[type="number"][name="quantity"], input[value]:not([type="hidden"]), spinbutton',
-      quantityIncreaseButton: 'button.cart-product-add',
-      quantityDecreaseButton: 'button.cart-product-subtract',
-      productPrice: '.cart-product-unit-price span, .price, .item-price, .subtotal',
-      removeButton: 'button.js--button:has-text("Remove Item")',
+      quantityIncreaseButton: 'button:has-text("Increase Quantity")',
+      quantityDecreaseButton: 'button:has-text("Decrease Quantity")',
+      productPrice: '.cart-product-unit-price > span', // Price is in generic element containing £
+      removeButton: 'button:has-text("Remove Item")',
       updateButton: '.action.update, .update-item, button:has-text("Update")',
       viewCartButton: '.action.viewcart, .view-cart, button:has-text("View Cart")',
       cartDropdown: '.minicart-content, .cart-dropdown, .dropdown-menu, div[role="dialog"]',
-      cartTotal: '.subtotal .price, .total-price, .grand-total .price',
+      cartTotal: 'paragraph:has-text("Total to Pay") + paragraph, paragraph:has-text("£")', // Total is in paragraph after "Total to Pay"
       confirmationMessage: '.message.success, .alert.success, .notification.success',
-      checkoutButton: '.action.primary.checkout, .checkout-button, button:has-text("Checkout")',
-      proceedToCheckoutButton: '.action.primary.checkout, .checkout-btn, button:has-text("Proceed")'
+      checkoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")',
+      proceedToCheckoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")'
     };
   }
 
@@ -86,38 +86,29 @@ class ShoppingCartPage extends BasePage {
    */
   async openCart() {
     try {
-      // For PerfectDraft, clicking cart icon navigates directly to cart page
-      // Try multiple approaches to find and click the cart icon
-      const cartSelectors = [
-        'a[href*="/checkout/cart/"]',
-        'a[href*="/cart/"]',
-        'a:has(img):has(generic)', // Link with img and generic (cart counter)
-        'link:has(generic)' // Link with generic element (could be cart counter)
-      ];
+      // Try to find cart icon by href first (most reliable)
+      const cartLink = this.page.locator('a[href*="/checkout/cart/"]').first();
 
-      for (const selector of cartSelectors) {
-        try {
-          const cartIcon = this.page.locator(selector).first();
-          if (await cartIcon.isVisible({ timeout: 2000 })) {
-            await cartIcon.click();
-            await this.page.waitForLoadState('domcontentloaded');
-            await this.waitForPageLoad();
-            await this.waitForElementToBeVisible('.cart-tems', 5000);
-            return;
-          }
-        } catch {
-          continue;
-        }
+      if (await cartLink.isVisible({ timeout: 3000 })) {
+        await cartLink.click();
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.waitForElementToBeVisible('.cart-items', 5000);
+        return;
       }
 
-      // If no cart icon found, navigate directly
+      // Fallback: navigate directly
+      console.log('Cart icon not found, navigating directly to cart page');
       await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
       await this.waitForPageLoad();
     } catch (error) {
       // Last resort: direct navigation
-      console.log('Direct cart navigation fallback');
-      await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
-      await this.waitForPageLoad();
+      console.log('Direct cart navigation fallback due to error:', error.message);
+      try {
+        await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
+        await this.waitForPageLoad();
+      } catch (navError) {
+        throw new Error(`Failed to navigate to cart: ${navError.message}`);
+      }
     }
   }
 
@@ -164,11 +155,13 @@ class ShoppingCartPage extends BasePage {
         const name = await this.getItemText(item, this.selectors.productName);
         const price = await this.getItemText(item, this.selectors.productPrice);
         const quantity = await this.getItemQuantity(item);
+        const image = await this.getImage(item)
 
         items.push({
           name,
           price,
           quantity,
+          image,
           index: i
         });
       }
@@ -224,6 +217,24 @@ class ShoppingCartPage extends BasePage {
       if (await quantityInput.count() > 0) {
         const value = await quantityInput.getAttribute('value');
         return parseInt(value || '1', 10);
+      }
+      return 1;
+    } catch {
+      return 1;
+    }
+  }
+
+  /**
+   * Get item image
+   * @param {Object} item - Item locator
+   * @returns {Promise<string>}
+   */
+  async getImage(item) {
+    try {
+      const image = item.locator(this.selectors.productImage);
+      if (await quantityInput.count() > 0) {
+        const value = await quantityInput.getAttribute('src');
+        return value;
       }
       return 1;
     } catch {
