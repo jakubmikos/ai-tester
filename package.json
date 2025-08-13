@@ -25,9 +25,7 @@
     "test:report": "npm run test && npm run report:open",
     "test:smoke:report": "npm run test:smoke && npm run report:open",
     "playwright:install": "playwright install",
-    "bdd:generate": "bddgen",
-    "prebdd": "npm run bdd:generate",
-    "pretest": "npm run bdd:generate"
+    "bdd:generate": "bddgen"
   },
   "keywords": [
     "playwright",
