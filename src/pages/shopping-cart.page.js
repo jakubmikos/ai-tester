@@ -1,5 +1,6 @@
 // src/pages/shopping-cart.page.js
 const BasePage = require('./base.page');
+const WaitHelpers = require('../helpers/wait-helpers');
 
 /**
  * Shopping Cart Page Object
@@ -14,7 +15,7 @@ class ShoppingCartPage extends BasePage {
       cartIcon: '.counter.qty, .minicart-wrapper, .cart-icon, button:has-text("£")',
       cartCounter: '.counter.qty .counter-number, .counter-number, .badge, a[href*="/cart/"] generic, a[href*="/checkout/cart/"] generic',
       emptyCartMessage: ':has-text("Your cart is empty"), :has-text("You have no items")',
-      cartItems: '.cart-items-list > .cart-product-container > .cart-product', // Each cart item is a listitem in the cart list
+      cartItems: '.cart-items-list > .cart-product-container > .cart-product', // Each cart item is a cart product
       productName: 'h3', // Product name is in h3 heading within the cart item
       productImage: 'img', // Product image is img element within cart item  
       productQuantity: 'input[type="number"][name="quantity"], input[value]:not([type="hidden"]), spinbutton',
@@ -86,13 +87,16 @@ class ShoppingCartPage extends BasePage {
    */
   async openCart() {
     try {
+      // Wait for any toast notifications to disappear first
+      await WaitHelpers.waitForToastToDisappear(this.page);
+      
       // Try to find cart icon by href first (most reliable)
       const cartLink = this.page.locator('a[href*="/checkout/cart/"]').first();
 
       if (await cartLink.isVisible({ timeout: 3000 })) {
         await cartLink.click();
-        await this.page.waitForLoadState('domcontentloaded');
-        await this.waitForElementToBeVisible('.cart-items', 5000);
+        await WaitHelpers.waitForNetworkIdle(this.page);
+        await WaitHelpers.waitForLoadingToComplete(this.page);
         return;
       }
 
@@ -255,7 +259,9 @@ class ShoppingCartPage extends BasePage {
       const quantityInput = item.locator(this.selectors.productQuantity);
       await quantityInput.fill(quantity.toString());
 
-      await this.page.waitForTimeout(1000); // Wait for update
+      // Wait for cart to update
+      await WaitHelpers.waitForNetworkIdle(this.page);
+      await WaitHelpers.waitForLoadingToComplete(this.page);
     } catch (error) {
       throw new Error(`Failed to update item quantity: ${error.message}`);
     }
@@ -273,7 +279,9 @@ class ShoppingCartPage extends BasePage {
       const increaseButton = item.locator(this.selectors.quantityIncreaseButton);
       await increaseButton.click();
 
-      await this.page.waitForTimeout(1000); // Wait for update
+      // Wait for cart to update
+      await WaitHelpers.waitForNetworkIdle(this.page);
+      await WaitHelpers.waitForLoadingToComplete(this.page);
     } catch (error) {
       throw new Error(`Failed to increase item quantity: ${error.message}`);
     }
@@ -291,7 +299,9 @@ class ShoppingCartPage extends BasePage {
       const decreaseButton = item.locator(this.selectors.quantityDecreaseButton);
       await decreaseButton.click();
 
-      await this.page.waitForTimeout(1000); // Wait for update
+      // Wait for cart to update
+      await WaitHelpers.waitForNetworkIdle(this.page);
+      await WaitHelpers.waitForLoadingToComplete(this.page);
     } catch (error) {
       throw new Error(`Failed to decrease item quantity: ${error.message}`);
     }
@@ -310,7 +320,8 @@ class ShoppingCartPage extends BasePage {
       await removeButton.click();
 
       // Wait for item to be removed
-      await this.page.waitForTimeout(2000);
+      await WaitHelpers.waitForNetworkIdle(this.page);
+      await WaitHelpers.waitForLoadingToComplete(this.page);
     } catch (error) {
       throw new Error(`Failed to remove item from cart: ${error.message}`);
     }
@@ -371,7 +382,7 @@ class ShoppingCartPage extends BasePage {
       // Remove items one by one starting from the last
       for (let i = itemCount - 1; i >= 0; i--) {
         await this.removeItemFromCart(i);
-        await this.page.waitForTimeout(1000); // Wait between removals
+        await WaitHelpers.waitForLoadingToComplete(this.page);
       }
     } catch (error) {
       console.error('Error clearing cart:', error);
@@ -467,7 +478,8 @@ class ShoppingCartPage extends BasePage {
         const applyButton = this.page.locator('button:has-text("Apply"), .apply-coupon');
         if (await applyButton.isVisible()) {
           await applyButton.click();
-          await this.page.waitForTimeout(2000); // Wait for coupon to apply
+          await WaitHelpers.waitForNetworkIdle(this.page);
+          await WaitHelpers.waitForLoadingToComplete(this.page);
         }
       }
     } catch (error) {
