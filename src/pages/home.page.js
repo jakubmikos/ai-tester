@@ -14,11 +14,7 @@ class HomePage extends BasePage {
     
     // Search selectors
     this.searchSelectors = [
-      'input[type="search"]',
-      '[placeholder*="Search"]',
-      '[placeholder*="search"]',
-      'input[name*="search"]',
-      '.search input'
+      'input[type="search"]'
     ];
     
     // Cart selectors
@@ -92,10 +88,15 @@ class HomePage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async isSearchFunctionalityAvailable() {
+    // Wait for page to be fully loaded since Algolia search loads dynamically
+    await this.page.waitForLoadState('networkidle', { timeout: 10000 });
+    await this.page.waitForTimeout(2000); // Give extra time for Algolia to initialize
+    
     for (const selector of this.searchSelectors) {
       try {
-        const element = await this.page.$(selector);
-        if (element && await element.isVisible()) {
+        // Use Playwright's locator with longer timeout for dynamic search elements
+        const element = this.page.locator(selector);
+        if (await element.isVisible({ timeout: 5000 })) {
           return true;
         }
       } catch {
