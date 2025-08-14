@@ -13,7 +13,7 @@ Scenario: Add products to shopping cart
     Given my cart is empty
     When I navigate to the "Kegs" section
     And I add "PerfectDraft Stella Artois 6L Keg" to the cart
-    Then the cart should show quantity of at least "1"
+    Then the cart counter should show quantity of at least "1"
     And I should see a confirmation message
     When I click on the cart icon
     Then I should see the cart contents with:

@@ -18,15 +18,15 @@ class ShoppingCartPage extends BasePage {
       cartItems: '.cart-items-list > .cart-product-container > .cart-product', // Each cart item is a cart product
       productName: 'h3', // Product name is in h3 heading within the cart item
       productImage: 'img', // Product image is img element within cart item  
-      productQuantity: 'input[type="number"][name="quantity"], input[value]:not([type="hidden"]), spinbutton',
-      quantityIncreaseButton: 'button:has-text("Increase Quantity")',
-      quantityDecreaseButton: 'button:has-text("Decrease Quantity")',
+      productQuantity: 'input[name="quantity"]',
+      quantityIncreaseButton: 'button[aria-label="Increase Quantity"], .cart-product-add',
+      quantityDecreaseButton: 'button[aria-label="Decrease Quantity"], .cart-product-subtract',
       productPrice: '.cart-product-unit-price > span', // Price is in generic element containing £
       removeButton: 'button:has-text("Remove Item")',
       updateButton: '.action.update, .update-item, button:has-text("Update")',
       viewCartButton: '.action.viewcart, .view-cart, button:has-text("View Cart")',
       cartDropdown: '.minicart-content, .cart-dropdown, .dropdown-menu, div[role="dialog"]',
-      cartTotal: 'paragraph:has-text("Total to Pay") + paragraph, paragraph:has-text("£")', // Total is in paragraph after "Total to Pay"
+      cartTotal: '.order-summary-subtotal > p', // Total from order summary
       confirmationMessage: '.message.success, .alert.success, .notification.success',
       checkoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")',
       proceedToCheckoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")'
@@ -219,7 +219,11 @@ class ShoppingCartPage extends BasePage {
     try {
       const quantityInput = item.locator(this.selectors.productQuantity);
       if (await quantityInput.count() > 0) {
-        const value = await quantityInput.getAttribute('value');
+        // Wait for the input value to be available and not empty
+        await quantityInput.waitFor({ state: 'visible', timeout: 5000 });
+        
+        // Use inputValue() instead of getAttribute('value') for better DOM sync
+        const value = await quantityInput.inputValue();
         return parseInt(value || '1', 10);
       }
       return 1;
@@ -318,6 +322,11 @@ class ShoppingCartPage extends BasePage {
 
       const removeButton = item.locator(this.selectors.removeButton);
       await removeButton.click();
+
+      // Wait for confirmation modal and click "Bin it" to confirm removal
+      const binItButton = this.page.locator('button:has-text("Bin it")');
+      await binItButton.waitFor({ state: 'visible', timeout: 5000 });
+      await binItButton.click();
 
       // Wait for item to be removed
       await WaitHelpers.waitForNetworkIdle(this.page);

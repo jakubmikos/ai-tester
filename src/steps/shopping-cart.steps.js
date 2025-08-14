@@ -78,7 +78,7 @@ When('I click on the cart icon', async ({ page }) => {
 
 When('I view my cart', async ({ page }) => {
   const cartPage = new ShoppingCartPage(page);
-  await cartPage.viewFullCart();
+  await cartPage.openCart();
 });
 
 Then('I should see the cart contents with:', async ({ page }, dataTable) => {
@@ -126,11 +126,14 @@ When('I increase the quantity to {string}', async ({ page }, newQuantity) => {
   const cartItem = page.locator(cartPage.selectors.cartItems).first();
   
   // Find quantity input within the cart item
-  const quantityInput = cartItem.locator('input[type="number"], input[data-role="cart-item-qty"]').first();
+  const quantityInput = cartItem.locator('input[name="quantity"]').first();
 
   try {
     // Update quantity
     await cartPage.updateItemQuantity(0, quantity);
+    
+    // Wait for cart to update itself after quantity changes
+    await page.waitForTimeout(2000);
     
     // Use Playwright's built-in expect to wait for value change
     await expect(quantityInput).toHaveValue(quantity.toString(), { timeout: 10000 });
@@ -148,6 +151,9 @@ When('I increase the quantity to {string}', async ({ page }, newQuantity) => {
       await page.waitForLoadState('networkidle', { timeout: 5000 });
     }
     
+    // Wait for cart to update itself after quantity changes
+    await page.waitForTimeout(2000);
+    
     // Verify the quantity updated
     await expect(quantityInput).toHaveValue(quantity.toString(), { timeout: 10000 });
   }
@@ -157,14 +163,22 @@ Then('the cart should show quantity of at least {string}', async ({ page }, expe
   const cartPage = new ShoppingCartPage(page);
   const quantity = parseInt(expectedQuantity, 10);
 
-  // Wait for cart items to update
+  // Wait for cart to fully update after quantity changes
   await WaitHelpers.waitForLoadingToComplete(page);
   await WaitHelpers.waitForCartItems(page);
 
+  // Wait specifically for the quantity input to have the expected value
+  const cartItem = page.locator(cartPage.selectors.cartItems).first();
+  const quantityInput = cartItem.locator('input[name="quantity"]');
+  
+  // Use Playwright's expect to wait for the value to update
+  await expect(quantityInput).toHaveValue(quantity.toString(), { timeout: 10000 });
+
+  // Double-check with our cart items details method
   const cartItems = await cartPage.getCartItemsDetails();
   const actualQuantity = cartItems[0]?.quantity || 0;
 
-  expect(actualQuantity, `Cart quantity should be ${quantity}`).toBeGreaterThanOrEqual(quantity);
+  expect(actualQuantity, `Cart quantity should be at least ${quantity}`).toBeGreaterThanOrEqual(quantity);
 });
 
 Then('the cart should show quantity {string}', async ({ page }, expectedQuantity) => {
