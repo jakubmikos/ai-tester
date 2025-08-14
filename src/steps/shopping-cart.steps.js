@@ -130,6 +130,7 @@ When('I increase the quantity to {string}', async ({ page }, newQuantity) => {
 
 Then('the cart should show quantity of at least {string}', async ({ page }, expectedQuantity) => {
   const cartPage = new ShoppingCartPage(page);
+  const quantity = parseInt(expectedQuantity, 10);
 
   // Wait for quantity update
   await page.waitForTimeout(1000);
@@ -137,11 +138,12 @@ Then('the cart should show quantity of at least {string}', async ({ page }, expe
   const cartItems = await cartPage.getCartItemsDetails();
   const actualQuantity = cartItems[0]?.quantity || 0;
 
-  expect(actualQuantity.toString(), `Cart quantity should be ${expectedQuantity}`).toBeGreaterThanOrEqual(expectedQuantity);
+  expect(actualQuantity, `Cart quantity should be ${quantity}`).toBeGreaterThanOrEqual(quantity);
 });
 
 Then('the cart should show quantity {string}', async ({ page }, expectedQuantity) => {
   const cartPage = new ShoppingCartPage(page);
+  const quantity = parseInt(expectedQuantity, 10);
 
   // Wait for quantity update
   await page.waitForTimeout(1000);
@@ -149,7 +151,7 @@ Then('the cart should show quantity {string}', async ({ page }, expectedQuantity
   const cartItems = await cartPage.getCartItemsDetails();
   const actualQuantity = cartItems[0]?.quantity || 0;
 
-  expect(actualQuantity.toString(), `Cart quantity should be ${expectedQuantity}`).toBe(expectedQuantity);
+  expect(actualQuantity, `Cart quantity should be ${quantity}`).toBe(quantity);
 });
 
 Then('the total price should be updated accordingly', async ({ page }) => {
@@ -179,4 +181,16 @@ Then('the cart should be empty', async ({ page }) => {
 
   const isEmpty = await cartPage.isCartEmpty();
   expect(isEmpty, 'Cart should be empty after removing all items').toBeTruthy();
+});
+
+// Cart counter steps
+Then('the cart counter should show quantity of at least {string}', async ({ page }, minQuantity) => {
+  const cartPage = new ShoppingCartPage(page);
+  const expectedMin = parseInt(minQuantity, 10);
+  
+  // Wait for counter to update
+  await page.waitForTimeout(1000);
+  
+  // Use the base page method to check cart counter
+  await cartPage.assertCartCounterAtLeast(expectedMin);
 });

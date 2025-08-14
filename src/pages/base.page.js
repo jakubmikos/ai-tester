@@ -13,6 +13,9 @@ class BasePage {
   constructor(page) {
     this.page = page;
     this.config = testConfig;
+    
+    // Cart counter element selector
+    this.cartCounterSelector = '.counter-number';
   }
 
   /**
@@ -492,6 +495,28 @@ class BasePage {
   async assertElementCount(selector, expectedCount, customMessage) {
     const elements = this.page.locator(selector);
     await expect(elements, customMessage || `Should have ${expectedCount} elements`).toHaveCount(expectedCount);
+  }
+
+  // Cart-specific methods
+
+  /**
+   * Get the cart counter value
+   * @returns {Promise<number>} The cart counter value as a number
+   */
+  async getCartCounterValue() {
+    const counterText = await this.getText(this.cartCounterSelector);
+    return parseInt(counterText, 10) || 0;
+  }
+
+  /**
+   * Assert cart counter has at least the specified quantity
+   * @param {number} minQuantity - Minimum expected quantity
+   * @param {string} customMessage - Optional custom message
+   */
+  async assertCartCounterAtLeast(minQuantity, customMessage) {
+    const actualQuantity = await this.getCartCounterValue();
+    const message = customMessage || `Cart counter should show at least ${minQuantity}, but shows ${actualQuantity}`;
+    expect(actualQuantity).toBeGreaterThanOrEqual(minQuantity);
   }
 }
 

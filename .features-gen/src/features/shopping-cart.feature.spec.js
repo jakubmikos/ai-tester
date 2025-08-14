@@ -12,7 +12,7 @@ test.describe("Shopping Cart Management", () => {
     await Given("my cart is empty", null, { page });
     await When("I navigate to the \"Kegs\" section", null, { page });
     await And("I add \"PerfectDraft Stella Artois 6L Keg\" to the cart", null, { page });
-    await Then("the cart should show quantity of at least \"1\"", null, { page });
+    await Then("the cart counter should show quantity of at least \"1\"", null, { page });
     await And("I should see a confirmation message", null, { page });
     await When("I click on the cart icon", null, { page });
     await Then("I should see the cart contents with:", {"dataTable":{"rows":[{"cells":[{"value":"Cart Information"}]},{"cells":[{"value":"Product name"}]},{"cells":[{"value":"Product image"}]},{"cells":[{"value":"Quantity"}]},{"cells":[{"value":"Unit price"}]},{"cells":[{"value":"Total price"}]}]}}, { page });
