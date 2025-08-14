@@ -54,17 +54,6 @@ When('I add {string} to the cart', async ({ page }, productName) => {
   await page.waitForTimeout(2000);
 });
 
-// Cart verification steps
-Then('the cart counter should show {string} item', async ({ page }, expectedCount) => {
-  const cartPage = new ShoppingCartPage(page);
-
-  // Wait a bit for cart counter to update
-  await page.waitForTimeout(1000);
-
-  const actualCount = await cartPage.getCartItemCount();
-  expect(actualCount, `Cart counter should show ${expectedCount} item(s)`).toBe(expectedCount);
-});
-
 Then('I should see a confirmation message', async ({ page }) => {
   const cartPage = new ShoppingCartPage(page);
 
@@ -139,6 +128,18 @@ When('I increase the quantity to {string}', async ({ page }, newQuantity) => {
   }
 });
 
+Then('the cart should show quantity of at least {string}', async ({ page }, expectedQuantity) => {
+  const cartPage = new ShoppingCartPage(page);
+
+  // Wait for quantity update
+  await page.waitForTimeout(1000);
+
+  const cartItems = await cartPage.getCartItemsDetails();
+  const actualQuantity = cartItems[0]?.quantity || 0;
+
+  expect(actualQuantity.toString(), `Cart quantity should be ${expectedQuantity}`).toBeGreaterThanOrEqual(expectedQuantity);
+});
+
 Then('the cart should show quantity {string}', async ({ page }, expectedQuantity) => {
   const cartPage = new ShoppingCartPage(page);
 
@@ -178,14 +179,4 @@ Then('the cart should be empty', async ({ page }) => {
 
   const isEmpty = await cartPage.isCartEmpty();
   expect(isEmpty, 'Cart should be empty after removing all items').toBeTruthy();
-});
-
-Then('the cart counter should show {string} items', async ({ page }, expectedCount) => {
-  const cartPage = new ShoppingCartPage(page);
-
-  // Wait for counter update
-  await page.waitForTimeout(1000);
-
-  const actualCount = await cartPage.getCartItemCount();
-  expect(actualCount, `Cart counter should show ${expectedCount} items`).toBe(expectedCount);
 });

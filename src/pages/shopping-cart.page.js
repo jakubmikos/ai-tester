@@ -255,12 +255,6 @@ class ShoppingCartPage extends BasePage {
       const quantityInput = item.locator(this.selectors.productQuantity);
       await quantityInput.fill(quantity.toString());
 
-      // Click update button if available
-      const updateButton = item.locator(this.selectors.updateButton);
-      if (await updateButton.count() > 0) {
-        await updateButton.click();
-      }
-
       await this.page.waitForTimeout(1000); // Wait for update
     } catch (error) {
       throw new Error(`Failed to update item quantity: ${error.message}`);
