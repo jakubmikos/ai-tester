@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 // scripts/test-runner.js
-const { spawn } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Advanced test runner with pre-flight checks and reporting

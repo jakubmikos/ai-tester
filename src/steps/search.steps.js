@@ -1,8 +1,8 @@
 // src/steps/search.steps.js
-const { expect } = require('@playwright/test');
-const { createBdd } = require('playwright-bdd');
-const SearchPage = require('../pages/search.page');
-const HomePage = require('../pages/home.page');
+import { expect } from '@playwright/test';
+import { createBdd } from 'playwright-bdd';
+import SearchPage from '../pages/search.page.js';
+import HomePage from '../pages/home.page.js';
 
 const { Given, When, Then } = createBdd();
 

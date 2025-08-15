@@ -1,5 +1,5 @@
 // src/pages/search.page.js
-const BasePage = require('./base.page');
+import BasePage from './base.page.js';
 
 /**
  * Search Page Object
@@ -411,4 +411,4 @@ class SearchPage extends BasePage {
   }
 }
 
-module.exports = SearchPage;
+export default SearchPage;

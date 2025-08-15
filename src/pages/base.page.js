@@ -1,6 +1,6 @@
 // src/pages/base.page.js
-const { expect } = require('@playwright/test');
-const testConfig = require('../config/test-config');
+import { expect } from '@playwright/test';
+import testConfig from '../config/test-config.js';
 
 /**
  * Base Page Object class
@@ -520,4 +520,4 @@ class BasePage {
   }
 }
 
-module.exports = BasePage;
+export default BasePage;

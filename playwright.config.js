@@ -1,6 +1,6 @@
 // playwright.config.js
-const { defineConfig, devices } = require('@playwright/test');
-const { defineBddConfig } = require('playwright-bdd');
+import { defineConfig, devices } from '@playwright/test';
+import { defineBddConfig } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
   paths: ['src/features/**/*.feature'],
@@ -10,7 +10,7 @@ const testDir = defineBddConfig({
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir,
   
   // Run tests in files in parallel

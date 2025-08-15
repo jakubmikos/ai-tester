@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "PerfectDraft e-commerce test automation using Playwright with BDD",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",

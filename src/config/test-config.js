@@ -1,5 +1,6 @@
 // src/config/test-config.js
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * Test configuration management
@@ -196,4 +197,4 @@ class TestConfig {
 }
 
 // Export singleton instance
-module.exports = new TestConfig();
+export default new TestConfig();

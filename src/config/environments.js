@@ -188,7 +188,7 @@ function getEnvironmentUrl(countryCode = 'GB') {
   return `${baseUrl}${path}`;
 }
 
-module.exports = {
+export {
   environments,
   getEnvironment,
   getCurrentEnvironment,

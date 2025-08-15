@@ -1,8 +1,8 @@
 // src/steps/checkout.steps.js
-const { expect } = require('@playwright/test');
-const { createBdd } = require('playwright-bdd');
-const CheckoutPage = require('../pages/checkout.page');
-const ShoppingCartPage = require('../pages/shopping-cart.page');
+import { expect } from '@playwright/test';
+import { createBdd } from 'playwright-bdd';
+import CheckoutPage from '../pages/checkout.page.js';
+import ShoppingCartPage from '../pages/shopping-cart.page.js';
 
 const { Given, When, Then } = createBdd();
 

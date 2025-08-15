@@ -1,5 +1,5 @@
 // src/support/allure-utils.js
-const { allure } = require('allure-playwright');
+import { allure } from 'allure-playwright';
 
 /**
  * Allure reporting utilities
@@ -312,4 +312,4 @@ class AllureUtils {
   }
 }
 
-module.exports = AllureUtils;
+export default AllureUtils;

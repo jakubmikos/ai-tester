@@ -1,6 +1,6 @@
 // src/support/fixtures.js
-const { test as base } = require('playwright-bdd');
-const testConfig = require('../config/test-config');
+import { test as base } from 'playwright-bdd';
+import testConfig from '../config/test-config.js';
 
 /**
  * Custom test fixtures for PerfectDraft tests
@@ -134,4 +134,4 @@ const test = base.extend({
   }
 });
 
-module.exports = { test };
+export { test };

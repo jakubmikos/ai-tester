@@ -188,4 +188,4 @@ class WaitHelpers {
   }
 }
 
-module.exports = WaitHelpers;
+export default WaitHelpers;

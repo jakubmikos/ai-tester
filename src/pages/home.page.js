@@ -1,5 +1,5 @@
 // src/pages/home.page.js
-const BasePage = require('./base.page');
+import BasePage from './base.page.js';
 
 /**
  * Home Page Object
@@ -8,31 +8,12 @@ const BasePage = require('./base.page');
 class HomePage extends BasePage {
   constructor(page) {
     super(page);
-    
-    // Navigation selectors
-    this.navigationSelectors = ['nav', '.navigation', '.main-nav', '[role="navigation"]'];
-    
-    // Search selectors
-    this.searchSelectors = [
-      'input[type="search"]'
-    ];
-    
-    // Cart selectors
-    this.cartCountSelectors = [
-      '.cart-count',
-      '.cart-counter',
-      '[data-cart-count]',
-      '.basket-count'
-    ];
-    
-    this.cartIconSelectors = [
-      'text=Cart',
-      'text=Basket',
-      '[href*="cart"]',
-      '[href*="basket"]',
-      '.cart-icon',
-      '.basket-icon'
-    ];
+
+    // Single specific selectors
+    this.navigationSelector = 'nav.main-nav';
+    this.searchSelector = 'input[type="search"]';
+    this.cartCountSelector = '.counter-number';
+    this.cartIconSelector = '.minicart-wrapper > a.showcart';
   }
 
   /**
@@ -56,17 +37,12 @@ class HomePage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async isNavigationMenuVisible() {
-    for (const selector of this.navigationSelectors) {
-      try {
-        const element = await this.page.$(selector);
-        if (element && await element.isVisible()) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
+    try {
+      const element = this.page.locator(this.navigationSelector);
+      return await element.isVisible({ timeout: 5000 });
+    } catch {
+      return false;
     }
-    return false;
   }
 
   /**
@@ -90,20 +66,13 @@ class HomePage extends BasePage {
   async isSearchFunctionalityAvailable() {
     // Wait for page to be fully loaded since Algolia search loads dynamically
     await this.page.waitForLoadState('networkidle', { timeout: 10000 });
-    await this.page.waitForTimeout(2000); // Give extra time for Algolia to initialize
-    
-    for (const selector of this.searchSelectors) {
-      try {
-        // Use Playwright's locator with longer timeout for dynamic search elements
-        const element = this.page.locator(selector);
-        if (await element.isVisible({ timeout: 5000 })) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
+
+    try {
+      const element = this.page.locator(this.searchSelector);
+      return await element.isVisible({ timeout: 5000 });
+    } catch {
+      return false;
     }
-    return false;
   }
 
   /**
@@ -111,18 +80,14 @@ class HomePage extends BasePage {
    * @returns {Promise<string>}
    */
   async getCartItemCount() {
-    for (const selector of this.cartCountSelectors) {
-      try {
-        const element = await this.page.$(selector);
-        if (element && await element.isVisible()) {
-          const text = await element.textContent();
-          return text?.trim() || '0';
-        }
-      } catch {
-        continue;
-      }
+    try {
+      const element = this.page.locator(this.cartCountSelector);
+      await element.waitFor({ timeout: 5000 });
+      const text = await element.textContent();
+      return text?.trim() || '0';
+    } catch {
+      return '0';
     }
-    return '0';
   }
 
   /**
@@ -130,17 +95,12 @@ class HomePage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async isCartIconVisible() {
-    for (const selector of this.cartIconSelectors) {
-      try {
-        const element = await this.page.$(selector);
-        if (element && await element.isVisible()) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
+    try {
+      const element = this.page.locator(this.cartIconSelector);
+      return await element.isVisible({ timeout: 5000 });
+    } catch {
+      return false;
     }
-    return false;
   }
 
   /**
@@ -185,7 +145,7 @@ class HomePage extends BasePage {
         console.log(`Could not navigate to section: ${sectionName}`);
       }
     }
-    
+
     await this.page.waitForLoadState('domcontentloaded');
     await this.page.waitForTimeout(2000); // Allow time for dynamic content to load
   }
@@ -246,37 +206,11 @@ class HomePage extends BasePage {
    * @param {string} searchTerm - Search term
    */
   async searchForProduct(searchTerm) {
-    // Find search input
-    let searchInput = null;
-    for (const selector of this.searchSelectors) {
-      try {
-        const element = await this.page.$(selector);
-        if (element && await element.isVisible()) {
-          searchInput = element;
-          break;
-        }
-      } catch {
-        continue;
-      }
-    }
+    const searchInput = this.page.locator(this.searchSelector);
+    await searchInput.waitFor({ timeout: 5000 });
 
-    if (!searchInput) {
-      throw new Error('Search input not found');
-    }
-
-    // Type search term
     await searchInput.fill(searchTerm);
-    
-    // Press Enter or click search button
-    try {
-      await searchInput.press('Enter');
-    } catch {
-      // Try to click search button if Enter doesn't work
-      const searchButton = await this.page.$('[type="submit"], .search-button, .search-submit');
-      if (searchButton) {
-        await searchButton.click();
-      }
-    }
+    await searchInput.press('Enter');
 
     await this.page.waitForLoadState('networkidle');
   }
@@ -317,25 +251,37 @@ class HomePage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async isPromotionalBannerVisible() {
-    const bannerSelectors = [
-      '.promotional-banner',
-      '.hero-banner',
-      '.promo-banner',
-      '[data-testid="promotional-banner"]'
-    ];
-
-    for (const selector of bannerSelectors) {
-      try {
-        const element = await this.page.$(selector);
-        if (element && await element.isVisible()) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
+    try {
+      const element = this.page.locator('.hero-banner');
+      return await element.isVisible({ timeout: 5000 });
+    } catch {
+      return false;
     }
-    return false;
+  }
+
+  /**
+   * Get page content for verification
+   * @returns {Promise<string>}
+   */
+  async getPageContent() {
+    return await this.page.textContent('body') || '';
+  }
+
+  /**
+   * Get HTML language attribute
+   * @returns {Promise<string|null>}
+   */
+  async getHtmlLang() {
+    return await this.page.getAttribute('html', 'lang');
+  }
+
+  /**
+   * Wait for country-specific URL
+   * @param {string} urlPattern - URL pattern to wait for
+   */
+  async waitForCountryUrl(urlPattern) {
+    await this.page.waitForURL(new RegExp(urlPattern));
   }
 }
 
-module.exports = HomePage;
+export default HomePage;

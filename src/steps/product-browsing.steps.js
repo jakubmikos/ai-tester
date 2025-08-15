@@ -1,9 +1,9 @@
 // src/steps/product-browsing.steps.js
-const { expect } = require('@playwright/test');
-const { createBdd } = require('playwright-bdd');
-const HomePage = require('../pages/home.page');
-const ProductCatalogPage = require('../pages/product-catalog.page');
-const ProductDetailPage = require('../pages/product-detail.page');
+import { expect } from '@playwright/test';
+import { createBdd } from 'playwright-bdd';
+import HomePage from '../pages/home.page.js';
+import ProductCatalogPage from '../pages/product-catalog.page.js';
+import ProductDetailPage from '../pages/product-detail.page.js';
 
 const { Given, When, Then } = createBdd();
 

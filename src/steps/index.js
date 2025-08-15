@@ -1,9 +1,9 @@
 // src/steps/index.js
 // Import all step definition files to register them with playwright-bdd
 
-require('./navigation.steps');
-require('./product-browsing.steps');
-require('./shopping-cart.steps');
-require('./checkout.steps');
-require('./store-locator.steps');
-require('./search.steps');
+import './navigation.steps.js';
+import './product-browsing.steps.js';
+import './shopping-cart.steps.js';
+import './checkout.steps.js';
+import './store-locator.steps.js';
+import './search.steps.js';

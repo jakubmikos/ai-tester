@@ -1,6 +1,6 @@
 // src/pages/shopping-cart.page.js
-const BasePage = require('./base.page');
-const WaitHelpers = require('../helpers/wait-helpers');
+import BasePage from './base.page.js';
+import WaitHelpers from '../helpers/wait-helpers.js';
 
 /**
  * Shopping Cart Page Object
@@ -497,4 +497,4 @@ class ShoppingCartPage extends BasePage {
   }
 }
 
-module.exports = ShoppingCartPage;
+export default ShoppingCartPage;

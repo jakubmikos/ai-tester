@@ -1,10 +1,10 @@
 // src/steps/shopping-cart.steps.js
-const { expect } = require('@playwright/test');
-const { createBdd } = require('playwright-bdd');
-const ShoppingCartPage = require('../pages/shopping-cart.page');
-const ProductCatalogPage = require('../pages/product-catalog.page');
-const HomePage = require('../pages/home.page');
-const WaitHelpers = require('../helpers/wait-helpers');
+import { expect } from '@playwright/test';
+import { createBdd } from 'playwright-bdd';
+import ShoppingCartPage from '../pages/shopping-cart.page.js';
+import ProductCatalogPage from '../pages/product-catalog.page.js';
+import HomePage from '../pages/home.page.js';
+import WaitHelpers from '../helpers/wait-helpers.js';
 
 const { Given, When, Then } = createBdd();
 

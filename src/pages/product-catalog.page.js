@@ -1,5 +1,5 @@
 // src/pages/product-catalog.page.js
-const BasePage = require('./base.page');
+import BasePage from './base.page.js';
 
 /**
  * Product Catalog Page Object
@@ -566,4 +566,4 @@ class ProductCatalogPage extends BasePage {
   }
 }
 
-module.exports = ProductCatalogPage;
+export default ProductCatalogPage;

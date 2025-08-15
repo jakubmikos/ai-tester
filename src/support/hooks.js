@@ -1,8 +1,8 @@
 // src/support/hooks.js
-const { Before, After, BeforeAll, AfterAll, Status } = require('playwright-bdd/decorators');
-const fs = require('fs').promises;
-const path = require('path');
-const testConfig = require('../config/test-config');
+import { Before, After, BeforeAll, AfterAll, Status } from 'playwright-bdd/decorators';
+import { promises as fs } from 'fs';
+import path from 'path';
+import testConfig from '../config/test-config.js';
 
 /**
  * Global hooks for test execution

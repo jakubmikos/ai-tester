@@ -1,7 +1,7 @@
 // src/steps/navigation.steps.js
-const { expect } = require('@playwright/test');
-const { createBdd } = require('playwright-bdd');
-const HomePage = require('../pages/home.page');
+import { expect } from '@playwright/test';
+import { createBdd } from 'playwright-bdd';
+import HomePage from '../pages/home.page.js';
 
 const { Given, When, Then } = createBdd();
 
@@ -26,13 +26,15 @@ When('I am on the country selection page', async ({ page }) => {
 });
 
 Then('I should see the available regions {string} and {string}', async ({ page }, region1, region2) => {
-  const pageContent = await page.textContent('body');
+  const homePage = new HomePage(page);
+  const pageContent = await homePage.getPageContent();
   expect(pageContent).toContain(region1);
   expect(pageContent).toContain(region2);
 });
 
 Then('I should see country options including {string}, {string}, {string}', async ({ page }, country1, country2, country3) => {
-  const pageContent = await page.textContent('body');
+  const homePage = new HomePage(page);
+  const pageContent = await homePage.getPageContent();
   expect(pageContent).toContain(country1);
   expect(pageContent).toContain(country2);
   expect(pageContent).toContain(country3);
@@ -77,7 +79,8 @@ When('I select country {string}', async ({ page }, country) => {
 });
 
 Then('I should be redirected to the UK website', async ({ page }) => {
-  await page.waitForURL(/.*perfectdraft\.com.*en-gb.*/);
+  const homePage = new HomePage(page);
+  await homePage.waitForCountryUrl('.*perfectdraft\.com.*en-gb.*');
   expect(page.url()).toContain('en-gb');
 });
 
@@ -90,7 +93,8 @@ Then('I should be redirected to the {string} website', async ({ page }, country)
 
   const expectedPath = expectedUrls[country];
   if (expectedPath) {
-    await page.waitForURL(new RegExp(`.*${expectedPath}.*`));
+    const homePage = new HomePage(page);
+    await homePage.waitForCountryUrl(`.*${expectedPath}.*`);
     expect(page.url()).toContain(expectedPath);
   }
 });
@@ -99,7 +103,8 @@ Then('the currency should be displayed in {string}', async ({ page }, currency) 
   // Wait a bit for currency to load
   await page.waitForTimeout(2000);
   
-  const pageContent = await page.textContent('body');
+  const homePage = new HomePage(page);
+  const pageContent = await homePage.getPageContent();
   
   if (currency === 'GBP') {
     expect(pageContent).toMatch(/£\d+/);
@@ -109,7 +114,8 @@ Then('the currency should be displayed in {string}', async ({ page }, currency) 
 });
 
 Then('the language should be {string}', async ({ page }, language) => {
-  const htmlLang = await page.getAttribute('html', 'lang');
+  const homePage = new HomePage(page);
+  const htmlLang = await homePage.getHtmlLang();
   
   if (language === 'English') {
     expect(htmlLang).toMatch(/en/i);

@@ -1,5 +1,5 @@
 // src/pages/checkout.page.js
-const BasePage = require('./base.page');
+import BasePage from './base.page.js';
 
 /**
  * Checkout Page Object
@@ -474,4 +474,4 @@ class CheckoutPage extends BasePage {
   }
 }
 
-module.exports = CheckoutPage;
+export default CheckoutPage;

@@ -1,7 +1,7 @@
 // src/steps/store-locator.steps.js
-const { expect } = require('@playwright/test');
-const { createBdd } = require('playwright-bdd');
-const HomePage = require('../pages/home.page');
+import { expect } from '@playwright/test';
+import { createBdd } from 'playwright-bdd';
+import HomePage from '../pages/home.page.js';
 
 const { Given, When, Then } = createBdd();
 

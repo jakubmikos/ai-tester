@@ -1,5 +1,5 @@
 // src/pages/product-detail.page.js
-const BasePage = require('./base.page');
+import BasePage from './base.page.js';
 
 /**
  * Product Detail Page Object
@@ -506,4 +506,4 @@ class ProductDetailPage extends BasePage {
   }
 }
 
-module.exports = ProductDetailPage;
+export default ProductDetailPage;
