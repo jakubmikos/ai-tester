@@ -1,6 +1,5 @@
 // src/pages/shopping-cart.page.js
 import BasePage from './base.page.js';
-import WaitHelpers from '../helpers/wait-helpers.js';
 
 /**
  * Shopping Cart Page Object
@@ -88,15 +87,15 @@ class ShoppingCartPage extends BasePage {
   async openCart() {
     try {
       // Wait for any toast notifications to disappear first
-      await WaitHelpers.waitForToastToDisappear(this.page);
+      await this.page.locator('.toast-container').first().waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
       
       // Try to find cart icon by href first (most reliable)
       const cartLink = this.page.locator('a[href*="/checkout/cart/"]').first();
 
       if (await cartLink.isVisible({ timeout: 3000 })) {
         await cartLink.click();
-        await WaitHelpers.waitForNetworkIdle(this.page);
-        await WaitHelpers.waitForLoadingToComplete(this.page);
+        await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+        await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
         return;
       }
 
@@ -264,8 +263,8 @@ class ShoppingCartPage extends BasePage {
       await quantityInput.fill(quantity.toString());
 
       // Wait for cart to update
-      await WaitHelpers.waitForNetworkIdle(this.page);
-      await WaitHelpers.waitForLoadingToComplete(this.page);
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
     } catch (error) {
       throw new Error(`Failed to update item quantity: ${error.message}`);
     }
@@ -284,8 +283,8 @@ class ShoppingCartPage extends BasePage {
       await increaseButton.click();
 
       // Wait for cart to update
-      await WaitHelpers.waitForNetworkIdle(this.page);
-      await WaitHelpers.waitForLoadingToComplete(this.page);
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
     } catch (error) {
       throw new Error(`Failed to increase item quantity: ${error.message}`);
     }
@@ -304,8 +303,8 @@ class ShoppingCartPage extends BasePage {
       await decreaseButton.click();
 
       // Wait for cart to update
-      await WaitHelpers.waitForNetworkIdle(this.page);
-      await WaitHelpers.waitForLoadingToComplete(this.page);
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
     } catch (error) {
       throw new Error(`Failed to decrease item quantity: ${error.message}`);
     }
@@ -329,8 +328,8 @@ class ShoppingCartPage extends BasePage {
       await binItButton.click();
 
       // Wait for item to be removed
-      await WaitHelpers.waitForNetworkIdle(this.page);
-      await WaitHelpers.waitForLoadingToComplete(this.page);
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
     } catch (error) {
       throw new Error(`Failed to remove item from cart: ${error.message}`);
     }
@@ -391,7 +390,7 @@ class ShoppingCartPage extends BasePage {
       // Remove items one by one starting from the last
       for (let i = itemCount - 1; i >= 0; i--) {
         await this.removeItemFromCart(i);
-        await WaitHelpers.waitForLoadingToComplete(this.page);
+        await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
       }
     } catch (error) {
       console.error('Error clearing cart:', error);
@@ -487,8 +486,8 @@ class ShoppingCartPage extends BasePage {
         const applyButton = this.page.locator('button:has-text("Apply"), .apply-coupon');
         if (await applyButton.isVisible()) {
           await applyButton.click();
-          await WaitHelpers.waitForNetworkIdle(this.page);
-          await WaitHelpers.waitForLoadingToComplete(this.page);
+          await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+          await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
         }
       }
     } catch (error) {

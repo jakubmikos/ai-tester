@@ -4,7 +4,6 @@ import { createBdd } from 'playwright-bdd';
 import ShoppingCartPage from '../pages/shopping-cart.page.js';
 import ProductCatalogPage from '../pages/product-catalog.page.js';
 import HomePage from '../pages/home.page.js';
-import WaitHelpers from '../helpers/wait-helpers.js';
 
 const { Given, When, Then } = createBdd();
 
@@ -38,7 +37,8 @@ Given('I have {string} in my cart', async ({ page }, productName) => {
   await catalogPage.addProductToCart(productName);
 
   // Wait for cart counter to update
-  await WaitHelpers.waitForCartCounterUpdate(page, 1);
+  await page.locator('.counter-number').first().waitFor({ state: 'visible', timeout: 10000 });
+  await expect(page.locator('.counter-number').first()).toHaveText(/^[1-9]\d*$/, { timeout: 10000 });
 
   // Verify product was added
   const cartPage = new ShoppingCartPage(page);
@@ -57,14 +57,16 @@ When('I add {string} to the cart', async ({ page }, productName) => {
   await catalogPage.addProductToCart(productName);
 
   // Wait for cart counter to update
-  await WaitHelpers.waitForCartCounterUpdate(page, initialCount + 1);
+  await page.locator('.counter-number').first().waitFor({ state: 'visible', timeout: 10000 });
+  const expectedMin = initialCount + 1;
+  await expect(page.locator('.counter-number').first()).toHaveText(new RegExp(`^[${expectedMin}-9]\d*$`), { timeout: 10000 });
 });
 
 Then('I should see a confirmation message', async ({ page }) => {
   const cartPage = new ShoppingCartPage(page);
 
   // Wait for any loading to complete
-  await WaitHelpers.waitForLoadingToComplete(page);
+  await page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
 
   const hasConfirmation = await cartPage.isConfirmationMessageVisible();
   expect(hasConfirmation, 'Should see confirmation message after adding to cart').toBeTruthy();
@@ -86,7 +88,8 @@ Then('I should see the cart contents with:', async ({ page }, dataTable) => {
   const cartPage = new ShoppingCartPage(page);
 
   // Wait for cart items to be visible
-  await WaitHelpers.waitForCartItems(page);
+  const cartItemsLocator = page.locator('.cart-items-list > .cart-product-container > .cart-product');
+  await expect(cartItemsLocator.first()).toBeVisible({ timeout: 10000 });
   
   // Get cart items details
   const cartItems = await cartPage.getCartItemsDetails();
@@ -164,8 +167,9 @@ Then('the cart should show quantity of at least {string}', async ({ page }, expe
   const quantity = parseInt(expectedQuantity, 10);
 
   // Wait for cart to fully update after quantity changes
-  await WaitHelpers.waitForLoadingToComplete(page);
-  await WaitHelpers.waitForCartItems(page);
+  await page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+  const cartItemsSelector = page.locator('.cart-items-list > .cart-product-container > .cart-product');
+  await expect(cartItemsSelector.first()).toBeVisible({ timeout: 10000 });
 
   // Wait specifically for the quantity input to have the expected value
   const cartItem = page.locator(cartPage.selectors.cartItems).first();
@@ -186,8 +190,9 @@ Then('the cart should show quantity {string}', async ({ page }, expectedQuantity
   const quantity = parseInt(expectedQuantity, 10);
 
   // Wait for cart items to update
-  await WaitHelpers.waitForLoadingToComplete(page);
-  await WaitHelpers.waitForCartItems(page);
+  await page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+  const cartItemsEl = page.locator('.cart-items-list > .cart-product-container > .cart-product');
+  await expect(cartItemsEl.first()).toBeVisible({ timeout: 10000 });
 
   const cartItems = await cartPage.getCartItemsDetails();
   const actualQuantity = cartItems[0]?.quantity || 0;
@@ -199,8 +204,8 @@ Then('the total price should be updated accordingly', async ({ page }) => {
   const cartPage = new ShoppingCartPage(page);
 
   // Wait for price update
-  await WaitHelpers.waitForLoadingToComplete(page);
-  await WaitHelpers.waitForNetworkIdle(page);
+  await page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+  await page.waitForLoadState('networkidle', { timeout: 5000 });
 
   const cartTotal = await cartPage.getCartTotal();
   expect(cartTotal, 'Cart total should be updated').toBeTruthy();
@@ -219,8 +224,8 @@ Then('the cart should be empty', async ({ page }) => {
   const cartPage = new ShoppingCartPage(page);
 
   // Wait for removal to complete
-  await WaitHelpers.waitForLoadingToComplete(page);
-  await WaitHelpers.waitForNetworkIdle(page);
+  await page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+  await page.waitForLoadState('networkidle', { timeout: 5000 });
 
   const isEmpty = await cartPage.isCartEmpty();
   expect(isEmpty, 'Cart should be empty after removing all items').toBeTruthy();
@@ -232,7 +237,8 @@ Then('the cart counter should show quantity of at least {string}', async ({ page
   const expectedMin = parseInt(minQuantity, 10);
   
   // Wait for counter to update
-  await WaitHelpers.waitForCartCounterUpdate(page, expectedMin);
+  await page.locator('.counter-number').first().waitFor({ state: 'visible', timeout: 10000 });
+  await expect(page.locator('.counter-number').first()).toHaveText(new RegExp(`^[${expectedMin}-9]\d*$`), { timeout: 10000 });
   
   // Use the base page method to check cart counter
   await cartPage.assertCartCounterAtLeast(expectedMin);
