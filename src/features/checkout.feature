@@ -11,8 +11,9 @@ Background:
 @P1 @Checkout @Critical
 Scenario: Complete checkout process as guest user
     Given I am not logged in
-    And I have "Stella Artois 6L Keg" in my cart
-    When I proceed to checkout
+    When I navigate to the "Kegs" section
+    And I add "PerfectDraft Stella Artois 6L Keg" to the cart
+    And I proceed to checkout
     And I select "Checkout as Guest" checkout option
     And I fill in guest checkout information with email "guest.user@example.com":
         | Field            | Value                    |

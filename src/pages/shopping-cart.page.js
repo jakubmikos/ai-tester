@@ -333,7 +333,7 @@ class ShoppingCartPage extends BasePage {
    */
   async proceedToCheckout() {
     // Use the specific checkout button selector
-    const checkoutButton = this.page.locator('button:has-text("Secure checkout")').first();
+    const checkoutButton = this.page.locator('button:has-text("Checkout")').first();
 
     if (await checkoutButton.isVisible({ timeout: 5000 })) {
       await checkoutButton.click();

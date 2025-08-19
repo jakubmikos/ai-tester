@@ -8,14 +8,14 @@ import BasePage from './base.page.js';
 class CheckoutPage extends BasePage {
   constructor(page) {
     super(page);
-    
+
     // Checkout page selectors
     this.selectors = {
       // Guest checkout
-      emailInput: 'input[type="email"], input[name*="email"], #customer-email',
+      emailInput: '.cutomer-login-email input[type="email"]',
       noPasswordOption: 'label:has-text("No Password"), span:has-text("No Password")',
       continueButton: 'button[type="submit"], button.action.primary, button:has-text("Continue")',
-      
+
       // Shipping form
       firstNameInput: 'input[name*="firstname"], #shipping-new-address-form input[name="firstname"]',
       lastNameInput: 'input[name*="lastname"], #shipping-new-address-form input[name="lastname"]',
@@ -23,33 +23,33 @@ class CheckoutPage extends BasePage {
       streetInput: 'input[name*="street"], #shipping-new-address-form input[name="street[0]"]',
       cityInput: 'input[name*="city"], #shipping-new-address-form input[name="city"]',
       postcodeInput: 'input[name*="postcode"], #shipping-new-address-form input[name="postcode"]',
-      
+
       // Delivery options
       standardDeliveryOption: 'input[value*="standard"], label:has-text("Standard"), input[name*="shipping_method"]:first-child',
-      
+
       // Payment selectors
       paymentMethodRadio: 'input[name="payment[method]"], .payment-method input[type="radio"]',
       cardNumberInput: 'input[name*="card_number"], #card_number, iframe[name*="card"]',
       expiryInput: 'input[name*="expiry"], #expiry_date',
       cvvInput: 'input[name*="cvv"], #cvv',
       cardholderInput: 'input[name*="cardholder"], #cardholder_name',
-      
+
       // Age verification
       ageVerificationCheckbox: 'input[type="checkbox"][name*="age"], input[id*="age-verification"], label:has-text("18")',
-      
+
       // Order placement
       placeOrderButton: 'button.checkout, button:has-text("Place Order"), button[title="Place Order"]',
-      
+
       // Confirmation page
       orderConfirmationMessage: '.checkout-success, .order-success, h1:has-text("Thank you")',
       orderNumber: '.order-number, .checkout-success .order-number',
-      
+
       // Common checkout containers
       checkoutContainer: '.checkout-container, #checkout, .opc-wrapper',
-      
+
       // Error messages
       errorMessage: '.error-message, .field-error, .mage-error',
-      
+
       // Loading indicators
       loadingIndicator: '.loading-mask, .loader, .spinner'
     };
@@ -66,7 +66,7 @@ class CheckoutPage extends BasePage {
       if (url.includes('checkout') || url.includes('onepage')) {
         return true;
       }
-      
+
       // Check for checkout-specific elements
       const hasCheckoutElements = await this.getElementCount(this.selectors.checkoutContainer) > 0;
       return hasCheckoutElements;
@@ -83,16 +83,7 @@ class CheckoutPage extends BasePage {
     // Enter email
     await this.waitForElement(this.selectors.emailInput, 10000);
     await this.type(this.selectors.emailInput, email);
-    
-    // Click "No Password" option for guest checkout
-    try {
-      await this.clickByText('No Password');
-      console.log('Clicked "No Password" option');
-    } catch {
-      // Some sites might not have explicit "No Password" option
-      console.log('No explicit "No Password" option found, proceeding as guest');
-    }
-    
+
     // Continue to shipping - try multiple possible continue buttons
     await this.clickContinueButton();
   }
@@ -103,7 +94,7 @@ class CheckoutPage extends BasePage {
   async clickContinueButton() {
     // Use the specific continue button selector from the selectors object
     const continueButton = this.page.locator(this.selectors.continueButton);
-    
+
     if (await continueButton.isVisible({ timeout: 5000 })) {
       await continueButton.click();
       console.log('Clicked continue button');
@@ -134,23 +125,23 @@ class CheckoutPage extends BasePage {
       if (firstName) {
         await this.type(this.selectors.firstNameInput, firstName);
       }
-      
+
       if (lastName) {
         await this.type(this.selectors.lastNameInput, lastName);
       }
-      
+
       if (phone) {
         await this.type(this.selectors.phoneInput, phone);
       }
-      
+
       if (addressLine1) {
         await this.type(this.selectors.streetInput, addressLine1);
       }
-      
+
       if (city) {
         await this.type(this.selectors.cityInput, city);
       }
-      
+
       if (postcode) {
         await this.type(this.selectors.postcodeInput, postcode);
       }
@@ -317,7 +308,7 @@ class CheckoutPage extends BasePage {
       if (await placeOrderButton.isVisible()) {
         await placeOrderButton.click();
         console.log('Place order button clicked');
-        
+
         // Wait for order processing
         await this.waitForOrderProcessing();
       } else {

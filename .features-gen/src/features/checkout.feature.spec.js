@@ -8,10 +8,11 @@ test.describe("Checkout Process", () => {
     await And("I am on the UK website", null, { page });
   });
 
-  test("Complete checkout process as guest user", { tag: ["@PerfectDraft", "@Checkout", "@P1", "@Critical"] }, async ({ Given, page, And, When, Then }) => {
+  test("Complete checkout process as guest user", { tag: ["@PerfectDraft", "@Checkout", "@P1", "@Critical"] }, async ({ Given, page, When, And, Then }) => {
     await Given("I am not logged in", null, { page });
-    await And("I have \"Stella Artois 6L Keg\" in my cart", null, { page });
-    await When("I proceed to checkout", null, { page });
+    await When("I navigate to the \"Kegs\" section", null, { page });
+    await And("I add \"PerfectDraft Stella Artois 6L Keg\" to the cart", null, { page });
+    await And("I proceed to checkout", null, { page });
     await And("I select \"Checkout as Guest\" checkout option", null, { page });
     await And("I fill in guest checkout information with email \"guest.user@example.com\":", {"dataTable":{"rows":[{"cells":[{"value":"Field"},{"value":"Value"}]},{"cells":[{"value":"First Name"},{"value":"Jane"}]},{"cells":[{"value":"Last Name"},{"value":"Smith"}]},{"cells":[{"value":"Phone Number"},{"value":"+44 7700 900123"}]},{"cells":[{"value":"Address Line 1"},{"value":"123 Test Street"}]},{"cells":[{"value":"City"},{"value":"London"}]},{"cells":[{"value":"Postcode"},{"value":"SW1A 1AA"}]}]}}, { page });
     await And("I select \"Standard\" delivery", null, { page });
