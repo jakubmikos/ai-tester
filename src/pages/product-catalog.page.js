@@ -8,40 +8,13 @@ import BasePage from './base.page.js';
 class ProductCatalogPage extends BasePage {
   constructor(page) {
     super(page);
-    
-    // Keg/product selectors
-    this.kegSelectors = [
-      'text=Kegs',
-      'text=Beer Kegs',
-      'a[href*="kegs"]',
-      'a[href*="beer"]',
-      '[data-category="kegs"]',
-      '.navigation a:has-text("Kegs")',
-      '.menu-item:has-text("Kegs")'
-    ];
-    
-    this.kegListSelectors = ['.result-wrapper'];
-    
-    // Filter and sort selectors
-    this.filterSelectors = [
-      '.filter',
-      '.filters',
-      '.product-filters',
-      '[data-testid="filters"]',
-      '.filter-container',
-      'select[name*="filter"]',
-      '.filter-dropdown'
-    ];
-    
-    this.sortSelectors = [
-      '.sort',
-      '.sort-by',
-      '.product-sort',
-      '[data-testid="sort"]',
-      'select[name*="sort"]',
-      '.sort-dropdown'
-    ];
-    
+
+    // Specific selectors based on actual website inspection
+    this.kegNavigationSelector = 'a.main-nav__link:has-text("Beer Kegs")';
+    this.kegListSelector = '.result-wrapper';
+    this.filterSelector = '.filter';
+    this.sortSelector = '.sort';
+
     // Product information selectors
     this.productInfoSelectors = {
       image: 'img[itemprop="image"]',
@@ -55,30 +28,21 @@ class ProductCatalogPage extends BasePage {
    * Navigate to kegs section
    */
   async navigateToKegsSection() {
-    let navigationSuccessful = false;
-
-    for (const selector of this.kegSelectors) {
-      try {
-        const element = this.findElement(selector);
-        if (await element.isVisible()) {
-          await element.click();
-          await this.waitForPageLoad();
-          navigationSuccessful = true;
-          console.log(`Navigation successful with selector: ${selector}`);
-          break;
-        }
-      } catch {
-        continue;
+    try {
+      // First method: Click the navigation link
+      const element = this.findElement(this.kegNavigationSelector);
+      if (await element.isVisible({ timeout: 5000 })) {
+        await element.click();
+        await this.waitForPageLoad();
+        return;
       }
+    } catch (error) {
+      console.log('Navigation link not found, navigating directly via URL');
     }
-
-    if (!navigationSuccessful) {
-      // Fallback: try to navigate via URL
-      const currentUrl = this.getCurrentUrl();
-      const url = new URL(currentUrl);
-      const baseUrl = `${url.protocol}//${url.host}`;
-      await this.navigateTo(`${baseUrl}/kegs`);
-    }
+    
+    // Direct navigation as primary method if link isn't visible
+    await this.navigateTo('https://www.perfectdraft.com/en-gb/perfect-draft-range/perfect-draft-kegs');
+    await this.waitForPageLoad();
   }
 
   /**
@@ -86,16 +50,13 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async isKegListVisible() {
-    for (const selector of this.kegListSelectors) {
-      try {
-        // Use Playwright's built-in waiting with 30 second timeout
-        await this.waitForElementToBeVisible(selector, 30000);
-        return true;
-      } catch {
-        continue;
-      }
+    try {
+      // Use Playwright's built-in waiting with 30 second timeout
+      await this.waitForElementToBeVisible(this.kegListSelector, 30000);
+      return true;
+    } catch {
+      return false;
     }
-    return false;
   }
 
   /**
@@ -103,24 +64,18 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<number>}
    */
   async getKegCount() {
-    for (const selector of this.kegListSelectors) {
-      try {
-        // Wait for at least one keg to be present
-        const locator = this.page.locator(selector);
-        await locator.first().waitFor({
-          state: 'attached',
-          timeout: 30000
-        });
+    try {
+      // Wait for at least one keg to be present
+      const locator = this.page.locator(this.kegListSelector);
+      await locator.first().waitFor({
+        state: 'attached',
+        timeout: 30000
+      });
 
-        const count = await locator.count();
-        if (count > 0) {
-          return count;
-        }
-      } catch {
-        continue;
-      }
+      return await locator.count();
+    } catch {
+      return 0;
     }
-    return 0;
   }
 
   /**
@@ -154,7 +109,7 @@ class ProductCatalogPage extends BasePage {
 
       // If at least most information is present, consider it valid
       const infoCount = (hasImage ? 1 : 0) + (hasName ? 1 : 0) +
-                       (hasPrice ? 1 : 0) + (hasABV ? 1 : 0);
+        (hasPrice ? 1 : 0) + (hasABV ? 1 : 0);
 
       if (infoCount < 3) { // At least 3 out of 4 pieces of info should be present
         return false;
@@ -169,9 +124,9 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<Array>}
    */
   async getKegElements() {
-    const elements = this.page.locator('.result-wrapper');
+    const elements = this.page.locator(this.kegListSelector);
     const count = await elements.count();
-    
+
     if (count > 0) {
       const elementArray = [];
       for (let i = 0; i < count; i++) {
@@ -229,21 +184,21 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async hasTextContent(kegElement, selectors, mustContain = null) {
-    for (const selector of selectors) {
-      try {
-        const element = kegElement.locator(selector);
-        const count = await element.count();
-        if (count > 0) {
-          const text = await element.first().textContent();
-          if (text && text.trim()) {
-            if (mustContain === null || text.includes(mustContain)) {
-              return true;
-            }
+    // Note: selectors is an array for compatibility, but should only have one element
+    const selector = selectors[0];
+    try {
+      const element = kegElement.locator(selector);
+      const count = await element.count();
+      if (count > 0) {
+        const text = await element.first().textContent();
+        if (text && text.trim()) {
+          if (mustContain === null || text.includes(mustContain)) {
+            return true;
           }
         }
-      } catch {
-        continue;
       }
+    } catch {
+      return false;
     }
     return false;
   }
@@ -253,32 +208,14 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async areFiltersAvailable() {
-    // Check filter elements
-    for (const selector of this.filterSelectors) {
-      try {
-        if (await this.isElementVisible(selector)) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
+    try {
+      // Check for filter elements - look for filter text which is more reliable
+      const filterElement = this.page.getByText('Filter', { exact: false });
+      const count = await filterElement.count();
+      return count > 0 && await filterElement.first().isVisible();
+    } catch {
+      return false;
     }
-
-    // Also check for filter-related text
-    const filterTexts = ['Filter', 'Filter by', 'Beer Type', 'Brand'];
-    for (const text of filterTexts) {
-      try {
-        const element = this.page.getByText(text, { exact: false });
-        const count = await element.count();
-        if (count > 0 && await element.first().isVisible()) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
-    }
-
-    return false;
   }
 
   /**
@@ -286,32 +223,14 @@ class ProductCatalogPage extends BasePage {
    * @returns {Promise<boolean>}
    */
   async areSortOptionsAvailable() {
-    // Check sort elements
-    for (const selector of this.sortSelectors) {
-      try {
-        if (await this.isElementVisible(selector)) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
+    try {
+      // Check for sort elements - look for sort text which is more reliable
+      const sortElement = this.page.getByText('Sort', { exact: false });
+      const count = await sortElement.count();
+      return count > 0 && await sortElement.first().isVisible();
+    } catch {
+      return false;
     }
-
-    // Also check for sort-related text
-    const sortTexts = ['Sort', 'Sort by', 'Price', 'Popularity', 'Name'];
-    for (const text of sortTexts) {
-      try {
-        const element = this.page.getByText(text, { exact: false });
-        const count = await element.count();
-        if (count > 0 && await element.first().isVisible()) {
-          return true;
-        }
-      } catch {
-        continue;
-      }
-    }
-
-    return false;
   }
 
   /**
@@ -324,7 +243,7 @@ class ProductCatalogPage extends BasePage {
       // Look for product headings that contain the machine type
       const productHeadings = this.page.locator('h3');
       const headingCount = await productHeadings.count();
-      
+
       for (let i = 0; i < headingCount; i++) {
         const heading = productHeadings.nth(i);
         if (await heading.isVisible()) {
@@ -333,9 +252,9 @@ class ProductCatalogPage extends BasePage {
             if (machineType === 'PerfectDraft') {
               // For standard PerfectDraft, find headings that contain "PerfectDraft" 
               // but NOT "Pro" or "Black"
-              if (text.includes('PerfectDraft') && 
-                  !text.includes('Pro') && 
-                  !text.includes('Black')) {
+              if (text.includes('PerfectDraft') &&
+                !text.includes('Pro') &&
+                !text.includes('Black')) {
                 return true;
               }
             } else if (machineType === 'PerfectDraft Pro') {
@@ -451,47 +370,28 @@ class ProductCatalogPage extends BasePage {
    * @param {string} productName - Product name
    */
   async addProductToCart(productName) {
-    try {
-      // Wait for products to load
-      await this.waitForElementToBeVisible('.result.product__link', 10000);
+    // Wait for products to load
+    await this.waitForElementToBeVisible('.result.product__link', 10000);
 
-      // The add to cart button selector based on actual website structure
-      const addToCartSelector = 'button[title*="Add"]';
+    let addToCartButton;
 
-      // If product name is specified, find the specific product's add to cart button
-      if (productName) {
-        let addToCartButton;
-        
-        if (productName.includes('Stella')) {
-          // Find Stella Artois add to cart button by data attributes
-          addToCartButton = this.page.locator('button[data-name*="Stella Artois"]');
-        } else if (productName.includes('Corona')) {
-          addToCartButton = this.page.locator('button[data-name*="Corona"]');
-        } else if (productName.includes('Camden')) {
-          addToCartButton = this.page.locator('button[data-name*="Camden"]');
-        } else {
-          // For other products, try to find by partial name match
-          const searchName = productName.split(' ')[0];
-          addToCartButton = this.page.locator(`button[data-name*="${searchName}"]`);
-        }
+    if (productName.includes('Stella')) {
+      // Find Stella Artois add to cart button by data attributes
+      addToCartButton = this.page.locator('button[data-name*="Stella Artois"]');
+    } else if (productName.includes('Corona')) {
+      addToCartButton = this.page.locator('button[data-name*="Corona"]');
+    } else if (productName.includes('Camden')) {
+      addToCartButton = this.page.locator('button[data-name*="Camden"]');
+    } else {
+      // For other products, try to find by partial name match
+      const searchName = productName.split(' ')[0];
+      addToCartButton = this.page.locator(`button[data-name*="${searchName}"]`);
+    }
 
-        const count = await addToCartButton.count();
-        if (count > 0) {
-          await addToCartButton.first().click();
-          return;
-        }
-      }
-
-      // Fallback: try to find any add to cart button on the page (first product)
-      const fallbackButton = this.page.locator(addToCartSelector).first();
-      if (await fallbackButton.isVisible()) {
-        await fallbackButton.click();
-        return;
-      }
-      
-      throw new Error(`Could not find add to cart button for product: ${productName}`);
-    } catch (error) {
-      throw new Error(`Failed to add product '${productName}' to cart: ${error.message}`);
+    const count = await addToCartButton.count();
+    if (count > 0) {
+      await addToCartButton.first().click();
+      return;
     }
   }
 
@@ -504,12 +404,12 @@ class ProductCatalogPage extends BasePage {
     try {
       // Try to find filter dropdown or checkbox
       const filterElement = this.page.locator(`[data-filter="${filterType}"], .filter-${filterType.toLowerCase()}`);
-      
+
       if (await filterElement.isVisible()) {
         // If it's a dropdown
         if (await filterElement.locator('select').count() > 0) {
           await filterElement.locator('select').selectOption(filterValue);
-        } 
+        }
         // If it's a checkbox/radio
         else if (await filterElement.locator(`input[value="${filterValue}"]`).count() > 0) {
           await filterElement.locator(`input[value="${filterValue}"]`).check();
@@ -521,7 +421,7 @@ class ProductCatalogPage extends BasePage {
             await optionElement.click();
           }
         }
-        
+
         // Wait for filter to apply
         await this.page.waitForTimeout(1000);
         await this.waitForPageLoad();
@@ -537,29 +437,24 @@ class ProductCatalogPage extends BasePage {
    */
   async sortProducts(sortOption) {
     try {
-      for (const selector of this.sortSelectors) {
-        const sortElement = this.page.locator(selector);
-        if (await sortElement.isVisible()) {
-          // If it's a select dropdown
-          if (await sortElement.evaluate(el => el.tagName.toLowerCase()) === 'select') {
-            await sortElement.selectOption(sortOption);
-          } else {
-            // If it's a clickable sort option
-            await sortElement.click();
-            const option = this.page.getByText(sortOption, { exact: false });
-            if (await option.isVisible()) {
-              await option.click();
-            }
-          }
-          
-          // Wait for sort to apply
-          await this.page.waitForTimeout(1000);
-          await this.waitForPageLoad();
-          return;
-        }
-      }
+      // Find sort dropdown or clickable element
+      const sortElement = this.page.getByText('Sort', { exact: false }).first();
       
-      throw new Error(`Could not find sort element for option: ${sortOption}`);
+      if (await sortElement.isVisible()) {
+        await sortElement.click();
+        
+        // Click on the specific sort option
+        const option = this.page.getByText(sortOption, { exact: false });
+        if (await option.isVisible()) {
+          await option.click();
+        }
+
+        // Wait for sort to apply
+        await this.page.waitForTimeout(1000);
+        await this.waitForPageLoad();
+      } else {
+        throw new Error(`Could not find sort element`);
+      }
     } catch (error) {
       throw new Error(`Failed to sort products by ${sortOption}: ${error.message}`);
     }

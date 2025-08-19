@@ -128,14 +128,12 @@ class HomePage extends BasePage {
         }
       }
     } else if (sectionName === 'Machines' || sectionName === 'PerfectDraft Machines') {
-      try {
-        // Use the specific link for machines
-        const machinesLink = this.page.getByText('PerfectDraft Machines').first();
-        await machinesLink.click({ force: true });
-      } catch {
-        // Direct navigation fallback
-        await this.page.goto('https://www.perfectdraft.com/en-gb/perfect-draft-range/perfect-draft-machines');
-      }
+      // Use more specific selector targeting anchor elements only
+      const machinesLink = this.page.locator('a').getByText('PerfectDraft Machines');
+      await machinesLink.click({ force: true });
+
+      // Wait for navigation to complete - bundles page specific content
+      await this.page.locator('.ais-InfiniteHits').waitFor();
     } else {
       // Fallback to text search for other sections
       try {
@@ -154,49 +152,27 @@ class HomePage extends BasePage {
    * Click on login/account link
    */
   async clickLoginLink() {
-    const loginSelectors = [
-      'text=Sign In',
-      'text=Login',
-      'text=Account',
-      '[href*="login"]',
-      '[href*="account"]',
-      '.account-link'
-    ];
-
-    for (const selector of loginSelectors) {
-      try {
-        await this.page.click(selector);
-        return;
-      } catch {
-        continue;
-      }
+    // Use the specific login selector for PerfectDraft
+    const loginLink = this.page.locator('a[href*="/customer/account"]').first();
+    
+    if (await loginLink.isVisible({ timeout: 5000 })) {
+      await loginLink.click();
+    } else {
+      throw new Error('Could not find login link');
     }
-    throw new Error('Could not find login link');
   }
 
   /**
    * Accept cookies if banner is present
    */
   async acceptCookies() {
-    const cookieSelectors = [
-      '[data-testid="accept-cookies"]',
-      '#onetrust-accept-btn-handler',
-      '.cookie-accept',
-      'text=Accept All',
-      'text=Accept Cookies'
-    ];
-
-    for (const selector of cookieSelectors) {
-      try {
-        const button = this.page.locator(selector);
-        if (await button.isVisible({ timeout: 3000 })) {
-          await button.click();
-          await this.page.waitForTimeout(500); // Wait for banner to disappear
-          return true;
-        }
-      } catch {
-        continue;
-      }
+    // Use the specific OneTrust cookie consent button
+    const cookieButton = this.page.locator('#onetrust-accept-btn-handler');
+    
+    if (await cookieButton.isVisible({ timeout: 3000 })) {
+      await cookieButton.click();
+      await this.page.waitForTimeout(500); // Wait for banner to disappear
+      return true;
     }
     return false;
   }
@@ -220,28 +196,22 @@ class HomePage extends BasePage {
    * @returns {Promise<Array>}
    */
   async getFeaturedProducts() {
-    const productSelectors = [
-      '.featured-products .product',
-      '.product-grid .product-item',
-      '[data-testid="product-card"]',
-      '.product-card'
-    ];
-
-    for (const selector of productSelectors) {
-      try {
-        const products = await this.page.$$(selector);
-        if (products.length > 0) {
-          const productData = [];
-          for (const product of products) {
-            const name = await product.$eval('.product-name, .product-title, h3, h4', el => el.textContent?.trim());
-            const price = await product.$eval('.price, .product-price', el => el.textContent?.trim());
-            productData.push({ name, price });
-          }
-          return productData;
+    // Use specific selector for product cards on PerfectDraft homepage
+    const products = await this.page.$$('.product-item');
+    
+    if (products.length > 0) {
+      const productData = [];
+      for (const product of products) {
+        try {
+          const name = await product.$eval('.product-item-name', el => el.textContent?.trim());
+          const price = await product.$eval('.price', el => el.textContent?.trim());
+          productData.push({ name, price });
+        } catch {
+          // Skip this product if selectors don't match
+          continue;
         }
-      } catch {
-        continue;
       }
+      return productData;
     }
     return [];
   }

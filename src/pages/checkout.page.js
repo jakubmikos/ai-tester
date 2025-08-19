@@ -101,28 +101,15 @@ class CheckoutPage extends BasePage {
    * Click continue button with multiple fallbacks
    */
   async clickContinueButton() {
-    const continueSelectors = [
-      this.selectors.continueButton,
-      'button:has-text("Next")',
-      'button.primary',
-      '.action.continue',
-      'button[type="submit"]'
-    ];
-
-    for (const selector of continueSelectors) {
-      try {
-        const element = this.page.locator(selector);
-        if (await element.isVisible()) {
-          await element.click();
-          console.log(`Clicked continue button with selector: ${selector}`);
-          return;
-        }
-      } catch {
-        continue;
-      }
-    }
+    // Use the specific continue button selector from the selectors object
+    const continueButton = this.page.locator(this.selectors.continueButton);
     
-    console.log('No continue button found - form might proceed automatically');
+    if (await continueButton.isVisible({ timeout: 5000 })) {
+      await continueButton.click();
+      console.log('Clicked continue button');
+    } else {
+      console.log('No continue button found - form might proceed automatically');
+    }
   }
 
   /**

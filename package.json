@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "playwright test",
+    "test": "bddgen && playwright test",
     "test:headed": "playwright test --headed",
     "test:chrome": "playwright test --project=chromium",
     "test:firefox": "playwright test --project=firefox",

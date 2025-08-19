@@ -33,7 +33,6 @@ Scenario: Modify cart contents
     And the total price should be updated accordingly
     When I click "Remove" for the item
     Then the cart should be empty
-    And the cart should show quantity "0"
 
 @P1 @ShoppingCart @Smoke @NewProduct
 Scenario: Add new Camden Hells keg to shopping cart

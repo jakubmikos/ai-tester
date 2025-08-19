@@ -355,24 +355,16 @@ class SearchPage extends BasePage {
    */
   async filterResults(filterType, filterValue) {
     try {
-      const filterSelectors = [
-        `[data-filter="${filterType}"]`,
-        `.filter-${filterType.toLowerCase()}`,
-        `input[name*="${filterType}"][value="${filterValue}"]`,
-        `label:has-text("${filterValue}")`
-      ];
-
-      for (const selector of filterSelectors) {
-        const filterElement = this.page.locator(selector);
-        if (await filterElement.count() > 0) {
-          await filterElement.first().click();
-          await this.page.waitForTimeout(1000); // Wait for filter to apply
-          console.log(`Applied filter: ${filterType} = ${filterValue}`);
-          return;
-        }
+      // Use the most specific data-filter attribute selector
+      const filterElement = this.page.locator(`[data-filter="${filterType}"]`);
+      
+      if (await filterElement.count() > 0) {
+        await filterElement.first().click();
+        await this.page.waitForTimeout(1000); // Wait for filter to apply
+        console.log(`Applied filter: ${filterType} = ${filterValue}`);
+      } else {
+        console.error(`Could not find filter: ${filterType} = ${filterValue}`);
       }
-
-      console.error(`Could not find filter: ${filterType} = ${filterValue}`);
     } catch (error) {
       throw new Error(`Failed to filter results: ${error.message}`);
     }

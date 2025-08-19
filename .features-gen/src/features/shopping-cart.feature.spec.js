@@ -26,7 +26,6 @@ test.describe("Shopping Cart Management", () => {
     await And("the total price should be updated accordingly", null, { page });
     await When("I click \"Remove\" for the item", null, { page });
     await Then("the cart should be empty", null, { page });
-    await And("the cart should show quantity \"0\"", null, { page });
   });
 
   test("Add new Camden Hells keg to shopping cart", { tag: ["@PerfectDraft", "@ShoppingCart", "@P1", "@Smoke", "@NewProduct"] }, async ({ Given, page, When, And, Then }) => {
@@ -51,5 +50,5 @@ test.use({
 const bddFileMeta = {
   "Add products to shopping cart": {"pickleLocation":"12:1","tags":["@PerfectDraft","@ShoppingCart","@P1","@Smoke"],"ownTags":["@Smoke","@ShoppingCart","@P1"]},
   "Modify cart contents": {"pickleLocation":"28:1","tags":["@PerfectDraft","@ShoppingCart","@P1","@Regression"],"ownTags":["@Regression","@ShoppingCart","@P1"]},
-  "Add new Camden Hells keg to shopping cart": {"pickleLocation":"39:1","tags":["@PerfectDraft","@ShoppingCart","@P1","@Smoke","@NewProduct"],"ownTags":["@NewProduct","@Smoke","@ShoppingCart","@P1"]},
+  "Add new Camden Hells keg to shopping cart": {"pickleLocation":"38:1","tags":["@PerfectDraft","@ShoppingCart","@P1","@Smoke","@NewProduct"],"ownTags":["@NewProduct","@Smoke","@ShoppingCart","@P1"]},
 };

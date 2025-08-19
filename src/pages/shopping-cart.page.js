@@ -1,5 +1,6 @@
 // src/pages/shopping-cart.page.js
 import BasePage from './base.page.js';
+import { test } from '@playwright/test';
 
 /**
  * Shopping Cart Page Object
@@ -38,22 +39,10 @@ class ShoppingCartPage extends BasePage {
    */
   async isCartEmpty() {
     try {
-      // Check for specific empty cart message from the website
-      const emptyCartSelectors = [
-        ':has-text("Your basket is currently empty")',
-        ':has-text("Your cart is empty")',
-        ':has-text("You have no items")',
-        this.selectors.emptyCartMessage
-      ];
-
-      for (const selector of emptyCartSelectors) {
-        try {
-          if (await this.page.locator(selector).isVisible()) {
-            return true;
-          }
-        } catch {
-          continue;
-        }
+      // Check for the specific empty cart message used on PerfectDraft
+      const emptyMessage = this.page.locator(':has-text("Your basket is currently empty")');
+      if (await emptyMessage.isVisible({ timeout: 2000 })) {
+        return true;
       }
 
       // Also check if cart counter shows 0
@@ -85,33 +74,25 @@ class ShoppingCartPage extends BasePage {
    * Open cart page by clicking cart icon
    */
   async openCart() {
+
     try {
-      // Wait for any toast notifications to disappear first
-      await this.page.locator('.toast-container').first().waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
-      
-      // Try to find cart icon by href first (most reliable)
-      const cartLink = this.page.locator('a[href*="/checkout/cart/"]').first();
 
-      if (await cartLink.isVisible({ timeout: 3000 })) {
-        await cartLink.click();
-        await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-        await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
-        return;
-      }
+      await this.page.locator('.minicart-popover')
+        .first()
+        .waitFor({ state: 'visible', timeout: 5000 });
 
-      // Fallback: navigate directly
-      console.log('Cart icon not found, navigating directly to cart page');
-      await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
-      await this.waitForPageLoad();
+      await this.page.locator('.popover-actions button')
+        .getByText('View Cart')
+        .first()
+        .click();
+
+
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.locator('.block-loader')
+        .waitFor({ state: 'hidden', timeout: 10000 })
+        .catch(() => { });
     } catch (error) {
-      // Last resort: direct navigation
-      console.log('Direct cart navigation fallback due to error:', error.message);
-      try {
-        await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
-        await this.waitForPageLoad();
-      } catch (navError) {
-        throw new Error(`Failed to navigate to cart: ${navError.message}`);
-      }
+      throw new Error(`Failed to open cart: ${error.message}`);
     }
   }
 
@@ -119,14 +100,9 @@ class ShoppingCartPage extends BasePage {
    * View full cart page
    */
   async viewFullCart() {
-    try {
-      await this.page.click(this.selectors.viewCartButton);
-      await this.waitForPageLoad();
-    } catch {
-      // Direct navigation fallback
-      await this.page.goto('/checkout/cart');
-      await this.waitForPageLoad();
-    }
+    // Direct navigation is more reliable for viewing full cart
+    await this.page.goto('https://www.perfectdraft.com/en-gb/checkout/cart/');
+    await this.waitForPageLoad();
   }
 
   /**
@@ -220,7 +196,7 @@ class ShoppingCartPage extends BasePage {
       if (await quantityInput.count() > 0) {
         // Wait for the input value to be available and not empty
         await quantityInput.waitFor({ state: 'visible', timeout: 5000 });
-        
+
         // Use inputValue() instead of getAttribute('value') for better DOM sync
         const value = await quantityInput.inputValue();
         return parseInt(value || '1', 10);
@@ -264,7 +240,7 @@ class ShoppingCartPage extends BasePage {
 
       // Wait for cart to update
       await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
     } catch (error) {
       throw new Error(`Failed to update item quantity: ${error.message}`);
     }
@@ -284,7 +260,7 @@ class ShoppingCartPage extends BasePage {
 
       // Wait for cart to update
       await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
     } catch (error) {
       throw new Error(`Failed to increase item quantity: ${error.message}`);
     }
@@ -304,7 +280,7 @@ class ShoppingCartPage extends BasePage {
 
       // Wait for cart to update
       await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
     } catch (error) {
       throw new Error(`Failed to decrease item quantity: ${error.message}`);
     }
@@ -329,7 +305,7 @@ class ShoppingCartPage extends BasePage {
 
       // Wait for item to be removed
       await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+      await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
     } catch (error) {
       throw new Error(`Failed to remove item from cart: ${error.message}`);
     }
@@ -356,28 +332,15 @@ class ShoppingCartPage extends BasePage {
    * Proceed to checkout
    */
   async proceedToCheckout() {
-    const checkoutSelectors = [
-      this.selectors.checkoutButton,
-      this.selectors.proceedToCheckoutButton,
-      'button:has-text("Checkout")',
-      'a:has-text("Checkout")',
-      '.checkout-btn'
-    ];
+    // Use the specific checkout button selector
+    const checkoutButton = this.page.locator('button:has-text("Secure checkout")').first();
 
-    for (const selector of checkoutSelectors) {
-      try {
-        const button = this.page.locator(selector);
-        if (await button.isVisible()) {
-          await button.click();
-          await this.waitForPageLoad();
-          return;
-        }
-      } catch {
-        continue;
-      }
+    if (await checkoutButton.isVisible({ timeout: 5000 })) {
+      await checkoutButton.click();
+      await this.waitForPageLoad();
+    } else {
+      throw new Error('Could not find checkout button');
     }
-
-    throw new Error('Could not find checkout button');
   }
 
   /**
@@ -390,7 +353,7 @@ class ShoppingCartPage extends BasePage {
       // Remove items one by one starting from the last
       for (let i = itemCount - 1; i >= 0; i--) {
         await this.removeItemFromCart(i);
-        await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+        await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
       }
     } catch (error) {
       console.error('Error clearing cart:', error);
@@ -464,31 +427,20 @@ class ShoppingCartPage extends BasePage {
    */
   async applyCoupon(couponCode) {
     try {
-      const couponSelectors = [
-        'input[name="coupon_code"]',
-        'input[placeholder*="coupon"]',
-        'input[placeholder*="discount"]',
-        '.coupon-input'
-      ];
+      // Use the specific coupon input selector
+      const couponInput = this.page.locator('input[name="coupon_code"]');
 
-      let couponInput = null;
-      for (const selector of couponSelectors) {
-        const element = this.page.locator(selector);
-        if (await element.isVisible()) {
-          couponInput = element;
-          break;
-        }
-      }
-
-      if (couponInput) {
+      if (await couponInput.isVisible({ timeout: 3000 })) {
         await couponInput.fill(couponCode);
 
-        const applyButton = this.page.locator('button:has-text("Apply"), .apply-coupon');
+        const applyButton = this.page.locator('button:has-text("Apply")');
         if (await applyButton.isVisible()) {
           await applyButton.click();
           await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-          await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+          await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
         }
+      } else {
+        console.log('Coupon input field not found');
       }
     } catch (error) {
       console.error('Error applying coupon:', error);

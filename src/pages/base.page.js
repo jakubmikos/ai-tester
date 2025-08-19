@@ -518,6 +518,30 @@ class BasePage {
     const message = customMessage || `Cart counter should show at least ${minQuantity}, but shows ${actualQuantity}`;
     expect(actualQuantity).toBeGreaterThanOrEqual(minQuantity);
   }
+
+  /**
+   * Wait for cart counter to update to expected value
+   * @param {number} expectedMin - Expected minimum value
+   */
+  async waitForCartCounterUpdate(expectedMin) {
+    await this.page.locator(this.cartCounterSelector).waitFor({ state: 'visible', timeout: 10000 });
+    await expect(this.page.locator(this.cartCounterSelector)).toHaveText(new RegExp(`^[${expectedMin}-9]\\d*$`), { timeout: 10000 });
+  }
+
+  /**
+   * Wait for loading to complete
+   */
+  async waitForLoadingToComplete() {
+    await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+  }
+
+  /**
+   * Wait for cart items to be visible
+   */
+  async waitForCartItemsVisible() {
+    const cartItemsLocator = this.page.locator('.cart-items-list > .cart-product-container > .cart-product');
+    await expect(cartItemsLocator.first()).toBeVisible({ timeout: 10000 });
+  }
 }
 
 export default BasePage;
