@@ -13,7 +13,7 @@ class BasePage {
   constructor(page) {
     this.page = page;
     this.config = testConfig;
-    
+
     // Cart counter element selector
     this.cartCounterSelector = '.counter-number';
   }
@@ -532,7 +532,7 @@ class BasePage {
    * Wait for loading to complete
    */
   async waitForLoadingToComplete() {
-    await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+    await this.page.locator('.block-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => { });
   }
 
   /**

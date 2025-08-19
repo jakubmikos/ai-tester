@@ -8,30 +8,30 @@ import BasePage from './base.page.js';
 class SearchPage extends BasePage {
   constructor(page) {
     super(page);
-    
+
     // Search-specific selectors verified from actual website
     this.selectors = {
       // Search form elements
-      searchInput: '#autocomplete-0-input, input[type="search"], input[placeholder*="Search"]',
-      searchButton: '.aa-SubmitButton, button[type="submit"], .search-button',
+      searchInput: 'input[type="search"].aa-Input',
+      searchButton: '.aa-SubmitButton',
       searchForm: '.aa-Form, .search-form, form[action*="search"]',
-      
+
       // Search results
       searchResultsHeader: 'h1, .page-title, .search-results-title',
-      productResults: '.products, .search-results, .result-wrapper',
-      resultItem: '.product-item, .result-item, .search-result-item',
-      
+      productResults: '.ais-InfiniteHits-list',
+      resultItem: '.ais-InfiniteHits-item .result-content',
+
       // No results
       noResultsMessage: '.no-results, .empty-results, .search-no-results',
-      
+
       // Filters and sorting
-      filterSection: '.sidebar, [class*="filter"], .search-filters',
+      filterSection: '.filters-wrapper',
       sortDropdown: '#sorter, select[name*="sort"], [data-role="sorter"]',
-      
+
       // Search suggestions
-      searchSuggestions: '.search-suggestions, .autocomplete-suggestions, .aa-Panel',
+      searchSuggestions: '.popular-searches',
       suggestionItem: '.suggestion-item, .aa-Item, .autocomplete-suggestion',
-      
+
       // Product types in results
       kegIndicator: '[data-product-type="keg"], .product-keg, [href*="keg"]',
       bundleIndicator: '[data-product-type="bundle"], .product-bundle, [href*="bundle"]',
@@ -60,6 +60,7 @@ class SearchPage extends BasePage {
     try {
       await this.click(this.selectors.searchButton);
       await this.waitForPageLoad();
+      await this.page.locator('.ais-InfinitteHits').waitFor({ timeout: 5000 });
       console.log('Search button clicked');
     } catch (error) {
       throw new Error(`Failed to click search button: ${error.message}`);
@@ -82,7 +83,7 @@ class SearchPage extends BasePage {
   async areSearchResultsVisible() {
     try {
       // Check for search results header
-      const hasHeader = await this.isElementVisible(this.selectors.searchResultsHeader);
+      /*const hasHeader = await this.isElementVisible(this.selectors.searchResultsHeader);
       if (hasHeader) {
         const headerText = await this.getText(this.selectors.searchResultsHeader);
         if (headerText.toLowerCase().includes('search results')) {
@@ -92,14 +93,17 @@ class SearchPage extends BasePage {
 
       // Check for product results container
       const hasResults = await this.isElementVisible(this.selectors.productResults);
-      
+
       // Check page text for search results indication
       const pageText = await this.page.textContent('body') || '';
-      const hasSearchResultsText = pageText.includes('Search results for:') || 
-                                  pageText.includes('results found') ||
-                                  pageText.includes('showing results');
+      const hasSearchResultsText = pageText.includes('Search results for:') ||
+        pageText.includes('results found') ||
+        pageText.includes('showing results');
 
       return hasResults || hasSearchResultsText;
+      */
+      await this.page.locator(this.selectors.productResults).waitFor({ timeout: 5000 });
+      return await this.isElementVisible(this.selectors.productResults);
     } catch {
       return false;
     }
@@ -113,11 +117,11 @@ class SearchPage extends BasePage {
   async doSearchResultsContainTerm(searchTerm) {
     try {
       const pageText = await this.page.textContent('body') || '';
-      
+
       // Check if results contain the search term or related products
       return pageText.toLowerCase().includes(searchTerm.toLowerCase()) ||
-             pageText.includes(`Search results for: '${searchTerm}'`) ||
-             pageText.includes(`Results for "${searchTerm}"`);
+        pageText.includes(`Search results for: '${searchTerm}'`) ||
+        pageText.includes(`Results for "${searchTerm}"`);
     } catch {
       return false;
     }
@@ -130,18 +134,18 @@ class SearchPage extends BasePage {
   async doResultsIncludeBothKegsAndBundles() {
     try {
       const pageText = await this.page.textContent('body') || '';
-      
+
       // Look for evidence of kegs
       const hasKegs = pageText.toLowerCase().includes('keg') ||
-                     pageText.includes('6L') ||
-                     (await this.getElementCount(this.selectors.kegIndicator)) > 0;
-      
+        pageText.includes('6L') ||
+        (await this.getElementCount(this.selectors.kegIndicator)) > 0;
+
       // Look for evidence of bundles/machines
       const hasBundles = pageText.toLowerCase().includes('bundle') ||
-                        pageText.toLowerCase().includes('machine') ||
-                        pageText.toLowerCase().includes('starter') ||
-                        (await this.getElementCount(this.selectors.bundleIndicator)) > 0 ||
-                        (await this.getElementCount(this.selectors.machineIndicator)) > 0;
+        pageText.toLowerCase().includes('machine') ||
+        pageText.toLowerCase().includes('starter') ||
+        (await this.getElementCount(this.selectors.bundleIndicator)) > 0 ||
+        (await this.getElementCount(this.selectors.machineIndicator)) > 0;
 
       return hasKegs && hasBundles;
     } catch {
@@ -164,9 +168,9 @@ class SearchPage extends BasePage {
       // Check for filter-related text
       const pageText = await this.page.textContent('body') || '';
       return pageText.toLowerCase().includes('filter') ||
-             pageText.includes('Shop By') ||
-             pageText.toLowerCase().includes('category') ||
-             pageText.includes('Product Type');
+        pageText.includes('Shop By') ||
+        pageText.toLowerCase().includes('category') ||
+        pageText.includes('Product Type');
     } catch {
       return false;
     }
@@ -215,9 +219,9 @@ class SearchPage extends BasePage {
       // Check page text for suggestions
       const pageText = await this.page.textContent('body') || '';
       return pageText.includes('Did you mean') ||
-             pageText.includes('Try searching for') ||
-             pageText.includes('Popular searches') ||
-             pageText.includes('Suggested searches');
+        pageText.includes('Try searching for') ||
+        pageText.includes('Popular searches') ||
+        pageText.includes('Suggested searches');
     } catch {
       return false;
     }
@@ -231,14 +235,14 @@ class SearchPage extends BasePage {
     try {
       const suggestions = [];
       const suggestionElements = await this.page.locator(this.selectors.suggestionItem).all();
-      
+
       for (const element of suggestionElements) {
         const text = await element.textContent();
         if (text && text.trim()) {
           suggestions.push(text.trim());
         }
       }
-      
+
       return suggestions;
     } catch {
       return [];
@@ -263,17 +267,17 @@ class SearchPage extends BasePage {
    */
   async getSearchResultsDetails() {
     const results = [];
-    
+
     try {
       const resultElements = await this.page.locator(this.selectors.resultItem).all();
-      
+
       for (let i = 0; i < Math.min(resultElements.length, 10); i++) { // Limit to first 10 results
         const element = resultElements[i];
-        
+
         const name = await this.getResultItemText(element, '.product-name, .result-title, h3, h4');
         const price = await this.getResultItemText(element, '.price, .product-price');
         const link = await this.getResultItemAttribute(element, 'a', 'href');
-        
+
         results.push({
           name,
           price,
@@ -284,7 +288,7 @@ class SearchPage extends BasePage {
     } catch (error) {
       console.error('Error getting search results details:', error);
     }
-    
+
     return results;
   }
 
@@ -337,11 +341,11 @@ class SearchPage extends BasePage {
     try {
       const resultElements = this.page.locator(this.selectors.resultItem);
       const result = resultElements.nth(index);
-      
+
       const link = result.locator('a').first();
       await link.click();
       await this.waitForPageLoad();
-      
+
       console.log(`Clicked search result at index: ${index}`);
     } catch (error) {
       throw new Error(`Failed to click search result: ${error.message}`);
@@ -357,7 +361,7 @@ class SearchPage extends BasePage {
     try {
       // Use the most specific data-filter attribute selector
       const filterElement = this.page.locator(`[data-filter="${filterType}"]`);
-      
+
       if (await filterElement.count() > 0) {
         await filterElement.first().click();
         await this.page.waitForTimeout(1000); // Wait for filter to apply
@@ -377,7 +381,7 @@ class SearchPage extends BasePage {
   async sortResults(sortOption) {
     try {
       const sortDropdown = this.page.locator(this.selectors.sortDropdown);
-      
+
       if (await sortDropdown.count() > 0) {
         await sortDropdown.selectOption(sortOption);
         await this.page.waitForTimeout(1000); // Wait for sort to apply

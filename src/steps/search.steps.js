@@ -10,7 +10,7 @@ const { Given, When, Then } = createBdd();
 When('I enter {string} in the search box', async ({ page }, searchTerm) => {
   const homePage = new HomePage(page);
   const searchPage = new SearchPage(page);
-  
+
   try {
     // Try using SearchPage methods first
     await searchPage.enterSearchTerm(searchTerm);
@@ -22,7 +22,7 @@ When('I enter {string} in the search box', async ({ page }, searchTerm) => {
 
 When('I click the search button', async ({ page }) => {
   const searchPage = new SearchPage(page);
-  
+
   try {
     await searchPage.clickSearchButton();
   } catch {
@@ -35,15 +35,15 @@ When('I click the search button', async ({ page }) => {
 // Search results verification steps
 Then('I should see search results containing {string} products', async ({ page }, searchTerm) => {
   const searchPage = new SearchPage(page);
-  
+
   // Verify search results are visible
   const resultsVisible = await searchPage.areSearchResultsVisible();
   expect(resultsVisible, 'Search results should be visible').toBeTruthy();
-  
+
   // Verify results contain the search term
   const resultsContainTerm = await searchPage.doSearchResultsContainTerm(searchTerm);
   expect(resultsContainTerm, `Search results should contain "${searchTerm}"`).toBeTruthy();
-  
+
   // Verify we have some results
   const resultCount = await searchPage.getNumberOfResults();
   expect(resultCount, 'Should have at least 1 search result').toBeGreaterThan(0);
@@ -64,7 +64,7 @@ Then('I should be able to filter the search results', async ({ page }) => {
 // No results steps
 Then('I should see a {string} message', async ({ page }, messageType) => {
   const searchPage = new SearchPage(page);
-  
+
   if (messageType === 'no results found') {
     const noResultsVisible = await searchPage.isNoResultsMessageVisible();
     expect(noResultsVisible, 'No results message should be visible').toBeTruthy();
