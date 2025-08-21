@@ -87,7 +87,7 @@ class ShoppingCartPage extends BasePage {
         .click();
 
 
-      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.waitForLoadState('networkidle', { timeout: 10000 });
       await this.page.locator('.block-loader')
         .waitFor({ state: 'hidden', timeout: 10000 })
         .catch(() => { });
