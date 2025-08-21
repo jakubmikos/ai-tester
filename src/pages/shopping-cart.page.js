@@ -28,7 +28,7 @@ class ShoppingCartPage extends BasePage {
       cartDropdown: '.minicart-content, .cart-dropdown, .dropdown-menu, div[role="dialog"]',
       cartTotal: '.order-summary-subtotal > p', // Total from order summary
       confirmationMessage: '.message.success, .alert.success, .notification.success',
-      checkoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")',
+      checkoutButton: 'button[aria-label="Checkout"]',
       proceedToCheckoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")'
     };
   }

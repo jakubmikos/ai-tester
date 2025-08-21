@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "bddgen && playwright test",
+    "test:sequential": "bddgen && playwright test --workers=1",
     "test:headed": "playwright test --headed",
     "test:chrome": "playwright test --project=chromium",
     "test:firefox": "playwright test --project=firefox",

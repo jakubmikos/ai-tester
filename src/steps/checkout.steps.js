@@ -40,7 +40,9 @@ When('I fill in guest checkout information with email {string}:', async ({ page 
   
   // First, select guest checkout with email
   await checkoutPage.selectGuestCheckout(email);
-  
+
+  await page.getByText('Enter address manually').click();
+
   // Parse shipping information from data table
   const shippingData = {};
   const rows = dataTable.hashes();
@@ -106,6 +108,17 @@ When('I click {string} button', async ({ page }, buttonText) => {
   if (buttonText === 'Place Order') {
     await checkoutPage.placeOrder();
   }
+  else {
+    const button = page.getByText(buttonText);
+    await button.click();
+  }
+});
+
+Then('I should see a payment page', async ({ page }) => {
+  const checkoutPage = new CheckoutPage(page);
+  
+  const isPaymentPage = await page.getByText('Select a payment method').isVisible();
+  expect(isPaymentPage, 'Order confirmation page should be displayed').toBeTruthy();
 });
 
 // Checkout verification steps
