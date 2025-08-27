@@ -10,12 +10,12 @@ test.describe("Product Search", () => {
 
   test("Search for specific products", { tag: ["@PerfectDraft", "@Search", "@P1", "@Regression"] }, async ({ When, page, And, Then }) => {
     await When("I enter \"Stella\" in the search box", null, { page });
-    await And("I click the search button", null, { page });
+    await And("I click the \"submit\" button", null, { page });
     await Then("I should see search results containing \"Stella\" products", null, { page });
     await And("the results should include both kegs and bundles", null, { page });
     await And("I should be able to filter the search results", null, { page });
     await When("I enter \"InvalidProductName123\" in the search box", null, { page });
-    await And("I click the search button", null, { page });
+    await And("I click the \"submit\" button", null, { page });
     await Then("I should see a \"no results found\" message", null, { page });
     await And("I should see suggestions for alternative searches", null, { page });
   });

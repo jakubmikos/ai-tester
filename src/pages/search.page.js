@@ -82,26 +82,6 @@ class SearchPage extends BasePage {
    */
   async areSearchResultsVisible() {
     try {
-      // Check for search results header
-      /*const hasHeader = await this.isElementVisible(this.selectors.searchResultsHeader);
-      if (hasHeader) {
-        const headerText = await this.getText(this.selectors.searchResultsHeader);
-        if (headerText.toLowerCase().includes('search results')) {
-          return true;
-        }
-      }
-
-      // Check for product results container
-      const hasResults = await this.isElementVisible(this.selectors.productResults);
-
-      // Check page text for search results indication
-      const pageText = await this.page.textContent('body') || '';
-      const hasSearchResultsText = pageText.includes('Search results for:') ||
-        pageText.includes('results found') ||
-        pageText.includes('showing results');
-
-      return hasResults || hasSearchResultsText;
-      */
       await this.page.locator(this.selectors.productResults).waitFor({ timeout: 5000 });
       return await this.isElementVisible(this.selectors.productResults);
     } catch {
