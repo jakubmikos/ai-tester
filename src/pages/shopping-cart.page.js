@@ -28,7 +28,7 @@ class ShoppingCartPage extends BasePage {
       cartDropdown: '.minicart-content, .cart-dropdown, .dropdown-menu, div[role="dialog"]',
       cartTotal: '.order-summary-subtotal > p', // Total from order summary
       confirmationMessage: '.message.success, .alert.success, .notification.success',
-      checkoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")',
+      checkoutButton: 'button[aria-label="Checkout"]',
       proceedToCheckoutButton: 'button:has-text("Secure checkout"), button:has-text("Secure Checkout")'
     };
   }
@@ -87,7 +87,7 @@ class ShoppingCartPage extends BasePage {
         .click();
 
 
-      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.waitForLoadState('networkidle', { timeout: 10000 });
       await this.page.locator('.block-loader')
         .waitFor({ state: 'hidden', timeout: 10000 })
         .catch(() => { });

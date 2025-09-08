@@ -12,17 +12,17 @@ class CheckoutPage extends BasePage {
     // Checkout page selectors
     this.selectors = {
       // Guest checkout
-      emailInput: '.cutomer-login-email input[type="email"]',
+      emailInput: '.customer-login-email input[type="email"]',
       noPasswordOption: 'label:has-text("No Password"), span:has-text("No Password")',
-      continueButton: 'button[type="submit"], button.action.primary, button:has-text("Continue")',
+      continueButton: 'button[aria-label="Continue as guest"]',
 
       // Shipping form
-      firstNameInput: 'input[name*="firstname"], #shipping-new-address-form input[name="firstname"]',
-      lastNameInput: 'input[name*="lastname"], #shipping-new-address-form input[name="lastname"]',
-      phoneInput: 'input[name*="telephone"], input[type="tel"], #shipping-new-address-form input[name="telephone"]',
-      streetInput: 'input[name*="street"], #shipping-new-address-form input[name="street[0]"]',
-      cityInput: 'input[name*="city"], #shipping-new-address-form input[name="city"]',
-      postcodeInput: 'input[name*="postcode"], #shipping-new-address-form input[name="postcode"]',
+      firstNameInput: 'input[name="firstName"]',//'input[name*="firstname"], #shipping-new-address-form input[name="firstname"]',
+      lastNameInput: 'input[name="lastName"]',//'input[name*="lastname"], #shipping-new-address-form input[name="lastname"]',
+      phoneInput: 'input[name="phone"]',
+      streetInput: 'input[name="streetLine1"]',
+      cityInput: 'input[name="city"]',
+      postcodeInput: 'input[name="postcode"]',
 
       // Delivery options
       standardDeliveryOption: 'input[value*="standard"], label:has-text("Standard"), input[name*="shipping_method"]:first-child',

@@ -14,7 +14,7 @@ export default defineConfig({
   testDir,
   
   // Run tests in files in parallel
-  fullyParallel: true,
+  fullyParallel: false,
   
   // Fail the build on CI if you accidentally left test.only in the source code
   forbidOnly: !!process.env.CI,
@@ -22,8 +22,8 @@ export default defineConfig({
   // Retry on CI only
   retries: process.env.CI ? 2 : 0,
   
-  // Limit parallel workers on CI
-  workers: process.env.CI ? 1 : undefined,
+  // Always use single worker for sequential execution
+  workers: 1,
   
   // Reporter to use
   reporter: [

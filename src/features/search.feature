@@ -11,11 +11,11 @@ Background:
 @P1 @Search @Regression  
 Scenario: Search for specific products
     When I enter "Stella" in the search box
-    And I click the search button
+    And I click the "submit" button
     Then I should see search results containing "Stella" products
     And the results should include both kegs and bundles
     And I should be able to filter the search results
     When I enter "InvalidProductName123" in the search box
-    And I click the search button
+    And I click the "submit" button
     Then I should see a "no results found" message
     And I should see suggestions for alternative searches

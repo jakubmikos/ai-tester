@@ -377,7 +377,7 @@ class ProductCatalogPage extends BasePage {
 
     if (productName.includes('Stella')) {
       // Find Stella Artois add to cart button by data attributes
-      addToCartButton = this.page.locator('button[data-name*="Stella Artois"]');
+      addToCartButton = this.page.locator('button[data-name*="Stella"]');
     } else if (productName.includes('Corona')) {
       addToCartButton = this.page.locator('button[data-name*="Corona"]');
     } else if (productName.includes('Camden')) {
@@ -388,11 +388,8 @@ class ProductCatalogPage extends BasePage {
       addToCartButton = this.page.locator(`button[data-name*="${searchName}"]`);
     }
 
-    const count = await addToCartButton.count();
-    if (count > 0) {
-      await addToCartButton.first().click();
-      return;
-    }
+    await addToCartButton.first().click();
+    return;
   }
 
   /**

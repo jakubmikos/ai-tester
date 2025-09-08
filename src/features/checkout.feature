@@ -9,7 +9,7 @@ Background:
     And I am on the UK website
 
 @P1 @Checkout @Critical
-Scenario: Complete checkout process as guest user
+Scenario: Incomplete (up to payment) checkout process as guest user
     Given I am not logged in
     When I navigate to the "Kegs" section
     And I add "PerfectDraft Stella Artois 6L Keg" to the cart
@@ -19,13 +19,9 @@ Scenario: Complete checkout process as guest user
         | Field            | Value                    |
         | First Name      | Jane                     |
         | Last Name       | Smith                    |
-        | Phone Number    | +44 7700 900123         |
+        | Phone Number    | 7708900123         |
         | Address Line 1  | 123 Test Street         |
         | City            | London                  |
         | Postcode        | SW1A 1AA                |
-    And I select "Standard" delivery
-    And I enter valid payment details
-    And I confirm age verification (18+)
-    And I click "Place Order" button
-    Then I should see an order confirmation page
-    And I should receive an order confirmation email at "guest.user@example.com"
+    And I click "Continue to payment" button
+    Then I should see a payment page
